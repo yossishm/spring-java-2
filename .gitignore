@@ -1,0 +1,15 @@
+
+target/classes/com/auth0/jwt/PemUtils.class
+target/classes/hello/Application.class
+target/classes/hello/LocalRestClient.class
+target/classes/JWTtest.class
+target/gs-spring-boot-docker-0.1.0.jar
+target/gs-spring-boot-docker-0.1.0.jar.original
+target/maven-archiver/pom.properties
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+target/surefire-reports/hello.ApplicationTest.txt
+target/surefire-reports/TEST-hello.ApplicationTest.xml
+target/test-classes/hello/ApplicationTest.class
