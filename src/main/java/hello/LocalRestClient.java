@@ -3,7 +3,7 @@ package hello;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,7 +15,7 @@ public class LocalRestClient {
   private String server = "http://localhost:8080";
   private RestTemplate rest;
   private HttpHeaders headers;
-  private HttpStatus status;
+  private HttpStatusCode status;
 
   public LocalRestClient(String autorization) {
     this.rest = new RestTemplate();
@@ -30,14 +30,14 @@ public class LocalRestClient {
   public String get(String uri) {
     HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
     ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.GET, requestEntity, String.class);
-    this.setStatus(responseEntity.getStatusCode());
+    this.setStatusCode(responseEntity.getStatusCode());
     return responseEntity.getBody();
   }
 
   public String post(String uri, String json) {   
     HttpEntity<String> requestEntity = new HttpEntity<String>(json, headers);
     ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.POST, requestEntity, String.class);
-    this.setStatus(responseEntity.getStatusCode());
+    this.setStatusCode(responseEntity.getStatusCode());
     return responseEntity.getBody();
   }
 
@@ -53,11 +53,11 @@ public class LocalRestClient {
 //     this.setStatus(responseEntity.getStatusCode());
 //   }
 
-  public HttpStatus getStatus() {
+  public HttpStatusCode getStatus() {
     return status;
   }
 
-  public void setStatus(HttpStatus status) {
+  public void setStatusCode(HttpStatusCode status) {
     this.status = status;
   } 
 }
