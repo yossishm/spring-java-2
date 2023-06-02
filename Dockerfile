@@ -9,5 +9,5 @@
 FROM eclipse-temurin:17-alpine
 RUN mkdir /opt/app
 ARG JAR_FILE
-ADD target/${JAR_FILE} /opt/app/app.jar
+ADD target/gs-spring-boot-docker-0.1.0.jar /opt/app/app.jar
 CMD ["java", "-jar", "/opt/app/app.jar"]

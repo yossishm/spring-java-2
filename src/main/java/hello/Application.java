@@ -75,37 +75,37 @@ public class Application {
     String jwsHeader = java.util.Base64.getEncoder().encodeToString("Authorization: Bearer".getBytes(StandardCharsets.UTF_8));
     System.out.println ("jws header base64 is : " + jwsHeader);
 
-    try {
-      Key publicKey = loadPublicKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/public-istio-demo-pkcs.der");//new FileInputStream(
-      headers.forEach((key, value) -> {
-      System.out.println(String.format("Header '%s' = %s", key, value));
-      Jws<Claims> jws;
+    // try {
+    //   Key publicKey = loadPublicKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/public-istio-demo-pkcs.der");//new FileInputStream(
+    //   headers.forEach((key, value) -> {
+    //   System.out.println(String.format("Header '%s' = %s", key, value));
+    //   Jws<Claims> jws;
       
       
-      if (key.equalsIgnoreCase (jwsHeader)){
-          String jwsString = value;
-          try {
-            jws = Jwts.parserBuilder()  // (1)
-            .setSigningKey(publicKey)         // (2)
-            .build()                    // (3)
-            .parseClaimsJws(jwsString); // (4)
-            System.out.println ("jws parsing is: " + jws);
+    //   if (key.equalsIgnoreCase (jwsHeader)){
+    //       String jwsString = value;
+    //       try {
+    //         jws = Jwts.parserBuilder()  // (1)
+    //         .setSigningKey(publicKey)         // (2)
+    //         .build()                    // (3)
+    //         .parseClaimsJws(jwsString); // (4)
+    //         System.out.println ("jws parsing is: " + jws);
             
-            // we can safely trust the JWT
+    //         // we can safely trust the JWT
 
             
-          }catch (JwtException ex) {       // (5)
+    //       }catch (JwtException ex) {       // (5)
             
-            // we *cannot* use the JWT as intended by its creator
-          }
-        }
-      });
+    //         // we *cannot* use the JWT as intended by its creator
+    //       }
+    //     }
+    //   });
       
     
  
-    }catch (Exception e){
-      System.err.println (e.getStackTrace ());
-    }
+    // }catch (Exception e){
+    //   System.err.println (e.getStackTrace ());
+    // }
       
     return "Hello Docker Yossi World";
   }
@@ -136,78 +136,65 @@ public class Application {
       // the key would be read from your application configuration instead.
       //Key key = "/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/istio-demo.pem"; //Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-      KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-      Key privateKey = loadPrivateKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/private-istio-demo-pkcs.der");//new FileInputStream());
-      Key publicKey = loadPublicKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/public-istio-demo-pkcs.der");//new FileInputStream(
-
-      System.out.println(publicKey);
-      System.out.println(privateKey);
-
-      String jwt = Jwts.builder()
-              .setSubject("paul.simon")
-              .signWith(SignatureAlgorithm.RS256, privateKey)
-              .compact();
-
-      System.out.println(jwt);
-
-      String subject = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(jwt).getBody().getSubject();
-      System.out.println(subject);
-
-      String jwsString = Jwts.builder().setSubject("Joe").signWith(privateKey).compact();
-      System.out.println ("Token is: " + jwsString);
-
-      assert Jwts.parserBuilder().setSigningKey(privateKey).build().parseClaimsJws(jwsString).getBody().getSubject().equals("Jo");
-
-
-
-//      String header = '{"alg":"HS256"}';
-//      String claims = '{"sub":"Joe"}';
-
- //     String encodedHeader = base64URLEncode( header.getBytes("UTF-8") );
- //     String encodedClaims = base64URLEncode( claims.getBytes("UTF-8") );
-
-
- //     String concatenated = encodedHeader + '.' + encodedClaims;
       
+  //     KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+  //     Key privateKey = loadPrivateKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/private-istio-demo-pkcs.der");//new FileInputStream());
+  //     Key publicKey = loadPublicKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/public-istio-demo-pkcs.der");//new FileInputStream(
+
+  //     System.out.println(publicKey);
+  //     System.out.println(privateKey);
+
+  //     String jwt = Jwts.builder()
+  //             .setSubject("paul.simon")
+  //             .signWith(SignatureAlgorithm.RS256, privateKey)
+  //             .compact();
+
+  //     System.out.println(jwt);
+
+  //     String subject = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(jwt).getBody().getSubject();
+  //     System.out.println(subject);
+
+  //     String jwsString = Jwts.builder().setSubject("Joe").signWith(privateKey).compact();
+  //     System.out.println ("Token is: " + jwsString);
+
+  //     assert Jwts.parserBuilder().setSigningKey(privateKey).build().parseClaimsJws(jwsString).getBody().getSubject().equals("Jo");
+
+
+
+
+
+  // jwsString = Jwts.builder() // (1)
+
+  //   .setSubject("Bob")      // (2) 
+
+  //   .signWith(privateKey)          // (3)
+
+  //   .setIssuer("me")
+  //   .setSubject("Bob")
+  //   .setAudience("you")
+  //   //.setExpiration(expiration) //a java.util.Date
+  //   //.setNotBefore(notBefore) //a java.util.Date s
+  //   .setIssuedAt(new Date()) // for example, now
+  //   .setId(UUID.randomUUID().toString ()) //just an example id
+
+
+  //   .claim("yossi", "accoountdata")
+  //   .claim("foo" , "bar")
      
- //     byte[] signature = hmacSha256( concatenated, privateKey );
+  //   .compact();             // (4)
 
- //     jws = concatenated + '.' + base64URLEncode( signature );
-
-  //    System.out.println ("jws is: " + jws);
-
-
-  jwsString = Jwts.builder() // (1)
-
-    .setSubject("Bob")      // (2) 
-
-    .signWith(privateKey)          // (3)
-
-    .setIssuer("me")
-    .setSubject("Bob")
-    .setAudience("you")
-    //.setExpiration(expiration) //a java.util.Date
-    //.setNotBefore(notBefore) //a java.util.Date s
-    .setIssuedAt(new Date()) // for example, now
-    .setId(UUID.randomUUID().toString ()) //just an example id
-
-
-    .claim("yossi", "accoountdata")
-    .claim("foo" , "bar")
-     
-    .compact();             // (4)
-
-    System.out.println ("jws is: " + jwsString);
+  //   System.out.println ("jws is: " + jwsString);
 
 
 
 
-    // get response to myself
-    LocalRestClient restClient = new LocalRestClient (jwsString);
+  //   // get response to myself
+     LocalRestClient restClient = new LocalRestClient ("");//(jwsString);
 
-    String response = restClient.get("");
-    System.out.println ("local host called . status is:" + restClient.getStatus() + "response is: " + response);
+     String response = restClient.get("");
+     System.out.println ("local host called . status is:" + restClient.getStatus() + "response is: " + response);
   }
 
   public static PrivateKey loadPrivateKey(String filename) throws Exception {
