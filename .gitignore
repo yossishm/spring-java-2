@@ -13,3 +13,4 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputF
 target/surefire-reports/hello.ApplicationTest.txt
 target/surefire-reports/TEST-hello.ApplicationTest.xml
 target/test-classes/hello/ApplicationTest.class
+target/classes/application.properties
