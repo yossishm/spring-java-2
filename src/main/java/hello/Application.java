@@ -2,17 +2,11 @@ package hello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-import java.time.*;
 import java.nio.charset.StandardCharsets;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.codec.binary.Base64;
-import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -26,26 +20,25 @@ import java.util.function.Function;
 
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.FileNotFoundException;
+
 import java.nio.file.*;
 
-import org.springframework.web.reactive.function.client.ClientResponse;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.*;
-import org.springframework.web.reactive.function.*;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 
 @SpringBootApplication
 @RestController
 public class Application {
+
+  @Bean
+  public OpenTelemetry openTelemetry() {
+    return AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+  }
 
    /// Server Side - cache - getObject
    @RequestMapping("/api/v1/cacheServices/getObject")

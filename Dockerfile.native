@@ -12,9 +12,22 @@
 #FROM container-registry.oracle.com/graalvm/graalvm-community:21
 #FROM eclipse-temurin:17.0.10_7-jre-ubi9-minimal
 #FROM eclipse-temurin:17.0.10_7-jre
+FROM container-registry.oracle.com/graalvm/graalvm-community:17 AS builder
+
+# Set the working directory to /home/app
+WORKDIR /build
+
+# Copy the source code into the image for building
+COPY . /build
+
+# Build
+RUN ./mvnw --no-transfer-progress native:compile -Pnative
+
+# The deployment Image
 FROM container-registry.oracle.com/graalvm/graalvm-community:17
 
-RUN mkdir /opt/app
-ARG JAR_FILE
-COPY target/gs-spring-boot-docker-0.1.0.jar /opt/app/app.jar
-CMD ["java", "-jar", "/opt/app/app.jar"]
+EXPOSE 8080
+
+# Copy the native executable into the containers
+COPY --from=builder /build/target/gs-spring-boot-docker  app
+ENTRYPOINT ["./app"]
