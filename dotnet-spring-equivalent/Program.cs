@@ -33,9 +33,7 @@ builder.Services.AddOpenTelemetry()
     {
         metrics
             .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddRuntimeInstrumentation()
-            .AddProcessInstrumentation();
+            .AddHttpClientInstrumentation();
     });
 
 var app = builder.Build();
