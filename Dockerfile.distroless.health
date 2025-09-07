@@ -1,0 +1,17 @@
+# Distroless with health checks
+FROM eclipse-temurin:21.0.8_9-jre-alpine-3.22 AS builder
+WORKDIR /build
+COPY target/gs-spring-boot-docker-0.2.0.jar /build/app.jar
+
+# Health check version with wget
+FROM gcr.io/distroless/java21-debian12:debug
+
+COPY --from=builder /build/app.jar /app/app.jar
+EXPOSE 8080
+
+# Health check using wget (available in debug image)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+

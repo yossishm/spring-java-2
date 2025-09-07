@@ -1,0 +1,31 @@
+# Scratch-based Dockerfile for minimal size
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy project file and restore dependencies
+COPY ["SpringJavaEquivalent.csproj", "."]
+RUN dotnet restore "SpringJavaEquivalent.csproj"
+
+# Copy source code
+COPY . .
+
+# Build with self-contained deployment for scratch
+RUN dotnet publish "SpringJavaEquivalent.csproj" -c Release -o /app/publish \
+    --self-contained true \
+    --runtime linux-x64 \
+    /p:PublishSingleFile=true \
+    /p:PublishTrimmed=true
+
+# Use scratch base image for minimal size
+FROM scratch
+WORKDIR /app
+
+# Copy the self-contained executable
+COPY --from=build /app/publish/SpringJavaEquivalent .
+
+# Copy necessary runtime files for scratch
+COPY --from=build /app/publish/SpringJavaEquivalent.pdb .
+
+EXPOSE 8080
+
+ENTRYPOINT ["/app/SpringJavaEquivalent"]

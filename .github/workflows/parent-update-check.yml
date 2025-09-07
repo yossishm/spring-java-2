@@ -1,0 +1,68 @@
+name: Spring Boot parent update check
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-parent-update:
+    name: Check Spring Boot parent update
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Check for parent updates
+        id: check
+        run: |
+          mvn -B -q org.codehaus.mojo:versions-maven-plugin:2.17.1:display-parent-updates | tee parent_updates.txt
+          if grep -qi "The following parent updates are available" parent_updates.txt; then
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create issue if update found
+        if: steps.check.outputs.update == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('parent_updates.txt', 'utf8');
+            const title = 'Spring Boot parent update available';
+
+            // Try to find an existing open issue with the same title
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'dependencies,automation'
+            });
+
+            if (!issues.find(i => i.title === title)) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body: 'Automated check detected a newer Spring Boot parent.\n\n``````\n' + body + '\n``````\n',
+                labels: ['dependencies', 'automation']
+              });
+            }
+
+      - name: No update found
+        if: steps.check.outputs.update == 'false'
+        run: echo "No Spring Boot parent updates available."
+
+

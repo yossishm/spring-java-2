@@ -1,0 +1,27 @@
+# Native AOT build - equivalent to GraalVM native image
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy project file and restore dependencies
+COPY ["SpringJavaEquivalent.csproj", "."]
+RUN dotnet restore "SpringJavaEquivalent.csproj"
+
+# Copy source code
+COPY . .
+
+# Build with native AOT compilation
+RUN dotnet publish "SpringJavaEquivalent.csproj" -c Release -o /app/publish /p:PublishAot=true /p:PublishSingleFile=true
+
+# Use distroless runtime - equivalent to your distroless image
+FROM gcr.io/distroless/cc-debian12:nonroot
+WORKDIR /app
+
+# Copy the native executable
+COPY --from=build /app/publish/SpringJavaEquivalent /app/app
+
+# Switch to non-root user
+USER nonroot:nonroot
+
+EXPOSE 8080
+
+ENTRYPOINT ["/app/app"]

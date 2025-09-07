@@ -1,20 +1,6 @@
-#FROM openjdk:11-jre-slim
-#FROM openjdk:17-ea-22-jdk-oracle
-#FROM registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.1-14
-#FROM registry.redhat.io/openjdk/openjdk-11-rhel8
-#FROM container-registry.oracle.com/graalvm/community:ol7-java17-22.3.2-b1
-#FROM ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.2
-#FROM adoptopenjdk/openjdk8:ubi-minimal
-#ARG JAR_FILE=target/*.jar
-#COPY ${JAR_FILE} /app.jar
-#ENTRYPOINT ["java","-jar","/app.jar"]
-#FROM eclipse-temurin:17-alpine
-#FROM container-registry.oracle.com/graalvm/graalvm-community:21
-#FROM eclipse-temurin:17.0.10_7-jre-ubi9-minimal
-#FROM eclipse-temurin:17.0.10_7-jre
-FROM container-registry.oracle.com/graalvm/graalvm-community:17 AS builder
+FROM ghcr.io/graalvm/native-image-community:21 AS builder
 
-# Set the working directory to /home/app
+# Set the working directory to /build
 WORKDIR /build
 
 # Copy the source code into the image for building
@@ -23,11 +9,15 @@ COPY . /build
 # Build
 RUN ./mvnw --no-transfer-progress native:compile -Pnative
 
-# The deployment Image
-FROM container-registry.oracle.com/graalvm/graalvm-community:17
+# The deployment Image - using minimal distroless runtime
+FROM gcr.io/distroless/cc-debian12:nonroot
 
 EXPOSE 8080
 
-# Copy the native executable into the containers
-COPY --from=builder /build/target/gs-spring-boot-docker  app
-ENTRYPOINT ["./app"]
+# Copy the native executable into the container
+COPY --from=builder /build/target/gs-spring-boot-docker /app/app
+
+# Switch to non-root user
+USER nonroot:nonroot
+
+ENTRYPOINT ["/app/app"]

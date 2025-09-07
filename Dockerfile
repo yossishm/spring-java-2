@@ -1,20 +1,7 @@
-#FROM openjdk:11-jre-slim
-#FROM openjdk:17-ea-22-jdk-oracle
-#FROM registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.1-14
-#FROM registry.redhat.io/openjdk/openjdk-11-rhel8
-#FROM container-registry.oracle.com/graalvm/community:ol7-java17-22.3.2-b1
-#FROM ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.2
-#FROM adoptopenjdk/openjdk8:ubi-minimal
-#ARG JAR_FILE=target/*.jar
-#COPY ${JAR_FILE} /app.jar
-#ENTRYPOINT ["java","-jar","/app.jar"]
-#FROM eclipse-temurin:17-alpine
-#FROM container-registry.oracle.com/graalvm/graalvm-community:21
-#FROM eclipse-temurin:17.0.10_7-jre-ubi9-minimal
-#FROM eclipse-temurin:17.0.10_7-jre
-FROM container-registry.oracle.com/graalvm/graalvm-community:17
-
+#FROM eclipse-temurin:21.0.6_7-jre-alpine-3.21
+#FROM eclipse-temurin:21.0.7_6-jre-alpine-3.21
+FROM eclipse-temurin:21.0.8_9-jre-alpine-3.22
 RUN mkdir /opt/app
 ARG JAR_FILE
-COPY target/gs-spring-boot-docker-0.1.0.jar /opt/app/app.jar
-CMD ["java", "-jar", "/opt/app/app.jar"]
+COPY target/gs-spring-boot-docker-0.2.0.jar /opt/app/app.jar
+ENTRYPOINT [ "java", "-jar", "/opt/app/app.jar"]
