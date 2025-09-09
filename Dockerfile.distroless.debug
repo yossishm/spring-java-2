@@ -13,3 +13,4 @@ EXPOSE 8080
 ENTRYPOINT ["/busybox/sh"]
 CMD ["-c", "java -jar /app/app.jar"]
 
+

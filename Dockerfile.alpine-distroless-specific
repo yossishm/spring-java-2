@@ -1,0 +1,37 @@
+# Multi-stage build with specific Alpine-based minimal runtime
+FROM eclipse-temurin:21.0.8_9-jre-alpine-3.22 AS builder
+WORKDIR /build
+COPY target/gs-spring-boot-docker-0.2.0.jar /build/app.jar
+
+# Runtime stage - specific Alpine version with minimal components
+FROM alpine:3.22.1
+
+# Install specific OpenJDK version and remove package manager
+RUN apk add --no-cache openjdk21-jre-headless=21.0.8_9-r0 && \
+    # Remove package manager and all unnecessary components
+    rm -rf /var/cache/apk/* /etc/apk /usr/share/man /usr/share/doc && \
+    # Remove unnecessary binaries to make it more distroless
+    rm -f /bin/* /sbin/* /usr/bin/* /usr/sbin/* && \
+    # Keep only essential binaries
+    ln -sf /usr/lib/jvm/java-21-openjdk/bin/java /usr/bin/java && \
+    # Create non-root user with specific UID/GID
+    addgroup -g 65532 -S nonroot && \
+    adduser -u 65532 -S nonroot -G nonroot
+
+# Set working directory
+WORKDIR /app
+
+# Copy the JAR from builder stage
+COPY --from=builder /build/app.jar /app/app.jar
+
+# Set ownership to non-root user
+RUN chown -R nonroot:nonroot /app
+
+# Switch to non-root user
+USER nonroot:nonroot
+
+# Expose port
+EXPOSE 8080
+
+# Run application
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

@@ -1,0 +1,26 @@
+# Ultra-minimal Alpine distroless with specific versions
+FROM alpine:3.22.1 AS base
+
+# Install only specific OpenJDK JRE version
+RUN apk add --no-cache openjdk21-jre-headless
+
+# Create minimal runtime image
+FROM scratch
+
+# Copy only essential files from Alpine
+COPY --from=base /usr/lib/jvm/java-21-openjdk /jre
+COPY --from=base /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=base /lib/libz.so.1 /lib/
+COPY --from=base /lib/libc.musl-x86_64.so.1 /lib/
+
+# Copy application
+COPY target/gs-spring-boot-docker-0.2.0.jar /app.jar
+
+# Set environment
+ENV PATH="/jre/bin:${PATH}"
+
+# Expose port
+EXPOSE 8080
+
+# Run application
+ENTRYPOINT ["/jre/bin/java", "-jar", "/app.jar"]
