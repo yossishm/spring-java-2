@@ -958,3 +958,7 @@ target/test-ids/junit-platform-unique-ids-8564528860614215237.txt
 target/test-ids/junit-platform-unique-ids-8719062148152716662.txt
 target/test-ids/junit-platform-unique-ids-8919455458730552975.txt
 target/test-ids/junit-platform-unique-ids-934905298344085296.txt
+target/classes/hello/TestController.class
+
+# Ignore entire target directory
+target/
