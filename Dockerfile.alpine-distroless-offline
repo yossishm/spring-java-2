@@ -1,44 +1,42 @@
-# Multi-stage build for offline/distroless deployment
-# This version doesn't require apk add during build time
+# Multi-stage build with offline connectivity - no apk add required
+# Based on alpine-distroless-specific but copying Java from builder stage
 
-# Stage 1: Builder with full JDK
+# Stage 1: Builder with full JDK and user creation
 FROM eclipse-temurin:21.0.8_9-jdk-alpine-3.22 AS builder
 WORKDIR /build
 COPY target/gs-spring-boot-docker-0.2.0.jar /build/app.jar
 
-# Stage 2: Create minimal runtime with pre-installed Java
-FROM eclipse-temurin:21.0.8_9-jre-alpine-3.22 AS runtime-builder
-
-# Remove package manager and unnecessary components to make it distroless-like
-RUN rm -rf /var/cache/apk/* /etc/apk /usr/share/man /usr/share/doc && \
-    # Remove unnecessary binaries but keep essential ones
-    find /bin /sbin /usr/bin /usr/sbin -type f ! -name "java" ! -name "sh" ! -name "cat" ! -name "ls" ! -name "mkdir" ! -name "rm" ! -name "cp" ! -name "mv" ! -name "chown" ! -name "chmod" ! -name "ln" ! -name "id" ! -name "whoami" ! -name "ps" ! -name "kill" ! -name "sleep" ! -name "echo" ! -name "printf" ! -name "test" ! -name "[" -delete 2>/dev/null || true && \
-    # Create non-root user with specific UID/GID
-    addgroup -g 65532 -S nonroot && \
+# Create user in builder stage (has connectivity)
+RUN addgroup -g 65532 -S nonroot && \
     adduser -u 65532 -S nonroot -G nonroot
 
-# Stage 3: Final minimal runtime
-FROM scratch AS final
+# Stage 2: Minimal Alpine runtime (no connectivity needed)
+FROM alpine:3.22.1 AS final
 
-# Copy only the essential runtime components from runtime-builder
-COPY --from=runtime-builder /usr/lib/jvm/java-21-openjdk /usr/lib/jvm/java-21-openjdk
-COPY --from=runtime-builder /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=runtime-builder /lib/libz.so.1 /lib/
-COPY --from=runtime-builder /lib/libc.musl-x86_64.so.1 /lib/
-COPY --from=runtime-builder /etc/passwd /etc/passwd
-COPY --from=runtime-builder /etc/group /etc/group
+# Copy Java runtime from builder stage (no apk add required)
+COPY --from=builder /opt/java/openjdk /opt/java/openjdk
 
-# Copy the JAR from builder stage
-COPY --from=builder /build/app.jar /app/app.jar
+# Copy user/group files from builder stage
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
+
+# Create symlink for java command
+RUN ln -sf /opt/java/openjdk/bin/java /usr/bin/java
 
 # Set working directory
 WORKDIR /app
 
+# Copy the JAR from builder stage
+COPY --from=builder /build/app.jar /app/app.jar
+
+# Set ownership to non-root user
+RUN chown -R nonroot:nonroot /app
+
 # Switch to non-root user
-USER 65532:65532
+USER nonroot:nonroot
 
 # Expose port
 EXPOSE 8080
 
 # Run application
-ENTRYPOINT ["/usr/lib/jvm/java-21-openjdk/bin/java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
