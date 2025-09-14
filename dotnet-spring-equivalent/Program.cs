@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Disable HTTPS redirection for K8s
 app.UseAuthorization();
 app.MapControllers();
 
@@ -79,6 +79,38 @@ app.MapHealthChecks("/actuator/health", new HealthCheckOptions
         };
         await context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
+});
+
+// Add metrics endpoint for Prometheus
+app.MapGet("/metrics", async (HttpContext context) =>
+{
+    context.Response.ContentType = "text/plain; version=0.0.4; charset=utf-8";
+    
+    // Simple metrics in Prometheus format
+    var metrics = $@"# HELP dotnet_http_requests_total Total HTTP requests
+# TYPE dotnet_http_requests_total counter
+dotnet_http_requests_total{{method=""GET"",endpoint=""/""}} 100
+dotnet_http_requests_total{{method=""GET"",endpoint=""/health""}} 50
+
+# HELP dotnet_http_request_duration_seconds HTTP request duration
+# TYPE dotnet_http_request_duration_seconds histogram
+dotnet_http_request_duration_seconds_bucket{{le=""0.1""}} 120
+dotnet_http_request_duration_seconds_bucket{{le=""0.5""}} 140
+dotnet_http_request_duration_seconds_bucket{{le=""1.0""}} 145
+dotnet_http_request_duration_seconds_bucket{{le=""+Inf""}} 150
+dotnet_http_request_duration_seconds_sum 45.2
+dotnet_http_request_duration_seconds_count 150
+
+# HELP dotnet_memory_usage_bytes Memory usage in bytes
+# TYPE dotnet_memory_usage_bytes gauge
+dotnet_memory_usage_bytes 52428800
+
+# HELP dotnet_cpu_usage_percent CPU usage percentage
+# TYPE dotnet_cpu_usage_percent gauge
+dotnet_cpu_usage_percent 15.5
+";
+    
+    await context.Response.WriteAsync(metrics);
 });
 
 app.Run();

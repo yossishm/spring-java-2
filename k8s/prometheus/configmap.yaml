@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: otel-system
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    rule_files:
+      # - "first_rules.yml"
+      # - "second_rules.yml"
+
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      - job_name: 'otel-collector'
+        static_configs:
+          - targets: ['otel-collector:8889']
+
+      - job_name: 'java-app'
+        static_configs:
+          - targets: ['java-app:8080']
+        metrics_path: '/actuator/prometheus'
+        scrape_interval: 5s
+        scrape_timeout: 5s
+
+      - job_name: 'dotnet-app'
+        static_configs:
+          - targets: ['dotnet-app:5000']
+        metrics_path: '/metrics'
+        scrape_interval: 5s
+        scrape_timeout: 5s
