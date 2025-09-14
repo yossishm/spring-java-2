@@ -19,25 +19,43 @@ builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy(), new[] { "ready" })
     .AddCheck("liveness", () => HealthCheckResult.Healthy(), new[] { "live" });
 
-// Add OpenTelemetry
+// Add OpenTelemetry with explicit configuration
 builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource
+        .AddService(
+            serviceName: "dotnet-app",
+            serviceVersion: "1.0.0"))
     .WithTracing(tracing =>
     {
         tracing
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
             .AddSource("SpringJavaEquivalent")
-            .SetResourceBuilder(ResourceBuilder.CreateDefault()
-                .AddService("SpringJavaEquivalent", "1.0.0"));
+            .AddOtlpExporter(options =>
+            {
+                options.Endpoint = new Uri("http://otel-collector:4317");
+                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+            });
     })
     .WithMetrics(metrics =>
     {
         metrics
             .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation();
+            .AddHttpClientInstrumentation()
+            .AddOtlpExporter(options =>
+            {
+                options.Endpoint = new Uri("http://otel-collector:4317");
+                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+            });
     });
 
 var app = builder.Build();
+
+// Log OTEL configuration
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("OTEL Service Name: dotnet-app");
+logger.LogInformation("OTEL Endpoint: http://otel-collector:4317");
+logger.LogInformation("OTEL Protocol: gRPC");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

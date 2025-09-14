@@ -1,0 +1,15 @@
+# Base runtime image that can be built once and reused
+# This creates a minimal Java runtime that doesn't require apk add during application builds
+
+FROM eclipse-temurin:21.0.8_9-jre-alpine-3.22
+
+# Remove package manager and unnecessary components
+RUN rm -rf /var/cache/apk/* /etc/apk /usr/share/man /usr/share/doc /tmp/* && \
+    # Remove unnecessary binaries but keep essential ones
+    find /bin /sbin /usr/bin /usr/sbin -type f ! -name "java" ! -name "sh" ! -name "cat" ! -name "ls" ! -name "mkdir" ! -name "rm" ! -name "cp" ! -name "mv" ! -name "chown" ! -name "chmod" ! -name "ln" ! -name "id" ! -name "whoami" ! -name "ps" ! -name "kill" ! -name "sleep" ! -name "echo" ! -name "printf" ! -name "test" ! -name "[" -delete 2>/dev/null || true && \
+    # Create non-root user
+    addgroup -g 65532 -S nonroot && \
+    adduser -u 65532 -S nonroot -G nonroot
+
+# This image can be tagged and pushed to a registry for reuse
+# Example: docker build -f Dockerfile.base-runtime -t my-registry/java-runtime:21-alpine-distroless .
