@@ -41,6 +41,8 @@ spec:
           value: "true"
         - name: MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED
           value: "true"
+        - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+          value: "true"
         resources:
           requests:
             memory: "512Mi"

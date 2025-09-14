@@ -22,16 +22,5 @@ data:
         static_configs:
           - targets: ['otel-collector:8889']
 
-      - job_name: 'java-app'
-        static_configs:
-          - targets: ['java-app:8080']
-        metrics_path: '/actuator/prometheus'
-        scrape_interval: 5s
-        scrape_timeout: 5s
-
-      - job_name: 'dotnet-app'
-        static_configs:
-          - targets: ['dotnet-app:5000']
-        metrics_path: '/metrics'
-        scrape_interval: 5s
-        scrape_timeout: 5s
+      # Java and .NET apps send metrics to OTEL collector via OTLP
+      # Prometheus scrapes metrics from OTEL collector instead of directly from apps
