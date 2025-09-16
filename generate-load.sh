@@ -20,8 +20,8 @@ generate_load() {
         curl -s "http://127.0.0.1:8080/actuator/metrics" > /dev/null
         
         # Generate traffic to .NET app
-        curl -s "http://127.0.0.1:8082/" > /dev/null
-        curl -s "http://127.0.0.1:8082/health/ready" > /dev/null
+        curl -s "http://127.0.0.1:5000/" > /dev/null
+        curl -s "http://127.0.0.1:5000/health/ready" > /dev/null
         
         # Generate some Grafana traffic
         curl -s "http://127.0.0.1:3000/api/health" > /dev/null

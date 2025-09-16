@@ -55,15 +55,12 @@ docker build -f Dockerfile.secure -t spring-java-equivalent-secure .
 docker build -f Dockerfile.scratch -t spring-java-equivalent-scratch .
 ```
 
-### Docker Compose
+### Kubernetes Deployment
 ```bash
-docker-compose up
+kubectl apply -f ../../k8s/apps/dotnet-app.yaml
 ```
 
-This will start three instances:
-- Standard: http://localhost:8080
-- Distroless: http://localhost:8081
-- Native: http://localhost:8082
+This will deploy the .NET app to Kubernetes with proper port configuration.
 
 ## Testing Endpoints
 
@@ -123,8 +120,7 @@ dotnet-spring-equivalent/
 ├── Dockerfile.distroless             # Distroless build
 ├── Dockerfile.native                 # Native AOT build
 ├── Dockerfile.secure                 # Secure build
-├── Dockerfile.scratch                # Scratch build
-└── docker-compose.yml                # Multi-container setup
+└── Dockerfile.scratch                # Scratch build
 ```
 
 ## Security Note

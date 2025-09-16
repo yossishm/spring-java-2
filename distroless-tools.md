@@ -157,21 +157,37 @@ ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 
 ## 6. Production Deployment Tools
 
-### Docker Compose with Distroless
+### Kubernetes Deployment with Distroless
 ```yaml
-# docker-compose.distroless.yml
-version: '3.8'
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.distroless
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    healthcheck:
+# k8s/apps/java-app.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-app
+  namespace: otel-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: java-app
+  template:
+    metadata:
+      labels:
+        app: java-app
+    spec:
+      containers:
+      - name: java-app
+        image: spring-java-2-java-app:otel
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: JAVA_OPTS
+          value: "-Xmx512m -Xms256m"
+        livenessProbe:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
       interval: 30s
       timeout: 10s
