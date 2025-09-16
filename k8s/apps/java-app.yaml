@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: java-app
-        image: spring-java-2-java-app:distroless-offline
+        image: spring-java-2-java-app:otel
         imagePullPolicy: Never  # Use local image
         ports:
         - containerPort: 8080

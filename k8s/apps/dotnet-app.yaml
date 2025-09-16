@@ -20,7 +20,7 @@ spec:
         image: spring-java-2-dotnet-app:latest
         imagePullPolicy: Never  # Use local image
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
           name: http
         env:
         - name: OTEL_SERVICE_NAME
@@ -35,6 +35,10 @@ spec:
           value: "otlp"
         - name: OTEL_TRACES_EXPORTER
           value: "otlp"
+        - name: PORT
+          value: "5000"
+        - name: ASPNETCORE_URLS
+          value: "http://0.0.0.0:5000"
         resources:
           requests:
             memory: "256Mi"
@@ -45,13 +49,13 @@ spec:
         livenessProbe:
           httpGet:
             path: /health/live
-            port: 8080
+            port: http
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /health/ready
-            port: 8080
+            port: http
           initialDelaySeconds: 15
           periodSeconds: 5
 ---
