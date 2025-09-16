@@ -102,7 +102,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}[5m])) by (service_name)",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}[5m]))",
           "interval": "",
           "legendFormat": "Java App - Request Rate/sec",
           "refId": "A"
@@ -112,7 +112,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m])) by (service_name)",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m]))",
           "interval": "",
           "legendFormat": ".NET App - Request Rate/sec",
           "refId": "B"
@@ -201,7 +201,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"java-spring-app\"}[5m])) by (service_name) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}[5m])) by (service_name)",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"java-spring-app\"}[5m])) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}[5m]))",
           "interval": "",
           "legendFormat": "Java App - Avg Response Time",
           "refId": "A"
@@ -211,7 +211,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"dotnet-app\"}[5m])) by (service_name) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m])) by (service_name)",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"dotnet-app\"}[5m])) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m]))",
           "interval": "",
           "legendFormat": ".NET App - Avg Response Time",
           "refId": "B"
@@ -300,7 +300,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}) by (service_name)",
+          "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"})",
           "interval": "",
           "legendFormat": "Java App - Total Requests",
           "refId": "A"
@@ -310,7 +310,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}) by (service_name)",
+          "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"})",
           "interval": "",
           "legendFormat": ".NET App - Total Requests",
           "refId": "B"
