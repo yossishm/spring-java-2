@@ -143,9 +143,9 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "rate(otel_otlp_exporter_exported_total{service_name=\"dotnet-app\",success=\"true\"}[5m])",
+          "expr": "rate(otel_aspnetcore_routing_match_attempts_total{service_name=\"dotnet-app\"}[5m])",
           "interval": "",
-          "legendFormat": ".NET App - Successful Exports/sec (Not Available)",
+          "legendFormat": ".NET App - Routing Match Attempts/sec",
           "refId": "B"
         }
       ],
@@ -273,9 +273,9 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "otel_otlp_exporter_exported_total{service_name=\"dotnet-app\",success=\"true\"}",
+          "expr": "otel_aspnetcore_routing_match_attempts_total{service_name=\"dotnet-app\"}",
           "interval": "",
-          "legendFormat": ".NET App - Total Successful Exports (Not Available)",
+          "legendFormat": ".NET App - Total Routing Match Attempts",
           "refId": "B"
         }
       ],
@@ -403,13 +403,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "rate(otel_otlp_exporter_exported_total{service_name=\"dotnet-app\",success=\"false\"}[5m])",
+          "expr": "rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m])",
           "interval": "",
-          "legendFormat": ".NET App - Failed Exports/sec (Not Available)",
+          "legendFormat": ".NET App - HTTP Request Rate/sec",
           "refId": "B"
         }
       ],
-      "title": "❌ Failed Exports Rate: Java vs .NET",
+      "title": "🚀 HTTP Request Rate: Java vs .NET",
       "type": "timeseries"
     },
     {
@@ -533,13 +533,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "otel_otlp_exporter_seen_total{service_name=\"dotnet-app\"}",
+          "expr": "otel_http_server_active_requests{service_name=\"dotnet-app\"}",
           "interval": "",
-          "legendFormat": ".NET App - Total Metrics Seen (Not Available)",
+          "legendFormat": ".NET App - Active HTTP Requests",
           "refId": "B"
         }
       ],
-      "title": "👀 Total Metrics Seen: Java vs .NET",
+      "title": "⚡ Active Requests: Java vs .NET",
       "type": "timeseries"
     }
   ],
@@ -561,7 +561,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "⚔️ Java vs .NET Performance Comparison (Java Active, .NET Pending)",
+  "title": "⚔️ Java vs .NET Performance Comparison (Both Active!)",
   "uid": "java-vs-dotnet",
   "version": 1,
   "weekStart": ""

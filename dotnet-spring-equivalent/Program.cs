@@ -9,6 +9,11 @@ using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Information);
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -19,43 +24,29 @@ builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy(), new[] { "ready" })
     .AddCheck("liveness", () => HealthCheckResult.Healthy(), new[] { "live" });
 
-// Add OpenTelemetry with explicit configuration
+// Add OpenTelemetry with simple configuration
+var otelEndpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT") ?? "http://otel-collector:4317";
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource
-        .AddService(
-            serviceName: "dotnet-app",
-            serviceVersion: "1.0.0"))
-    .WithTracing(tracing =>
-    {
-        tracing
-            .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddSource("SpringJavaEquivalent")
-            .AddOtlpExporter(options =>
-            {
-                options.Endpoint = new Uri("http://otel-collector:4317");
-                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-            });
-    })
+        .AddService(serviceName: "dotnet-app", serviceVersion: "1.0.0"))
     .WithMetrics(metrics =>
     {
         metrics
             .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
             .AddOtlpExporter(options =>
             {
-                options.Endpoint = new Uri("http://otel-collector:4317");
+                options.Endpoint = new Uri(otelEndpoint);
                 options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
             });
     });
 
 var app = builder.Build();
 
-// Log OTEL configuration
+// Log OTEL configuration status
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
-logger.LogInformation("OTEL Service Name: dotnet-app");
-logger.LogInformation("OTEL Endpoint: http://otel-collector:4317");
-logger.LogInformation("OTEL Protocol: gRPC");
+logger.LogInformation("🔧 OpenTelemetry configuration completed successfully");
+logger.LogInformation("📊 Metrics configured with OTLP exporter to {Endpoint}", otelEndpoint);
+logger.LogInformation("🚀 DOCKER BUILD TEST - This message should appear in container logs!");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,14 +1,11 @@
 # Multi-stage build with offline connectivity - no apk add required
 # Based on alpine-distroless-specific but copying Java from builder stage
 
-# Stage 1: Builder with full JDK and user creation
+# Stage 1: Builder with full JDK
 FROM eclipse-temurin:21.0.8_9-jdk-alpine-3.22 AS builder
 WORKDIR /build
 COPY target/gs-spring-boot-docker-0.2.0.jar /build/app.jar
 
-# Create user in builder stage (has connectivity)
-RUN addgroup -g 65532 -S nonroot && \
-    adduser -u 65532 -S nonroot -G nonroot
 
 # Stage 2: Minimal Alpine runtime (no connectivity needed)
 FROM alpine:3.22.1 AS final
@@ -16,12 +13,9 @@ FROM alpine:3.22.1 AS final
 # Copy Java runtime from builder stage (no apk add required)
 COPY --from=builder /opt/java/openjdk /opt/java/openjdk
 
-# Copy user/group files from builder stage
-COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /etc/group /etc/group
+# Use existing nobody user instead of creating new user
 
-# Create symlink for java command
-RUN ln -sf /opt/java/openjdk/bin/java /usr/bin/java
+# Use full path to java instead of creating symlink
 
 # Set working directory
 WORKDIR /app
@@ -29,14 +23,12 @@ WORKDIR /app
 # Copy the JAR from builder stage
 COPY --from=builder /build/app.jar /app/app.jar
 
-# Set ownership to non-root user
-RUN chown -R nonroot:nonroot /app
+# Skip ownership change to avoid sd-bus calls
 
-# Switch to non-root user
-USER nonroot:nonroot
+# Switch to nobody user
+USER nobody:nobody
 
-# Expose port
-EXPOSE 8080
+# Port 8080 will be exposed by Kubernetes Service
 
-# Run application
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# Run application using full path to java
+ENTRYPOINT ["/opt/java/openjdk/bin/java", "-jar", "/app/app.jar"]
