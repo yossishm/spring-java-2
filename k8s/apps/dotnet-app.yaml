@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: dotnet-app
-        image: spring-java-2-dotnet-app:latest
+        image: spring-java-2-dotnet-app:v2
         imagePullPolicy: Never  # Use local image
         ports:
         - containerPort: 5000
