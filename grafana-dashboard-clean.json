@@ -74,40 +74,9 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "reqps"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Java App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": ".NET App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -135,7 +104,7 @@
           },
           "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}[5m])) by (service_name)",
           "interval": "",
-          "legendFormat": "Java App - HTTP Request Rate/sec",
+          "legendFormat": "Java App - Request Rate/sec",
           "refId": "A"
         },
         {
@@ -145,11 +114,11 @@
           },
           "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m])) by (service_name)",
           "interval": "",
-          "legendFormat": ".NET App - HTTP Request Rate/sec",
+          "legendFormat": ".NET App - Request Rate/sec",
           "refId": "B"
         }
       ],
-      "title": "⏱️ Response Time: Java vs .NET",
+      "title": "📈 HTTP Request Rate: Java vs .NET",
       "type": "timeseries"
     },
     {
@@ -204,40 +173,9 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "s"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Java App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": ".NET App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -263,9 +201,9 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}) by (service_name)",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"java-spring-app\"}[5m])) by (service_name) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}[5m])) by (service_name)",
           "interval": "",
-          "legendFormat": "Java App - Total HTTP Requests",
+          "legendFormat": "Java App - Avg Response Time",
           "refId": "A"
         },
         {
@@ -273,13 +211,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}) by (service_name)",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"dotnet-app\"}[5m])) by (service_name) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m])) by (service_name)",
           "interval": "",
-          "legendFormat": ".NET App - Total HTTP Requests",
+          "legendFormat": ".NET App - Avg Response Time",
           "refId": "B"
         }
       ],
-      "title": "📈 Total HTTP Requests: Java vs .NET",
+      "title": "⏱️ Average Response Time: Java vs .NET",
       "type": "timeseries"
     },
     {
@@ -334,44 +272,13 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Java App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": ".NET App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 8
       },
@@ -393,139 +300,9 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"java-spring-app\"}[5m])) by (service_name) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}[5m])) by (service_name)",
-          "interval": "",
-          "legendFormat": "Java App - Average Response Time",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m])) by (service_name)",
-          "interval": "",
-          "legendFormat": ".NET App - HTTP Request Rate/sec",
-          "refId": "B"
-        }
-      ],
-      "title": "⏱️ Response Time: Java vs .NET",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Java App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": ".NET App"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 8
-      },
-      "id": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
           "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"java-spring-app\"}) by (service_name)",
           "interval": "",
-          "legendFormat": "Java App - Total HTTP Requests",
+          "legendFormat": "Java App - Total Requests",
           "refId": "A"
         },
         {
@@ -535,7 +312,7 @@
           },
           "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}) by (service_name)",
           "interval": "",
-          "legendFormat": ".NET App - Total HTTP Requests",
+          "legendFormat": ".NET App - Total Requests",
           "refId": "B"
         }
       ],
@@ -546,12 +323,7 @@
   "refresh": "5s",
   "schemaVersion": 27,
   "style": "dark",
-  "tags": [
-    "java",
-    "dotnet",
-    "comparison",
-    "performance"
-  ],
+  "tags": ["java", "dotnet", "performance", "comparison"],
   "templating": {
     "list": []
   },
@@ -561,8 +333,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "⚔️ Java vs .NET Performance Comparison (Both Active!)",
-  "uid": "java-vs-dotnet",
+  "title": "⚔️ Java vs .NET Performance Comparison (Clean)",
+  "uid": "java-vs-dotnet-clean",
   "version": 1,
   "weekStart": ""
 }
