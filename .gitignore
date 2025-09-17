@@ -56,3 +56,4 @@ src/layers.xml
 istio-1.26.0/
 minikube-darwin-amd64
 target/classes/hello/TestController.class
+target/classes/hello/TestController.class
