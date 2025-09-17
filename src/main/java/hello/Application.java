@@ -28,17 +28,13 @@ import java.io.InputStreamReader;
 import java.nio.file.*;
 
 
-import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+// OpenTelemetry imports removed - using Spring Boot native OTLP
 
 @SpringBootApplication
 @RestController
 public class Application {
 
-  @Bean
-  public OpenTelemetry openTelemetry() {
-    return AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
-  }
+  // OpenTelemetry bean removed - using Spring Boot native OTLP
 
    /// Server Side - cache - getObject
    @RequestMapping("/api/v1/cacheServices/getObject")

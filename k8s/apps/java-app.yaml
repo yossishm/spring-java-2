@@ -17,32 +17,31 @@ spec:
     spec:
       containers:
       - name: java-app
-        image: spring-java-2-java-app:otel
+        image: spring-java-2-java-app:clean
         imagePullPolicy: Never  # Use local image
         ports:
         - containerPort: 8080
           name: http
         env:
-        - name: OTEL_SERVICE_NAME
-          value: "java-spring-app"
-        - name: OTEL_RESOURCE_ATTRIBUTES
+        # Spring Boot native OTLP support (no agent, no full SDK)
+        - name: MANAGEMENT_METRICS_EXPORT_OTLP_ENABLED
+          value: "true"
+        - name: MANAGEMENT_OTLP_METRICS_EXPORT_URL
+          value: "http://otel-collector:4318/v1/metrics"
+        - name: MANAGEMENT_METRICS_EXPORT_OTLP_RESOURCE_ATTRIBUTES
           value: "service.name=java-spring-app,service.version=1.0.0"
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: "http://otel-collector:4317"
-        - name: OTEL_EXPORTER_OTLP_PROTOCOL
-          value: "grpc"
-        - name: OTEL_METRICS_EXPORTER
-          value: "otlp"
-        - name: OTEL_TRACES_EXPORTER
-          value: "otlp"
+        - name: MANAGEMENT_TRACING_SAMPLING_PROBABILITY
+          value: "1.0"
+        - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
+          value: "http://otel-collector:4318/v1/traces"
         - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
           value: "health,info,metrics,prometheus"
         - name: MANAGEMENT_ENDPOINT_METRICS_ENABLED
-          value: "true"
+          value: "false"
         - name: MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED
-          value: "true"
+          value: "false"
         - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
-          value: "true"
+          value: "false"
         resources:
           requests:
             memory: "512Mi"
