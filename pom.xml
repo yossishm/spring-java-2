@@ -84,11 +84,7 @@
 
 
         <!-- OpenTelemetry SDK auto-configuration for Spring Boot OTLP -->
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-        </dependency>
-
+  
 
 
         <!-- END jwt -->
