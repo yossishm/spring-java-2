@@ -1,54 +1,22 @@
 {
   "dashboard": {
     "id": null,
-    "title": "DotNet Application Metrics",
-    "tags": ["dotnet", "aspnetcore", "otlp"],
+    "title": "True Java vs DotNet Comparison",
+    "tags": ["java", "dotnet", "true-comparison", "otlp"],
     "timezone": "browser",
     "panels": [
       {
         "id": 1,
-        "title": "DotNet HTTP Requests",
-        "type": "stat",
+        "title": "Total HTTP Requests/sec - True Comparison",
+        "type": "timeseries",
         "targets": [
+          {
+            "expr": "sum(rate(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"}[5m]))",
+            "legendFormat": "Java Total Requests/sec"
+          },
           {
             "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m]))",
-            "legendFormat": "Requests/sec"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false
-              }
-            },
-            "mappings": []
-          }
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 0
-        }
-      },
-      {
-        "id": 2,
-        "title": "DotNet HTTP Response Times",
-        "type": "timeseries",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, rate(otel_http_server_request_duration_seconds_bucket{service_name=\"dotnet-app\"}[5m]))",
-            "legendFormat": "95th percentile"
-          },
-          {
-            "expr": "histogram_quantile(0.50, rate(otel_http_server_request_duration_seconds_bucket{service_name=\"dotnet-app\"}[5m]))",
-            "legendFormat": "50th percentile"
+            "legendFormat": "DotNet Total Requests/sec"
           }
         ],
         "fieldConfig": {
@@ -69,145 +37,7 @@
                 "vis": false
               },
               "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "s"
-          }
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 0
-        }
-      },
-      {
-        "id": 3,
-        "title": "DotNet Process Memory Usage",
-        "type": "timeseries",
-        "targets": [
-          {
-            "expr": "otel_process_memory_usage_bytes{service_name=\"dotnet-app\"}",
-            "legendFormat": "Process Memory"
-          },
-          {
-            "expr": "otel_process_memory_virtual_bytes{service_name=\"dotnet-app\"}",
-            "legendFormat": "Virtual Memory"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "bytes"
-          }
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 24,
-          "x": 0,
-          "y": 8
-        }
-      },
-      {
-        "id": 4,
-        "title": "DotNet HTTP Requests by Endpoint",
-        "type": "timeseries",
-        "targets": [
-          {
-            "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m])) by (http_route)",
-            "legendFormat": "{{http_route}}"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
+              "lineWidth": 3,
               "pointSize": 5,
               "scaleDistribution": {
                 "type": "linear"
@@ -243,17 +73,21 @@
           "h": 8,
           "w": 24,
           "x": 0,
-          "y": 16
+          "y": 0
         }
       },
       {
-        "id": 5,
-        "title": "DotNet CPU Usage",
+        "id": 2,
+        "title": "Main Route Requests/sec (Excluding Health Checks)",
         "type": "timeseries",
         "targets": [
           {
-            "expr": "rate(otel_process_cpu_seconds_total{service_name=\"dotnet-app\"}[5m]) * 100",
-            "legendFormat": "CPU Usage %"
+            "expr": "sum(rate(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\",uri=\"/\"}[5m]))",
+            "legendFormat": "Java Main Route"
+          },
+          {
+            "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\",http_route=\"\"}[5m]))",
+            "legendFormat": "DotNet Main Route"
           }
         ],
         "fieldConfig": {
@@ -274,7 +108,7 @@
                 "vis": false
               },
               "lineInterpolation": "linear",
-              "lineWidth": 1,
+              "lineWidth": 3,
               "pointSize": 5,
               "scaleDistribution": {
                 "type": "linear"
@@ -303,7 +137,270 @@
                 }
               ]
             },
-            "unit": "percent"
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        }
+      },
+      {
+        "id": 3,
+        "title": "Health Check Requests/sec",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum(rate(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\",uri=~\"/actuator/health.*\"}[5m]))",
+            "legendFormat": "Java Health Checks"
+          },
+          {
+            "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\",http_route=~\"/health/.*\"}[5m]))",
+            "legendFormat": "DotNet Health Checks"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 3,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        }
+      },
+      {
+        "id": 4,
+        "title": "Response Time 95th Percentile - True Comparison",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_requests_milliseconds_bucket{service_name=\"java-spring-app\"}[5m])) by (le))",
+            "legendFormat": "Java 95th percentile"
+          },
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_request_duration_seconds_bucket{service_name=\"dotnet-app\"}[5m])) by (le))",
+            "legendFormat": "DotNet 95th percentile"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 3,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "s"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        }
+      },
+      {
+        "id": 5,
+        "title": "Response Time 50th Percentile - True Comparison",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_requests_milliseconds_bucket{service_name=\"java-spring-app\"}[5m])) by (le))",
+            "legendFormat": "Java 50th percentile"
+          },
+          {
+            "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_request_duration_seconds_bucket{service_name=\"dotnet-app\"}[5m])) by (le))",
+            "legendFormat": "DotNet 50th percentile"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 3,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "s"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        }
+      },
+      {
+        "id": 6,
+        "title": "Current Total Request Counts",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"})",
+            "legendFormat": "Java Total Count"
+          },
+          {
+            "expr": "sum(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"})",
+            "legendFormat": "DotNet Total Count"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
           }
         },
         "gridPos": {
