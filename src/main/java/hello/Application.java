@@ -2,7 +2,7 @@ package hello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.nio.charset.StandardCharsets;
@@ -238,7 +238,7 @@ public static Key loadPublicKey(InputStream in) throws IOException, NoSuchAlgori
     KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
     return loadKey(in, bytes -> {
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
+       // PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
         try {
             X509EncodedKeySpec spec =
                     new X509EncodedKeySpec(bytes);

@@ -2,7 +2,13 @@
   "dashboard": {
     "id": null,
     "title": "Enhanced True Java vs DotNet Comparison",
-    "tags": ["java", "dotnet", "true-comparison", "enhanced", "otlp"],
+    "tags": [
+      "java",
+      "dotnet",
+      "true-comparison",
+      "enhanced",
+      "otlp"
+    ],
     "timezone": "browser",
     "panels": [
       {
@@ -525,6 +531,138 @@
           "w": 12,
           "x": 12,
           "y": 24
+        }
+      },
+      {
+        "id": 9,
+        "title": "Java req/sec by uri (increase/60)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (uri)(increase(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"}[1m])) / 60",
+            "legendFormat": "{{uri}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        }
+      },
+      {
+        "id": 10,
+        "title": ".NET req/sec by http_route (increase/60)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (http_route)(increase(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[1m])) / 60",
+            "legendFormat": "{{http_route}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 32
+        }
+      },
+      {
+        "id": 11,
+        "title": "Java req/sec by status (increase/60)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (status)(increase(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"}[1m])) / 60",
+            "legendFormat": "{{status}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 40
+        }
+      },
+      {
+        "id": 12,
+        "title": ".NET req/sec by http_response_status_code (increase/60)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (http_response_status_code)(increase(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[1m])) / 60",
+            "legendFormat": "{{http_response_status_code}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 40
+        }
+      },
+      {
+        "id": 13,
+        "title": "Java req/sec by instance (increase/60)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (instance)(increase(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"}[1m])) / 60",
+            "legendFormat": "{{instance}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 48
+        }
+      },
+      {
+        "id": 14,
+        "title": ".NET req/sec by instance (increase/60)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (instance)(increase(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[1m])) / 60",
+            "legendFormat": "{{instance}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 48
         }
       }
     ],

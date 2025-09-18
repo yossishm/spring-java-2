@@ -1,0 +1,31 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Req/sec Consistency Check (increase/60)",
+    "tags": ["consistency", "otlp"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Req/sec via increase over 1m",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum(increase(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"}[1m])) / 60",
+            "legendFormat": "Java increase/60"
+          },
+          {
+            "expr": "sum(increase(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[1m])) / 60",
+            "legendFormat": "DotNet increase/60"
+          }
+        ],
+        "fieldConfig": {"defaults": {"unit": "reqps"}},
+        "gridPos": {"h": 10, "w": 24, "x": 0, "y": 0}
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "refresh": "5s",
+    "schemaVersion": 27,
+    "version": 0
+  }
+}

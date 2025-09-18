@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Timer;
-import io.micrometer.core.instrument.Gauge;
 // Prometheus imports removed - using basic Micrometer
 
 import java.util.Random;
