@@ -74,6 +74,6 @@ spec:
     app: java-app
   ports:
   - name: http
-    port: 8080
+    port: 9000
     targetPort: 8080
   type: ClusterIP
