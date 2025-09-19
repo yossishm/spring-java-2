@@ -2,8 +2,10 @@ package hello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import hello.security.RequirePermission;
+
 import java.util.*;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
@@ -38,6 +40,8 @@ public class Application {
 
    /// Server Side - cache - getObject
    @RequestMapping("/api/v1/cacheServices/getObject")
+   @PreAuthorize("hasAuthority('CACHE_READ') or hasAuthority('CACHE_ADMIN')")
+   @RequirePermission(value = {"CACHE_READ", "CACHE_ADMIN"})
    public String getObject( @RequestHeader Map<String, String> headers , @RequestParam(name = "id") String id) {  
     System.out.println ("Get: " + id + " Called");
     return "get";
@@ -46,13 +50,17 @@ public class Application {
   /// Server Side - cache - putObject
   //@RequestMapping("/api/v1/cacheServices/putObject")
   @PutMapping("/api/v1/cacheServices/putObject")
+  @PreAuthorize("hasAuthority('CACHE_WRITE') or hasAuthority('CACHE_ADMIN')")
+  @RequirePermission(value = {"CACHE_WRITE", "CACHE_ADMIN"})
   public String putObject( @RequestHeader Map<String, String> headers , @RequestParam(name = "id") String id) {
     System.out.println ("Put: " + id + " Called");
     return "put";
   }
 
-  /// Server Side - cache - putObject
+  /// Server Side - cache - deleteObject
   @DeleteMapping("/api/v1/cacheServices/deleteObject")
+  @PreAuthorize("hasAuthority('CACHE_DELETE') or hasAuthority('CACHE_ADMIN')")
+  @RequirePermission(value = {"CACHE_DELETE", "CACHE_ADMIN"})
   public String deleteObject( @RequestHeader Map<String, String> headers , @RequestParam(name = "id") String id) {
     System.out.println ("Delete: " + id + " Called");
     return "delete";
