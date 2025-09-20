@@ -1,3 +1,7 @@
+// <copyright file="EnhancedAuthTestController.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,11 +17,10 @@ namespace SpringJavaEquivalent.Controllers;
 [Tags("Enhanced Authorization Test")]
 public class EnhancedAuthTestController : ControllerBase
 {
-    private readonly ILogger<EnhancedAuthTestController> _logger;
+    private const string UnknownValue = "Unknown";
 
-    public EnhancedAuthTestController(ILogger<EnhancedAuthTestController> logger)
+    public EnhancedAuthTestController()
     {
-        _logger = logger;
     }
 
     /// <summary>
@@ -28,13 +31,15 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult PublicEndpoint()
     {
-        var response = new
+        return Ok(new
         {
-            message = "This is a public endpoint (Level 0)",
             level = 0,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+            message = "Public endpoint - no authentication required",
+            timestamp = DateTime.UtcNow,
+            user = UnknownValue,
+            roles = new[] { "NONE" },
+            permissions = new[] { "NONE" },
+        });
     }
 
     /// <summary>
@@ -43,238 +48,275 @@ public class EnhancedAuthTestController : ControllerBase
     [HttpGet("authenticated")]
     [Authorize]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
     public IActionResult AuthenticatedEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var response = new
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToArray();
+
+        return Ok(new
         {
-            message = "This is an authenticated endpoint (Level 1)",
             level = 1,
-            username,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+            message = "Authenticated endpoint - basic authentication required",
+            timestamp = DateTime.UtcNow,
+            user,
+            roles,
+            permissions = new[] { "BASIC_ACCESS" },
+        });
     }
 
     /// <summary>
-    /// Level 2: Role-based authorization
+    /// Level 2: Role-based authorization - USER role required
     /// </summary>
-    [HttpGet("role-based")]
+    [HttpGet("user-role")]
     [Authorize(Roles = "USER")]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(403)]
-    public IActionResult RoleBasedEndpoint()
+    public IActionResult UserRoleEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var roles = User.Claims
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
             .Where(c => c.Type == ClaimTypes.Role)
             .Select(c => c.Value)
-            .ToList();
+            .ToArray();
 
-        var response = new
+        return Ok(new
         {
-            message = "This is a role-based endpoint (Level 2)",
             level = 2,
-            username,
+            message = "User role endpoint - USER role required",
+            timestamp = DateTime.UtcNow,
+            user,
             roles,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+            permissions = new[] { "USER_ACCESS", "READ_DATA" },
+        });
     }
 
     /// <summary>
-    /// Level 3: Admin role authorization
+    /// Level 3: Role-based authorization - ADMIN role required
     /// </summary>
-    [HttpGet("admin-only")]
+    [HttpGet("admin-role")]
     [Authorize(Roles = "ADMIN")]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(403)]
-    public IActionResult AdminOnlyEndpoint()
+    public IActionResult AdminRoleEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var response = new
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToArray();
+
+        return Ok(new
         {
-            message = "This is an admin-only endpoint (Level 3)",
             level = 3,
-            username,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+            message = "Admin role endpoint - ADMIN role required",
+            timestamp = DateTime.UtcNow,
+            user,
+            roles,
+            permissions = new[] { "ADMIN_ACCESS", "WRITE_DATA", "DELETE_DATA" },
+        });
     }
 
     /// <summary>
-    /// Level 4: Permission-based authorization
+    /// Level 4: Permission-based authorization - CACHE_READ permission required
     /// </summary>
-    [HttpGet("permission-based")]
-    [Authorize(Policy = "RequireCacheReadPermission")]
+    [HttpGet("cache-read")]
+    [Authorize(Policy = "CacheReadPolicy")]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(403)]
-    public IActionResult PermissionBasedEndpoint()
+    public IActionResult CacheReadEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var permissions = User.Claims
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToArray();
+        var permissions = this.User.Claims
             .Where(c => c.Type == "permission")
             .Select(c => c.Value)
-            .ToList();
+            .ToArray();
 
-        var response = new
+        return Ok(new
         {
-            message = "This is a permission-based endpoint (Level 4)",
             level = 4,
-            username,
+            message = "Cache read endpoint - CACHE_READ permission required",
+            timestamp = DateTime.UtcNow,
+            user,
+            roles,
             permissions,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+        });
     }
 
     /// <summary>
-    /// Level 5: Authentication Level-based authorization (AAL)
+    /// Level 5: Permission-based authorization - CACHE_WRITE permission required
     /// </summary>
-    [HttpGet("aal2-required")]
-    [Authorize(Policy = "RequireAAL2OrHigher")]
+    [HttpGet("cache-write")]
+    [Authorize(Policy = "CacheWritePolicy")]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(403)]
-    public IActionResult Aal2RequiredEndpoint()
+    public IActionResult CacheWriteEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var authLevels = User.Claims
-            .Where(c => c.Type == "auth_level")
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
             .Select(c => c.Value)
-            .ToList();
+            .ToArray();
+        var permissions = this.User.Claims
+            .Where(c => c.Type == "permission")
+            .Select(c => c.Value)
+            .ToArray();
 
-        var response = new
+        return Ok(new
         {
-            message = "This is an AAL2+ endpoint (Level 5)",
             level = 5,
-            username,
-            authLevels,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+            message = "Cache write endpoint - CACHE_WRITE permission required",
+            timestamp = DateTime.UtcNow,
+            user,
+            roles,
+            permissions,
+        });
     }
 
     /// <summary>
-    /// Level 6: Identity Provider-based authorization
+    /// Level 6: Multiple role authorization - ADMIN or MANAGER role required
     /// </summary>
-    [HttpGet("enterprise-only")]
-    [Authorize(Policy = "RequireEnterpriseIdp")]
+    [HttpGet("admin-or-manager")]
+    [Authorize(Roles = "ADMIN,MANAGER")]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(403)]
-    public IActionResult EnterpriseOnlyEndpoint()
+    public IActionResult AdminOrManagerEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var idps = User.Claims
-            .Where(c => c.Type == "idp")
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
             .Select(c => c.Value)
-            .ToList();
+            .ToArray();
 
-        var response = new
+        return Ok(new
         {
-            message = "This is an enterprise-only endpoint (Level 6)",
             level = 6,
-            username,
-            identityProviders = idps,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+            message = "Admin or Manager endpoint - ADMIN or MANAGER role required",
+            timestamp = DateTime.UtcNow,
+            user,
+            roles,
+            permissions = new[] { "MANAGEMENT_ACCESS", "APPROVE_REQUESTS" },
+        });
     }
 
     /// <summary>
-    /// Level 7: Complex multi-factor authorization
+    /// Level 7: Complex authorization - ADMIN role AND CACHE_WRITE permission required
     /// </summary>
-    [HttpGet("multi-factor")]
-    [Authorize(Policy = "RequireMultiFactorAuth")]
+    [HttpGet("admin-cache-write")]
+    [Authorize(Roles = "ADMIN", Policy = "CacheWritePolicy")]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(403)]
-    public IActionResult MultiFactorEndpoint()
+    public IActionResult AdminCacheWriteEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var roles = User.Claims
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
             .Where(c => c.Type == ClaimTypes.Role)
             .Select(c => c.Value)
-            .ToList();
-
-        var permissions = User.Claims
+            .ToArray();
+        var permissions = this.User.Claims
             .Where(c => c.Type == "permission")
             .Select(c => c.Value)
-            .ToList();
+            .ToArray();
 
-        var authLevels = User.Claims
-            .Where(c => c.Type == "auth_level")
-            .Select(c => c.Value)
-            .ToList();
-
-        var idps = User.Claims
-            .Where(c => c.Type == "idp")
-            .Select(c => c.Value)
-            .ToList();
-
-        var response = new
+        return Ok(new
         {
-            message = "This is a multi-factor endpoint (Level 7)",
             level = 7,
-            username,
+            message = "Admin cache write endpoint - ADMIN role AND CACHE_WRITE permission required",
+            timestamp = DateTime.UtcNow,
+            user,
             roles,
             permissions,
-            authLevels,
-            identityProviders = idps,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-        return Ok(response);
+        });
     }
 
     /// <summary>
-    /// Get current user's authorization context
+    /// Level 8: Custom authorization - Identity Provider requirement
     /// </summary>
-    [HttpGet("context")]
-    [Authorize]
+    [HttpGet("identity-provider")]
+    [Authorize(Policy = "IdentityProviderPolicy")]
     [ProducesResponseType(typeof(object), 200)]
-    [ProducesResponseType(401)]
-    public IActionResult GetAuthorizationContext()
+    public IActionResult IdentityProviderEndpoint()
     {
-        var username = User.Identity?.Name ?? "Unknown";
-        var roles = User.Claims
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
             .Where(c => c.Type == ClaimTypes.Role)
             .Select(c => c.Value)
-            .ToList();
+            .ToArray();
+        var identityProvider = this.User.Claims
+            .FirstOrDefault(c => c.Type == "identity_provider")?.Value ?? UnknownValue;
 
-        var permissions = User.Claims
+        return Ok(new
+        {
+            level = 8,
+            message = "Identity provider endpoint - specific identity provider required",
+            timestamp = DateTime.UtcNow,
+            user,
+            roles,
+            identityProvider,
+            permissions = new[] { "IDENTITY_PROVIDER_ACCESS" },
+        });
+    }
+
+    /// <summary>
+    /// Level 9: Auth Level requirement
+    /// </summary>
+    [HttpGet("auth-level")]
+    [Authorize(Policy = "AuthLevelPolicy")]
+    [ProducesResponseType(typeof(object), 200)]
+    public IActionResult AuthLevelEndpoint()
+    {
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToArray();
+        var authLevel = this.User.Claims
+            .FirstOrDefault(c => c.Type == "auth_level")?.Value ?? UnknownValue;
+
+        return Ok(new
+        {
+            level = 9,
+            message = "Auth level endpoint - specific authentication level required",
+            timestamp = DateTime.UtcNow,
+            user,
+            roles,
+            authLevel,
+            permissions = new[] { "HIGH_AUTH_ACCESS" },
+        });
+    }
+
+    /// <summary>
+    /// Level 10: Maximum security - All requirements
+    /// </summary>
+    [HttpGet("maximum-security")]
+    [Authorize(Roles = "ADMIN", Policy = "CacheWritePolicy,IdentityProviderPolicy,AuthLevelPolicy")]
+    [ProducesResponseType(typeof(object), 200)]
+    public IActionResult MaximumSecurityEndpoint()
+    {
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToArray();
+        var permissions = this.User.Claims
             .Where(c => c.Type == "permission")
             .Select(c => c.Value)
-            .ToList();
+            .ToArray();
+        var identityProvider = this.User.Claims
+            .FirstOrDefault(c => c.Type == "identity_provider")?.Value ?? UnknownValue;
+        var authLevel = this.User.Claims
+            .FirstOrDefault(c => c.Type == "auth_level")?.Value ?? UnknownValue;
 
-        var authLevels = User.Claims
-            .Where(c => c.Type == "auth_level")
-            .Select(c => c.Value)
-            .ToList();
-
-        var idps = User.Claims
-            .Where(c => c.Type == "idp")
-            .Select(c => c.Value)
-            .ToList();
-
-        var allClaims = User.Claims
-            .ToDictionary(c => c.Type, c => c.Value);
-
-        var response = new
+        return Ok(new
         {
-            username,
+            level = 10,
+            message = "Maximum security endpoint - all authorization requirements",
+            timestamp = DateTime.UtcNow,
+            user,
             roles,
             permissions,
-            authLevels,
-            identityProviders = idps,
-            allClaims,
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
-
-        return Ok(response);
+            identityProvider,
+            authLevel,
+        });
     }
 }

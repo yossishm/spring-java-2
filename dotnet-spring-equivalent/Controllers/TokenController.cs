@@ -1,3 +1,7 @@
+// <copyright file="TokenController.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Mvc;
 using SpringJavaEquivalent.Services;
 using System.ComponentModel.DataAnnotations;
@@ -14,12 +18,13 @@ namespace SpringJavaEquivalent.Controllers;
 public class TokenController : ControllerBase
 {
     private readonly JwtService _jwtService;
-    private readonly ILogger<TokenController> _logger;
+    private const string CacheReadPermission = "CACHE_READ";
+    private const string CacheWritePermission = "CACHE_WRITE";
+    private const string DefaultRole = "USER";
 
-    public TokenController(JwtService jwtService, ILogger<TokenController> logger)
+    public TokenController(JwtService jwtService)
     {
-        _jwtService = jwtService;
-        _logger = logger;
+        this._jwtService = jwtService;
     }
 
     /// <summary>
@@ -34,15 +39,15 @@ public class TokenController : ControllerBase
         [FromQuery] string? permissions = null)
     {
         // Parse roles and permissions from comma-separated strings
-        var rolesList = string.IsNullOrEmpty(roles) 
-            ? new List<string> { "USER" } 
+        var rolesList = string.IsNullOrEmpty(roles)
+            ? new List<string> { DefaultRole }
             : roles.Split(',').Select(r => r.Trim()).ToList();
-        
-        var permissionsList = string.IsNullOrEmpty(permissions) 
-            ? new List<string> { "CACHE_READ" } 
+
+        var permissionsList = string.IsNullOrEmpty(permissions)
+            ? new List<string> { CacheReadPermission }
             : permissions.Split(',').Select(p => p.Trim()).ToList();
 
-        var token = _jwtService.GenerateToken(username, rolesList, permissionsList);
+        var token = this._jwtService.GenerateToken(username, rolesList, permissionsList);
 
         var response = new
         {
@@ -50,105 +55,117 @@ public class TokenController : ControllerBase
             username,
             roles = rolesList,
             permissions = permissionsList,
-            expiresIn = "24 hours",
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+            expiresAt = DateTime.UtcNow.AddHours(1),
         };
 
         return Ok(response);
     }
 
     /// <summary>
-    /// Generate predefined token types for testing
+    /// Generate a predefined token based on type
     /// </summary>
-    [HttpGet("token/{type}")]
+    [HttpGet("predefined/{type}")]
     [ProducesResponseType(typeof(object), 200)]
     [ProducesResponseType(400)]
-    public IActionResult GeneratePredefinedToken(string type)
+    public IActionResult GeneratePredefinedToken([FromRoute] string type)
     {
-        string username;
-        List<string> roles;
-        List<string> permissions;
-        string authLevel;
-        string idp;
-
-        switch (type.ToLower())
+        var lowerType = type.ToLowerInvariant();
+        return lowerType switch
         {
-            case "admin":
-                username = "admin";
-                roles = new List<string> { "ADMIN", "USER" };
-                permissions = new List<string> { "CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN" };
-                authLevel = "AAL3"; // High security for admin
-                idp = "enterprise-ldap";
-                break;
-            case "user":
-                username = "user";
-                roles = new List<string> { "USER" };
-                permissions = new List<string> { "CACHE_READ" };
-                authLevel = "AAL1"; // Basic auth for regular user
-                idp = "local";
-                break;
-            case "cache-admin":
-                username = "cache-admin";
-                roles = new List<string> { "USER" };
-                permissions = new List<string> { "CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN" };
-                authLevel = "AAL2"; // MFA for cache admin
-                idp = "azure-ad";
-                break;
-            case "cache-writer":
-                username = "cache-writer";
-                roles = new List<string> { "USER" };
-                permissions = new List<string> { "CACHE_READ", "CACHE_WRITE" };
-                authLevel = "AAL2"; // MFA for write operations
-                idp = "okta";
-                break;
-            case "cache-reader":
-                username = "cache-reader";
-                roles = new List<string> { "USER" };
-                permissions = new List<string> { "CACHE_READ" };
-                authLevel = "AAL1"; // Basic auth for read-only
-                idp = "local";
-                break;
-            case "aal1-user":
-                username = "aal1-user";
-                roles = new List<string> { "USER" };
-                permissions = new List<string> { "CACHE_READ" };
-                authLevel = "AAL1";
-                idp = "local";
-                break;
-            case "aal2-user":
-                username = "aal2-user";
-                roles = new List<string> { "USER" };
-                permissions = new List<string> { "CACHE_READ", "CACHE_WRITE" };
-                authLevel = "AAL2";
-                idp = "azure-ad";
-                break;
-            case "aal3-user":
-                username = "aal3-user";
-                roles = new List<string> { "ADMIN" };
-                permissions = new List<string> { "CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN" };
-                authLevel = "AAL3";
-                idp = "enterprise-ldap";
-                break;
-            default:
-                return BadRequest(new { error = "Invalid token type" });
-        }
+            "admin" => this.GenerateAdminToken(),
+            "user" => this.GenerateUserToken(),
+            "readonly" => this.GenerateReadOnlyToken(),
+            "write" => this.GenerateWriteToken(),
+            _ => BadRequest($"Unknown token type: {type}"),
+        };
+    }
 
-        var token = _jwtService.GenerateToken(username, roles, permissions, authLevel, idp);
+    /// <summary>
+    /// Generate an admin token with full permissions
+    /// </summary>
+    [HttpGet("admin")]
+    [ProducesResponseType(typeof(object), 200)]
+    public IActionResult GenerateAdminToken()
+    {
+        var token = this._jwtService.GenerateToken(
+            "admin",
+            new List<string> { "ADMIN", "USER" },
+            new List<string> { CacheReadPermission, CacheWritePermission, "ADMIN_ACCESS" });
 
-        var response = new
+        return Ok(new
         {
             token,
-            username,
-            roles,
-            permissions,
-            auth_level = authLevel,
-            idp,
-            type,
-            expiresIn = "24 hours",
-            timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-        };
+            username = "admin",
+            roles = new[] { "ADMIN", "USER" },
+            permissions = new[] { CacheReadPermission, CacheWritePermission, "ADMIN_ACCESS" },
+            expiresAt = DateTime.UtcNow.AddHours(1),
+        });
+    }
 
-        return Ok(response);
+    /// <summary>
+    /// Generate a regular user token
+    /// </summary>
+    [HttpGet("user")]
+    [ProducesResponseType(typeof(object), 200)]
+    public IActionResult GenerateUserToken()
+    {
+        var token = this._jwtService.GenerateToken(
+            "user",
+            new List<string> { DefaultRole },
+            new List<string> { CacheReadPermission });
+
+        return Ok(new
+        {
+            token,
+            username = "user",
+            roles = new[] { DefaultRole },
+            permissions = new[] { CacheReadPermission },
+            expiresAt = DateTime.UtcNow.AddHours(1),
+        });
+    }
+
+    /// <summary>
+    /// Generate a read-only token
+    /// </summary>
+    [HttpGet("readonly")]
+    [ProducesResponseType(typeof(object), 200)]
+    public IActionResult GenerateReadOnlyToken()
+    {
+        var token = this._jwtService.GenerateToken(
+            "readonly",
+            new List<string> { "READONLY" },
+            new List<string> { CacheReadPermission });
+
+        return Ok(new
+        {
+            token,
+            username = "readonly",
+            roles = new[] { "READONLY" },
+            permissions = new[] { CacheReadPermission },
+            expiresAt = DateTime.UtcNow.AddHours(1),
+        });
+    }
+
+    /// <summary>
+    /// Generate a write token
+    /// </summary>
+    [HttpGet("write")]
+    [ProducesResponseType(typeof(object), 200)]
+    public IActionResult GenerateWriteToken()
+    {
+        var token = this._jwtService.GenerateToken(
+            "writer",
+            new List<string> { "WRITER" },
+            new List<string> { CacheReadPermission, CacheWritePermission });
+
+        return Ok(new
+        {
+            token,
+            username = "writer",
+            roles = new[] { "WRITER" },
+            permissions = new[] { CacheReadPermission, CacheWritePermission },
+            expiresAt = DateTime.UtcNow.AddHours(1),
+        });
     }
 
     /// <summary>
@@ -156,32 +173,38 @@ public class TokenController : ControllerBase
     /// </summary>
     [HttpPost("validate")]
     [ProducesResponseType(typeof(object), 200)]
-    public IActionResult ValidateToken([Required] string token)
+    [ProducesResponseType(400)]
+    public IActionResult ValidateToken([FromBody] Dictionary<string, string> request)
     {
-        var isValid = _jwtService.ValidateToken(token);
-        
-        if (isValid)
+        if (!request.TryGetValue("token", out var token))
         {
-            var response = new
-            {
-                valid = isValid,
-                username = _jwtService.ExtractUsername(token),
-                roles = _jwtService.ExtractRoles(token),
-                permissions = _jwtService.ExtractPermissions(token),
-                auth_level = _jwtService.ExtractAuthLevel(token),
-                idp = _jwtService.ExtractIdentityProvider(token),
-                timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-            };
-            return Ok(response);
+            return BadRequest("Token is required");
         }
-        else
+
+        try
         {
-            var response = new
+            var isValid = this._jwtService.ValidateToken(token);
+            var username = this._jwtService.ExtractUsername(token);
+            var roles = this._jwtService.ExtractRoles(token);
+            var permissions = this._jwtService.ExtractPermissions(token);
+
+            return Ok(new
             {
                 valid = isValid,
-                timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-            };
-            return Ok(response);
+                username,
+                roles,
+                permissions,
+                validatedAt = DateTime.UtcNow,
+            });
+        }
+        catch (Exception ex)
+        {
+            return Ok(new
+            {
+                valid = false,
+                error = ex.Message,
+                validatedAt = DateTime.UtcNow,
+            });
         }
     }
 }

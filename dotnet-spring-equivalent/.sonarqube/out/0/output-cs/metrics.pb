@@ -1,24 +1,16 @@
-Û
-V/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/LocalRestClient.cs 8j*+,<=>NOPrJ	
- !"#$%&'(-./0123456789:?@ABCDEFGHIJKLQRSTUVWXYZ[\]_`abcx‚ !"&12348CDEFJUVW[aÏ
-Q/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.cs8 	8j*	
-+1CDE_`apqr„…†˜™š©ª«º»¼rû !#$%&'(),-./2345789:;<=?@AFGHIJKMNOPQRSTUWXYZ[\]bcdefghijklmnstuvwxyz{|}~€‚‡ˆ‰Š‹Œ‘’“”•–›œŸ ¡¢£¤¥¦§¬­®¯°±²³´µ¶·¸½¾¿ÀÁÂÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖØÙÚÛÜİŞßx‚E!%&,.24:;<?@KMTW[ghlxyz{€Œ” ¡¥±²¶ÂÅÇÉËÏÔØÜ‚
-E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.csf8j'Ty|‡”—¤®µ¹ÂÉÎàæíïóù™rØ	
- !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRUVWXYZ[\]^_`abcdefgijklmnopqrstuvwz}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’•–˜™›œŸ¡¢¥¦¨©«¬¯°²³¶·º»¼½¾¿ÀÃÄÅÆÇÊËÌÏĞÑÒÓÔÕÖ×ØÙÚÛÜŞáâãäçèéêëğñôõ÷úûüıÿ€‚„…†‡ˆ‰Š‹Œ‘’“”•–—šœx‚­Udeiptz}~€‚ƒ…‡ˆ‰•˜™›œŸ¡¢¥¦¨©«¬¯°²³¶·º¼½¾ÃÄÅÆÇÊËÌÏĞÑÓÕ×ÙÚŞáâãäçéêğñôõ÷úüÿ„†ˆ‹Œ‘•šœ”
-a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.cs 8j+,-5KLMSklmtvrv	
- "#$%&'()./01236789:;=>?@ABCDEGHINOPQRTUVWXYZ[]^_`abcdeghinopqrstwxyz{|}€‚ƒ„…†‡‰Š‹Œx‚ #'3=DGTXYZ]dgst†‰±
-Y/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/TokenController.csG 8j	
-$<=>PW^elš›œrÒ !"#%&')*+-/012345679:?@ABCDEFGHJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†ˆŠ‹Œ‘’“”•—˜Ÿ ¡£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»x‚\%')+-69JMNOPQRTUVWXY[\]^_`bcdefgijklmnpqrstuwxyz{|~€‚ƒ…ˆ”—¡£¨©ª«¬­¯¶¸µ
-[/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/MetricsController.cs 8j6r7	
- !"#%&'()*,-./1245789:;<=>?@A‚ !()/278<=ì
-d/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/EnhancedAuthTestController.cs( 
-8j+	
-()*<=>WXYlmn‡ˆ‰¢£¤½¾¿êëìrÜ !"#$%&+,-./0123456789:?@ABCDEFGHIJLMNOPQRSTUZ[\]^_`abcdefghijopqrstuvwxyz|}~€‚ƒ„…Š‹Œ‘’“”•—˜™š›œŸ ¥¦§¨©ª«¬­®¯°²³´µ¶·¸¹º»ÀÁÂÃÄÅÆÇÈÉÊËÍÎÏĞÒÓÔÕ×ØÙÚÜİŞßàáâãäåæçèíîïğñòóôõö÷ùúûüşÿ€ƒ„…†ˆ‰‹Œ‘’“”–—˜‚o#%179FGHIRTagivwxy‚„‘’“”Ÿ¬­®¯¸ºÇÈÉÊÍÎÏÒÓÔ×ØÙåçóôõöùúûşÿ€ƒ„…ˆ‰“–Ä
-_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.cs 8j&'(456BCDr8	
- !#$)*+,-./012789:;<=>?@EFGHIJKLMNOx‚ #01>?LM°
-a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs 
-8
-j !,-.9:;r*	
-"#$&'()*/0134567<=>@ABCD‚(5Bà
-]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.cs 8j+,->?@WXYrG	
- "#$%'()./01235678:;<ABCDEGHIJKMNOPQSTUZ[\]^`abcefgx‚ "$'2357:EGIJKMOS^`be
+İ
+V/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/LocalRestClient.cs 8j
+./0@ABRSTrK !"#$%&'()*+,123456789:;<=>CDEFGHIJKLMNOPUVWXYZ[\]^_`acdefghx‚$%&*5678<GHIJNYZ[_ef–
+Q/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.cs0 	8j*-3DEF_`apqr„…†˜™š©ª«º»¼rÑ	 !"#%&'()*+./0145679:;<=>@ABGHIJKLNOPQRSTUWXYZ[\]bcdefghijklmnstuvwxyz{|}~€‚‡ˆ‰Š‹Œ‘’“”•–›œŸ ¡¢£¤¥¦§¬­®¯°±²³´µ¶·¸½¾¿ÀÁÂÃÄÅÆÇÈÉÊx	‚6#'.046<=@ALNTW[ghlxyz{€Œ” ¡¥±²¶ÂÃÇ«
+E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.csL8
+j"M\_cgkos„Œ”¦«²µ¹¼ÇÊrÍ	
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKNOPQRSTUVWXYZ]^`adehilmpqtuvwyz{|~€‚…†‡ˆ‰Š‘’•–—˜™š›œŸ ¡¢£¤§©¬­®¯°³¶·º½¾¿ÀÂÃÄÅÈËÌÎx‚g NOQTUX]`adehilmpqtuvwyz{|~€…†‡ˆ‰Š‘’•–šœ §©¬®¯³¶·º½¿ÂÄÈËÌÎ³
+[/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/MetricsController.cs 8j:r5	 !"#$%&')*+,-.01235689;<=>?@ABCD‚ $%,-36;<@A·
+Y/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/TokenController.cs 8j" )@ABSTUijk€•–—«¬­rå	!"#$%&'(*+,./02456789:;=>CDEFGHIJKLMNOPQVWXYZ[\]_`abcdefglmnopqrsuvwxyz{|}‚ƒ„…†‡ˆ‰‹Œ‘’“˜™š›œŸ¡¢£¤¥¦§¨©®¯°±²³´µ¶¸¹º»¼½¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒx‚C*,.02:=HIKLMNOZ_cdepuyz{†‹‘œ¡¥¦§³µº»¼½¿ÅÊÍÎª
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.cs 8j !"#)789AWXY_wxy€‚r†	$%&'(*+,./012345:;<=>?BCDEFGIJKLMNOPQSTUZ[\]^`abcdefgijklmnopqstuz{|}~€ƒ„…†‡ˆ‰‹Œ‘’“•–—˜x‚*+,/3?IPS`defips€‹’•î
+d/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/EnhancedAuthTestController.cs' 8(j7-./FGH_`axyz•–—²³´ËÌÍèéê„…† ¡¢r¥	 !"#$%&'()*+0123456789;<=>?@ABCDIJKLMNOPQRTUVWXYZ[\]bcdefghijkmnopqrstuv{|}~€‚ƒ„…†‡ˆŠ‹Œ‘’“˜™š›œŸ ¡¢£¤¥§¨©ª«¬­®¯°µ¶·¸¹º»¼½¾ÀÁÂÃÄÅÆÇÈÉÎÏĞÑÒÓÔÕÖ×ØÙÚÛİŞßàáâãäåæëìíîïğñòóôõöøùúûüışÿ€‚‡ˆ‰Š‹Œ‘’”•–—˜™š›œ£¤¥¦§¨©ª«¬­®¯°±²³´¶·¸¹º»¼½¾¿ÀÁÂ‚›"&()5678;?BNOPQTX[ghijmqt€‚ƒ…†‡ŠŸ ¢£¤§«º»¼½ÀÄÇÓÔÕÖØÙÚİáğñòóõöøü€Œ‘’”˜œ¨©ª«­®¯±²³´¶ºÄ
+_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.cs 8j!*+,89:FGHr8	"#$%'(-./0123456;<=>?@ABCDIJKLMNOPQRSx‚"$'45BCPQ¼
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs 8j	
+#$%012=>?JKLr2 !&'(*+,-.345789:;@ABDEFGHMNOQRSTU‚,9FS‹
+]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.cs$ 8j
+ !567KLM`abuvwr`"#$%&')*,-./12389:;<=?@BCDEGHINOPQRSUWXYZ\]^cdefghjlmnoqrsxyz{|}‚ƒ„†‡ˆx‚)&')*,.1<=?@BDGRSUWY\ghjlnq|}ƒ†

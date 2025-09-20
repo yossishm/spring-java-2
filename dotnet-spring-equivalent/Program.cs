@@ -1,3 +1,7 @@
+// <copyright file="Program.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,184 +52,121 @@ builder.Services.AddSwaggerGen(c =>
             - `CACHE_READ` - Read cache operations
             - `CACHE_WRITE` - Write cache operations  
             - `CACHE_DELETE` - Delete cache operations
-            - `CACHE_ADMIN` - Full cache administration
+            - `ADMIN_ACCESS` - Administrative operations
             
             ### Available Roles:
-            - `ADMIN` - Full system access
             - `USER` - Basic user access
+            - `ADMIN` - Administrative access
+            - `MANAGER` - Management access
+            - `READONLY` - Read-only access
+            - `WRITER` - Write access
             
-            ### Authentication Assurance Levels (AAL):
-            - `AAL1` - Single-factor authentication (password only)
-            - `AAL2` - Multi-factor authentication (password + MFA)
-            - `AAL3` - Hardware-based authentication (FIDO2, smart cards)
+            ### Authentication Levels:
+            - `AAL1` - Basic authentication
+            - `AAL2` - Multi-factor authentication
+            - `AAL3` - Hardware-based authentication
             
-            ### Identity Providers (IDP):
+            ### Identity Providers:
             - `local` - Local authentication
-            - `azure-ad` - Microsoft Azure Active Directory
-            - `okta` - Okta Identity Provider
-            - `enterprise-ldap` - Enterprise LDAP
-            
-            ### Getting Started:
-            1. Generate a JWT token using `/api/v1/auth/token/{type}`
-            2. Use the token in the Authorization header: `Bearer <token>`
-            3. Test different authorization levels using `/api/v1/enhanced-test/*`
-            
-            ### .NET Now Matches Spring:
-            - ✅ Real JWT implementation with proper validation
-            - ✅ 8 authorization levels with comprehensive policies
-            - ✅ Role-based and permission-based access control
-            - ✅ Authentication Assurance Levels (AAL)
-            - ✅ Identity Provider tracking
-            - ✅ Multi-factor authorization
-            - ✅ Comprehensive security documentation
-            """
-    });
-
-    // Add JWT Bearer authentication to Swagger
-    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    {
-        Description = """
-            JWT Authorization header using the Bearer scheme.
-            
-            **Example:** `Authorization: Bearer <token>`
-            
-            **Token Generation:**
-            - Use `/api/v1/auth/token/admin` for admin access
-            - Use `/api/v1/auth/token/user` for basic user access
-            - Use `/api/v1/auth/token/cache-reader` for read-only access
-            - Use `/api/v1/auth/token/cache-writer` for read/write access
-            - Use `/api/v1/auth/token/cache-admin` for full cache access
+            - `enterprise` - Enterprise SSO
+            - `external` - External provider
             """,
-        Name = "Authorization",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
     });
+});
 
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+// Add JWT Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+                builder.Configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret must be configured"))),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero,
+        };
     });
-});
 
-// Add JWT service
-builder.Services.AddScoped<JwtService>();
-
-// Configure JWT Authentication
-var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "mySecretKeyForJWTTokenGenerationAndValidation123456789";
-var key = Encoding.ASCII.GetBytes(jwtSecret);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false; // For development
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
-    };
-});
-
-// Configure Authorization with custom policies
+// Add Authorization
 builder.Services.AddAuthorization(options =>
 {
-    // Permission-based policies
-    options.AddPolicy("RequireCacheReadPermission", policy =>
+    // Cache Read Policy
+    options.AddPolicy("CacheReadPolicy", policy =>
         policy.Requirements.Add(new PermissionRequirement("CACHE_READ")));
-    
-    options.AddPolicy("RequireCacheWritePermission", policy =>
+
+    // Cache Write Policy
+    options.AddPolicy("CacheWritePolicy", policy =>
         policy.Requirements.Add(new PermissionRequirement("CACHE_WRITE")));
-    
-    options.AddPolicy("RequireCacheDeletePermission", policy =>
+
+    // Cache Delete Policy
+    options.AddPolicy("CacheDeletePolicy", policy =>
         policy.Requirements.Add(new PermissionRequirement("CACHE_DELETE")));
-    
-    options.AddPolicy("RequireCacheAdminPermission", policy =>
-        policy.Requirements.Add(new PermissionRequirement("CACHE_ADMIN")));
 
-    // Combined permission policies
-    options.AddPolicy("RequireCacheReadOrAdminPermission", policy =>
-        policy.Requirements.Add(new AnyPermissionRequirement("CACHE_READ", "CACHE_ADMIN")));
-    
-    options.AddPolicy("RequireCacheWriteOrAdminPermission", policy =>
-        policy.Requirements.Add(new AnyPermissionRequirement("CACHE_WRITE", "CACHE_ADMIN")));
-    
-    options.AddPolicy("RequireCacheDeleteOrAdminPermission", policy =>
-        policy.Requirements.Add(new AnyPermissionRequirement("CACHE_DELETE", "CACHE_ADMIN")));
+    // Identity Provider Policy
+    options.AddPolicy("IdentityProviderPolicy", policy =>
+        policy.Requirements.Add(new IdentityProviderRequirement("enterprise")));
 
-    // Authentication level policies
-    options.AddPolicy("RequireAAL2OrHigher", policy =>
+    // Auth Level Policy
+    options.AddPolicy("AuthLevelPolicy", policy =>
         policy.Requirements.Add(new AuthLevelRequirement("AAL2")));
-    
-    options.AddPolicy("RequireAAL3OrHigher", policy =>
-        policy.Requirements.Add(new AuthLevelRequirement("AAL3")));
 
-    // Identity provider policies
-    options.AddPolicy("RequireEnterpriseIdp", policy =>
-        policy.Requirements.Add(new IdentityProviderRequirement("enterprise-ldap")));
+    // Combined policies for cache operations
+    options.AddPolicy("RequireCacheReadOrAdminPermission", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim("permission", "CACHE_READ") ||
+            context.User.IsInRole("ADMIN")));
 
-    // Multi-factor authorization policy
-    options.AddPolicy("RequireMultiFactorAuth", policy =>
-    {
-        policy.RequireRole("ADMIN");
-        policy.Requirements.Add(new PermissionRequirement("CACHE_ADMIN"));
-        policy.Requirements.Add(new AnyPermissionRequirement("AUTH_LEVEL_AAL3", "IDP_enterprise-ldap"));
-    });
+    options.AddPolicy("RequireCacheWriteOrAdminPermission", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim("permission", "CACHE_WRITE") ||
+            context.User.IsInRole("ADMIN")));
+
+    options.AddPolicy("RequireCacheDeleteOrAdminPermission", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim("permission", "CACHE_DELETE") ||
+            context.User.IsInRole("ADMIN")));
 });
 
-// Register authorization handlers
+// Add Authorization Handlers
 builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, AnyPermissionHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, AllPermissionsHandler>();
-builder.Services.AddScoped<IAuthorizationHandler, AuthLevelHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, RoleHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, IdentityProviderHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, AuthLevelHandler>();
 
-// Add health checks
+// Add custom services
+builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<LocalRestClient>();
+
+// Add Health Checks
 builder.Services.AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy(), new[] { "ready" })
-    .AddCheck("liveness", () => HealthCheckResult.Healthy(), new[] { "live" });
+    .AddCheck("self", () => HealthCheckResult.Healthy(), new[] { "ready" });
 
-// Add OpenTelemetry with simple configuration
-var otelEndpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT") ?? "http://otel-collector:4317";
+// Add OpenTelemetry
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource
-        .AddService(serviceName: "dotnet-app", serviceVersion: "1.0.0"))
-    .WithMetrics(metrics =>
-    {
-        metrics
-            .AddAspNetCoreInstrumentation()
-            .AddOtlpExporter(options =>
-            {
-                options.Endpoint = new Uri(otelEndpoint);
-                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-            });
-    });
+        .AddService("SpringJavaEquivalent", serviceVersion: "1.0.0")
+        .AddAttributes(new Dictionary<string, object>
+        {
+            ["deployment.environment"] = builder.Environment.EnvironmentName,
+        }))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter());
+
+// Add Prometheus metrics
+builder.Services.AddSingleton<MetricServer>();
 
 var app = builder.Build();
-
-// Log OTEL configuration status
-var logger = app.Services.GetRequiredService<ILogger<Program>>();
-logger.LogInformation("🔧 OpenTelemetry configuration completed successfully");
-logger.LogInformation("📊 Metrics configured with OTLP exporter to {Endpoint}", otelEndpoint);
-logger.LogInformation("🚀 DOCKER BUILD TEST - This message should appear in container logs!");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -234,51 +175,32 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection(); // Disable HTTPS redirection for K8s
-
-// Add Prometheus metrics middleware
+// Add Prometheus metrics endpoint
 app.UseHttpMetrics();
-app.UseRouting();
 
-// Add authentication and authorization middleware
+// Add authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Map controllers
 app.MapControllers();
 
-// Health check endpoints
+// Map health check endpoints
 app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
-    Predicate = check => check.Tags.Contains("ready")
+    Predicate = check => check.Tags.Contains("ready"),
 });
 
 app.MapHealthChecks("/health/live", new HealthCheckOptions
 {
-    Predicate = check => check.Tags.Contains("live")
+    Predicate = _ => false,
 });
 
-app.MapHealthChecks("/actuator/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.ContentType = "application/json";
-        var response = new
-        {
-            status = report.Status.ToString(),
-            components = report.Entries.ToDictionary(
-                entry => entry.Key,
-                entry => new
-                {
-                    status = entry.Value.Status.ToString(),
-                    details = entry.Value.Description
-                }
-            )
-        };
-        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-    }
-});
-
-// Add Prometheus metrics endpoint
+// Map Prometheus metrics endpoint
 app.MapMetrics();
+
+// Start the Prometheus metrics server
+var metricServer = app.Services.GetRequiredService<MetricServer>();
+metricServer.Start();
 
 app.Run();

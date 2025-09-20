@@ -1,3 +1,7 @@
+// <copyright file="JwtService.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,41 +16,39 @@ namespace SpringJavaEquivalent.Services;
 /// </summary>
 public class JwtService
 {
-    private readonly IConfiguration _configuration;
     private readonly string _secretKey;
     private readonly int _expirationHours;
 
     public JwtService(IConfiguration configuration)
     {
-        _configuration = configuration;
-        _secretKey = _configuration["Jwt:Secret"] ?? "mySecretKeyForJWTTokenGenerationAndValidation123456789";
-        _expirationHours = int.Parse(_configuration["Jwt:ExpirationHours"] ?? "24");
+        this._secretKey = configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret must be configured");
+        this._expirationHours = int.Parse(configuration["Jwt:ExpirationHours"] ?? "24", System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>
     /// Generate JWT token with roles and permissions
     /// </summary>
-    public string GenerateToken(string username, List<string> roles, List<string> permissions, 
+    public string GenerateToken(string username, IReadOnlyList<string> roles, IReadOnlyList<string> permissions,
         string authLevel = "AAL1", string idp = "local")
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_secretKey);
-        
+        var key = Encoding.ASCII.GetBytes(this._secretKey);
+
         var claims = new List<Claim>
         {
             new(ClaimTypes.Name, username),
-            new(ClaimTypes.NameIdentifier, username),
+            new("username", username),
             new("auth_level", authLevel),
-            new("idp", idp)
+            new("identity_provider", idp),
         };
 
-        // Add roles as claims
+        // Add role claims
         foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        // Add permissions as claims
+        // Add permission claims
         foreach (var permission in permissions)
         {
             claims.Add(new Claim("permission", permission));
@@ -55,9 +57,8 @@ public class JwtService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(_expirationHours),
-            IssuedAt = DateTime.UtcNow,
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            Expires = DateTime.UtcNow.AddHours(this._expirationHours),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -72,7 +73,7 @@ public class JwtService
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secretKey);
+            var key = Encoding.ASCII.GetBytes(this._secretKey);
 
             tokenHandler.ValidateToken(token, new TokenValidationParameters
             {
@@ -80,8 +81,7 @@ public class JwtService
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
                 ValidateAudience = false,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
             }, out SecurityToken validatedToken);
 
             return true;
@@ -93,26 +93,26 @@ public class JwtService
     }
 
     /// <summary>
-    /// Extract username from token
+    /// Extract username from JWT token
     /// </summary>
-    public string? ExtractUsername(string token)
+    public string ExtractUsername(string token)
     {
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
-            return jsonToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            return jsonToken.Claims.FirstOrDefault(x => x.Type == "username")?.Value ?? string.Empty;
         }
         catch
         {
-            return null;
+            return string.Empty;
         }
     }
 
     /// <summary>
-    /// Extract roles from token
+    /// Extract roles from JWT token
     /// </summary>
-    public List<string> ExtractRoles(string token)
+    public IReadOnlyList<string> ExtractRoles(string token)
     {
         try
         {
@@ -130,9 +130,9 @@ public class JwtService
     }
 
     /// <summary>
-    /// Extract permissions from token
+    /// Extract permissions from JWT token
     /// </summary>
-    public List<string> ExtractPermissions(string token)
+    public IReadOnlyList<string> ExtractPermissions(string token)
     {
         try
         {
@@ -150,7 +150,7 @@ public class JwtService
     }
 
     /// <summary>
-    /// Extract authentication level from token
+    /// Extract authentication level from JWT token
     /// </summary>
     public string ExtractAuthLevel(string token)
     {
@@ -158,16 +158,16 @@ public class JwtService
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
-            return jsonToken.Claims.FirstOrDefault(x => x.Type == "auth_level")?.Value ?? "AAL1";
+            return jsonToken.Claims.FirstOrDefault(x => x.Type == "auth_level")?.Value ?? string.Empty;
         }
         catch
         {
-            return "AAL1";
+            return string.Empty;
         }
     }
 
     /// <summary>
-    /// Extract identity provider from token
+    /// Extract identity provider from JWT token
     /// </summary>
     public string ExtractIdentityProvider(string token)
     {
@@ -175,49 +175,28 @@ public class JwtService
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
-            return jsonToken.Claims.FirstOrDefault(x => x.Type == "idp")?.Value ?? "local";
+            return jsonToken.Claims.FirstOrDefault(x => x.Type == "identity_provider")?.Value ?? string.Empty;
         }
         catch
         {
-            return "local";
+            return string.Empty;
         }
     }
 
     /// <summary>
-    /// Extract all claims from token
+    /// Extract all claims from JWT token
     /// </summary>
-    public Dictionary<string, object> ExtractAllClaims(string token)
+    public Dictionary<string, string> ExtractAllClaims(string token)
     {
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
-            
-            var claims = new Dictionary<string, object>();
-            foreach (var claim in jsonToken.Claims)
-            {
-                if (claims.ContainsKey(claim.Type))
-                {
-                    if (claims[claim.Type] is List<string> list)
-                    {
-                        list.Add(claim.Value);
-                    }
-                    else
-                    {
-                        claims[claim.Type] = new List<string> { claims[claim.Type].ToString()!, claim.Value };
-                    }
-                }
-                else
-                {
-                    claims[claim.Type] = claim.Value;
-                }
-            }
-            
-            return claims;
+            return jsonToken.Claims.ToDictionary(x => x.Type, x => x.Value);
         }
         catch
         {
-            return new Dictionary<string, object>();
+            return new Dictionary<string, string>();
         }
     }
 }

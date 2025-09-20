@@ -1,3 +1,7 @@
+// <copyright file="PermissionRequirement.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace SpringJavaEquivalent.Authorization;
@@ -11,7 +15,7 @@ public class PermissionRequirement : IAuthorizationRequirement
 
     public PermissionRequirement(string permission)
     {
-        Permission = permission;
+        this.Permission = permission ?? throw new ArgumentNullException(nameof(permission));
     }
 }
 
@@ -24,7 +28,7 @@ public class AnyPermissionRequirement : IAuthorizationRequirement
 
     public AnyPermissionRequirement(params string[] permissions)
     {
-        Permissions = permissions;
+        this.Permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
     }
 }
 
@@ -37,7 +41,7 @@ public class AllPermissionsRequirement : IAuthorizationRequirement
 
     public AllPermissionsRequirement(params string[] permissions)
     {
-        Permissions = permissions;
+        this.Permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
     }
 }
 
@@ -46,11 +50,11 @@ public class AllPermissionsRequirement : IAuthorizationRequirement
 /// </summary>
 public class AuthLevelRequirement : IAuthorizationRequirement
 {
-    public string MinAuthLevel { get; }
+    public string RequiredAuthLevel { get; }
 
-    public AuthLevelRequirement(string minAuthLevel)
+    public AuthLevelRequirement(string requiredAuthLevel)
     {
-        MinAuthLevel = minAuthLevel;
+        this.RequiredAuthLevel = requiredAuthLevel ?? throw new ArgumentNullException(nameof(requiredAuthLevel));
     }
 }
 
@@ -59,10 +63,23 @@ public class AuthLevelRequirement : IAuthorizationRequirement
 /// </summary>
 public class IdentityProviderRequirement : IAuthorizationRequirement
 {
-    public string RequiredIdp { get; }
+    public string RequiredIdentityProvider { get; }
 
-    public IdentityProviderRequirement(string requiredIdp)
+    public IdentityProviderRequirement(string requiredIdentityProvider)
     {
-        RequiredIdp = requiredIdp;
+        this.RequiredIdentityProvider = requiredIdentityProvider ?? throw new ArgumentNullException(nameof(requiredIdentityProvider));
+    }
+}
+
+/// <summary>
+/// Authorization requirement for role-based access control
+/// </summary>
+public class RoleRequirement : IAuthorizationRequirement
+{
+    public string Role { get; }
+
+    public RoleRequirement(string role)
+    {
+        this.Role = role ?? throw new ArgumentNullException(nameof(role));
     }
 }

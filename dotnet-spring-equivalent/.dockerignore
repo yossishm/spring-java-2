@@ -1,0 +1,64 @@
+# .dockerignore file to prevent sensitive data from being copied to Docker containers
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+
+# Secrets and keys
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+keys/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# IDE files
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Build outputs
+bin/
+obj/
+out/
+
+# Test results
+TestResults/
+coverage/
+
+# Documentation
+*.md
+docs/
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# SonarQube
+.sonarqube/
+
+# Reports
+reports/
+security-reports/

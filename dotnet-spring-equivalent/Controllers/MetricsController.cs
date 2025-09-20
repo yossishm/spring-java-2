@@ -1,65 +1,68 @@
+// <copyright file="MetricsController.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
 using System.Diagnostics;
 
-namespace SpringJavaEquivalent.Controllers
+namespace SpringJavaEquivalent.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class MetricsController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class MetricsController : ControllerBase
+    private static readonly Meter Meter = new("SpringJavaEquivalent.Metrics", "1.0.0");
+    private static readonly Counter<long> RequestCounter = Meter.CreateCounter<long>("custom_requests_total", "Total number of custom requests");
+    private static readonly Histogram<double> ResponseTime = Meter.CreateHistogram<double>("custom_response_time", "Custom response time");
+    private static readonly Random Random = new();
+
+    [HttpGet("test")]
+    public async Task<string> TestMetrics()
     {
-        private static readonly Meter _meter = new("SpringJavaEquivalent.Metrics", "1.0.0");
-        private static readonly Counter<long> _requestCounter = _meter.CreateCounter<long>("custom_requests_total", "Total number of custom requests");
-        private static readonly Histogram<double> _responseTime = _meter.CreateHistogram<double>("custom_response_time", "Custom response time");
-        private static readonly Random _random = new();
+        RequestCounter.Add(1);
 
-        [HttpGet("test")]
-        public async Task<string> TestMetrics()
+        using var activity = new Activity("custom_operation");
+        activity.Start();
+
+        try
         {
-            _requestCounter.Add(1);
-            
-            using var activity = new Activity("custom_operation");
-            activity.Start();
-            
-            try
-            {
-                // Simulate some work
-                await Task.Delay(_random.Next(50, 150));
-                return "Metrics test completed";
-            }
-            finally
-            {
-                activity.Stop();
-                _responseTime.Record(activity.Duration.TotalMilliseconds);
-            }
+            // Simulate some work
+            await Task.Delay(Random.Next(50, 150));
+            return "Metrics test completed";
         }
-
-        [HttpGet("counter")]
-        public string IncrementCounter([FromQuery] int value = 1)
+        finally
         {
-            _requestCounter.Add(value);
-            return $"Counter incremented by {value}";
+            activity.Stop();
+            ResponseTime.Record(activity.Duration.TotalMilliseconds);
         }
+    }
 
-        [HttpGet("slow")]
-        public async Task<string> SlowEndpoint()
+    [HttpGet("counter")]
+    public string IncrementCounter([FromQuery] int value = 1)
+    {
+        RequestCounter.Add(value);
+        return $"Counter incremented by {value}";
+    }
+
+    [HttpGet("slow")]
+    public async Task<string> SlowEndpoint()
+    {
+        RequestCounter.Add(1);
+
+        using var activity = new Activity("slow_operation");
+        activity.Start();
+
+        try
         {
-            _requestCounter.Add(1);
-            
-            using var activity = new Activity("slow_operation");
-            activity.Start();
-            
-            try
-            {
-                // Simulate slow operation
-                await Task.Delay(_random.Next(500, 1500));
-                return "Slow operation completed";
-            }
-            finally
-            {
-                activity.Stop();
-                _responseTime.Record(activity.Duration.TotalMilliseconds);
-            }
+            // Simulate slow operation
+            await Task.Delay(Random.Next(500, 1500));
+            return "Slow operation completed";
+        }
+        finally
+        {
+            activity.Stop();
+            ResponseTime.Record(activity.Duration.TotalMilliseconds);
         }
     }
 }

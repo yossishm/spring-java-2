@@ -11,6 +11,7 @@
   <SonarQubeHostUrl>http://localhost:9000</SonarQubeHostUrl>
   <SonarQubeVersion>25.9.0.112764</SonarQubeVersion>
   <SonarProjectKey>dotnet-spring-equivalent</SonarProjectKey>
+  <SonarProjectVersion>1.0</SonarProjectVersion>
   <SonarProjectName>Spring .NET Equivalent Application</SonarProjectName>
   <AdditionalConfig>
     <ConfigSetting Id="BuildUri" />
@@ -150,7 +151,6 @@
   </ServerSettings>
   <LocalSettings>
     <Property Name="sonar.host.url">http://localhost:9000</Property>
-    <Property Name="sonar.exclusions">**/bin/**,**/obj/**</Property>
   </LocalSettings>
   <ScannerOptsSettings />
   <AnalyzersSettings>

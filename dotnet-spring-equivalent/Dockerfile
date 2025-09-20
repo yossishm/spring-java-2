@@ -10,7 +10,13 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY ["SpringJavaEquivalent.csproj", "."]
 RUN dotnet restore "SpringJavaEquivalent.csproj"
-COPY . .
+# Copy only necessary source files, excluding sensitive data
+COPY ["Controllers/", "Controllers/"]
+COPY ["Services/", "Services/"]
+COPY ["Authorization/", "Authorization/"]
+COPY ["Program.cs", "."]
+COPY ["appsettings.json", "."]
+COPY ["appsettings.Development.json", "."]
 WORKDIR "/src"
 RUN dotnet build "SpringJavaEquivalent.csproj" -c Release -o /app/build
 

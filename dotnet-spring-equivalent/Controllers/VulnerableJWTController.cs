@@ -1,3 +1,7 @@
+// <copyright file="VulnerableJWTController.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
@@ -6,20 +10,28 @@ namespace SpringJavaEquivalent.Controllers;
 
 [ApiController]
 [Route("api/jwt")]
-public class VulnerableJWTController : ControllerBase
+public class VulnerableJwtController : ControllerBase
 {
-    private readonly ILogger<VulnerableJWTController> _logger;
+    // SECURITY WARNING: This is intentionally vulnerable for demonstration purposes
+    // In production, use strong, randomly generated secrets from secure configuration
+    private const string WeakSecret = "DEMO_WEAK_SECRET_DO_NOT_USE_IN_PRODUCTION";
+    private const string TokenKey = "token";
+    private const string AlgorithmKey = "algorithm";
+    private const string ValidKey = "valid";
+    private const string DecodedKey = "decoded";
+    private const string HeaderKey = "header";
+    private const string PayloadKey = "payload";
+    private const string SignatureKey = "signature";
+    private const string ErrorKey = "error";
+    private const string MessageKey = "message";
 
-    // Vulnerable: Using weak secret key (same as Spring version)
-    private static readonly string WEAK_SECRET = "mySecretKey123";
-
-    public VulnerableJWTController(ILogger<VulnerableJWTController> logger)
+    public VulnerableJwtController()
     {
-        _logger = logger;
     }
 
     /// <summary>
     /// Create a vulnerable JWT token - equivalent to Spring's create endpoint
+    /// SECURITY WARNING: This endpoint is intentionally vulnerable for demonstration purposes
     /// </summary>
     [HttpPost("create")]
     public IActionResult CreateToken([FromBody] Dictionary<string, object> payload)
@@ -29,7 +41,7 @@ public class VulnerableJWTController : ControllerBase
             // Vulnerable: Simple base64 encoding (not real JWT) - same as Spring version
             var header = Convert.ToBase64String(Encoding.UTF8.GetBytes("{\"alg\":\"HS256\",\"typ\":\"JWT\"}"));
             var payloadStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(payload)));
-            var signature = Convert.ToBase64String(Encoding.UTF8.GetBytes(WEAK_SECRET));
+            var signature = Convert.ToBase64String(Encoding.UTF8.GetBytes(WeakSecret));
 
             var token = $"{header}.{payloadStr}.{signature}";
             return Ok(token);
@@ -48,14 +60,14 @@ public class VulnerableJWTController : ControllerBase
     {
         try
         {
-            var token = request.GetValueOrDefault("token", "");
+            var token = request.GetValueOrDefault(TokenKey, string.Empty);
 
             // Vulnerable: No proper validation - same as Spring version
             var response = new Dictionary<string, object>
             {
-                ["valid"] = true,
-                ["token"] = token,
-                ["message"] = "Token accepted without proper validation"
+                [ValidKey] = true,
+                [TokenKey] = token,
+                [MessageKey] = "Token accepted without proper validation",
             };
 
             return Ok(response);
@@ -64,8 +76,8 @@ public class VulnerableJWTController : ControllerBase
         {
             var response = new Dictionary<string, object>
             {
-                ["valid"] = false,
-                ["error"] = e.Message
+                [ValidKey] = false,
+                [ErrorKey] = e.Message,
             };
 
             return Ok(response);
@@ -84,10 +96,10 @@ public class VulnerableJWTController : ControllerBase
             var parts = token.Split('.');
             var response = new Dictionary<string, object>
             {
-                ["decoded"] = true,
-                ["header"] = parts.Length > 0 ? Encoding.UTF8.GetString(Convert.FromBase64String(parts[0])) : "",
-                ["payload"] = parts.Length > 1 ? Encoding.UTF8.GetString(Convert.FromBase64String(parts[1])) : "",
-                ["signature"] = parts.Length > 2 ? parts[2] : ""
+                [DecodedKey] = true,
+                [HeaderKey] = parts.Length > 0 ? Encoding.UTF8.GetString(Convert.FromBase64String(parts[0])) : string.Empty,
+                [PayloadKey] = parts.Length > 1 ? Encoding.UTF8.GetString(Convert.FromBase64String(parts[1])) : string.Empty,
+                [SignatureKey] = parts.Length > 2 ? parts[2] : string.Empty,
             };
 
             return Ok(response);
@@ -96,8 +108,8 @@ public class VulnerableJWTController : ControllerBase
         {
             var response = new Dictionary<string, object>
             {
-                ["decoded"] = false,
-                ["error"] = e.Message
+                [DecodedKey] = false,
+                [ErrorKey] = e.Message,
             };
 
             return Ok(response);
@@ -112,16 +124,16 @@ public class VulnerableJWTController : ControllerBase
     {
         try
         {
-            var token = request.GetValueOrDefault("token", "");
-            var algorithm = request.GetValueOrDefault("algorithm", ""); // Vulnerable: user-controlled algorithm
+            var token = request.GetValueOrDefault(TokenKey, string.Empty);
+            var algorithm = request.GetValueOrDefault(AlgorithmKey, string.Empty); // Vulnerable: user-controlled algorithm
 
             // Vulnerable: Accepts any algorithm without validation - same as Spring version
             var response = new Dictionary<string, object>
             {
-                ["valid"] = true,
-                ["algorithm"] = algorithm,
-                ["token"] = token,
-                ["message"] = $"Algorithm accepted without validation: {algorithm}"
+                [ValidKey] = true,
+                [AlgorithmKey] = algorithm,
+                [TokenKey] = token,
+                [MessageKey] = $"Algorithm accepted without validation: {algorithm}",
             };
 
             return Ok(response);
@@ -130,8 +142,8 @@ public class VulnerableJWTController : ControllerBase
         {
             var response = new Dictionary<string, object>
             {
-                ["valid"] = false,
-                ["error"] = e.Message
+                [ValidKey] = false,
+                [ErrorKey] = e.Message,
             };
 
             return Ok(response);

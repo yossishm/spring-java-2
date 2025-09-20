@@ -1,3 +1,7 @@
+// <copyright file="ApplicationController.cs" company="SpringJavaEquivalent">
+// Copyright (c) 2024. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -13,7 +17,7 @@ public class ApplicationController : ControllerBase
 
     public ApplicationController(ILogger<ApplicationController> logger)
     {
-        _logger = logger;
+        this._logger = logger;
     }
 
     /// <summary>
@@ -24,12 +28,12 @@ public class ApplicationController : ControllerBase
     {
         // Equivalent to Spring's base64 encoding of "Authorization: Bearer"
         var jwsHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("Authorization: Bearer"));
-        _logger.LogInformation("jws header base64 is: {JwsHeader}", jwsHeader);
+        this._logger.LogInformation("jws header base64 is: {JwsHeader}", jwsHeader);
 
         // Log all headers (equivalent to Spring's header iteration)
-        foreach (var header in Request.Headers)
+        foreach (var header in this.Request.Headers)
         {
-            _logger.LogInformation("Header '{Key}' = {Value}", header.Key, header.Value);
+            this._logger.LogInformation("Header '{Key}' = {Value}", header.Key, header.Value);
         }
 
         return Ok("Hello Docker Yossi World");
@@ -45,7 +49,7 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(403)]
     public IActionResult GetObject([FromQuery] string id)
     {
-        _logger.LogInformation("Get: {Id} Called", id);
+        this._logger.LogInformation("Get: {Id} Called", id);
         return Ok("get");
     }
 
@@ -59,7 +63,7 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(403)]
     public IActionResult PutObject([FromQuery] string id)
     {
-        _logger.LogInformation("Put: {Id} Called", id);
+        this._logger.LogInformation("Put: {Id} Called", id);
         return Ok("put");
     }
 
@@ -73,7 +77,7 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(403)]
     public IActionResult DeleteObject([FromQuery] string id)
     {
-        _logger.LogInformation("Delete: {Id} Called", id);
+        this._logger.LogInformation("Delete: {Id} Called", id);
         return Ok("delete");
     }
 }
