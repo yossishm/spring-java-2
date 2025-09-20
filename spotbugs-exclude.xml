@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Exclude false positives for PrometheusController -->
+    <Match>
+        <Class name="hello.PrometheusController" />
+        <Bug pattern="URF_UNREAD_FIELD" />
+    </Match>
+    <Match>
+        <Class name="hello.PrometheusController" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+</FindBugsFilter>

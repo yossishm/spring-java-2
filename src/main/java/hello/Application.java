@@ -261,7 +261,7 @@ public class Application {
   }
 
   private static Key loadKey(InputStream in, Function<byte[], Key> keyParser) throws IOException {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
         String line;
         StringBuilder content = new StringBuilder();
         while ((line = reader.readLine()) != null) {

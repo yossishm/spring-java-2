@@ -24,7 +24,7 @@ public class ApplicationTest {
 	@Test
 	public void greetingShouldReturnDefaultMessage() throws Exception {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",
-				String.class)).contains("Hello Docker");
+				String.class)).contains("Hello Docker Yossi World");
 	}
 
 	@Test

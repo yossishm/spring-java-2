@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/api/jwt")
@@ -18,9 +19,9 @@ public class VulnerableJWTController {
     public ResponseEntity<String> createToken(@RequestBody Map<String, Object> payload) {
         try {
             // Vulnerable: Simple base64 encoding (not real JWT)
-            String header = Base64.getEncoder().encodeToString("{\"alg\":\"HS256\",\"typ\":\"JWT\"}".getBytes());
-            String payloadStr = Base64.getEncoder().encodeToString(payload.toString().getBytes());
-            String signature = Base64.getEncoder().encodeToString(WEAK_SECRET.getBytes());
+            String header = Base64.getEncoder().encodeToString("{\"alg\":\"HS256\",\"typ\":\"JWT\"}".getBytes(StandardCharsets.UTF_8));
+            String payloadStr = Base64.getEncoder().encodeToString(payload.toString().getBytes(StandardCharsets.UTF_8));
+            String signature = Base64.getEncoder().encodeToString(WEAK_SECRET.getBytes(StandardCharsets.UTF_8));
             
             String token = header + "." + payloadStr + "." + signature;
             return ResponseEntity.ok(token);
@@ -57,8 +58,8 @@ public class VulnerableJWTController {
             String[] parts = token.split("\\.");
             Map<String, Object> response = new HashMap<>();
             response.put("decoded", true);
-            response.put("header", parts.length > 0 ? new String(Base64.getDecoder().decode(parts[0])) : "");
-            response.put("payload", parts.length > 1 ? new String(Base64.getDecoder().decode(parts[1])) : "");
+            response.put("header", parts.length > 0 ? new String(Base64.getDecoder().decode(parts[0]), StandardCharsets.UTF_8) : "");
+            response.put("payload", parts.length > 1 ? new String(Base64.getDecoder().decode(parts[1]), StandardCharsets.UTF_8) : "");
             response.put("signature", parts.length > 2 ? parts[2] : "");
             
             return ResponseEntity.ok(response);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -194,7 +195,7 @@ public class JwtUtil {
      * Get signing key for JWT validation
      */
     private SecretKey getSigningKey() {
-        byte[] keyBytes = secret.getBytes();
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -212,12 +213,6 @@ public class JwtUtil {
         return createToken(username, roles, permissions, authLevel, idp);
     }
 
-    /**
-     * Create JWT token with claims
-     */
-    private String createToken(String subject, List<String> roles, List<String> permissions) {
-        return createToken(subject, roles, permissions, "AAL1", "local");
-    }
 
     /**
      * Create JWT token with claims including auth_level and idp

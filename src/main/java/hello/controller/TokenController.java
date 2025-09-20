@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -97,7 +98,7 @@ public class TokenController {
         String authLevel;
         String idp;
         
-        switch (type.toLowerCase()) {
+        switch (type.toLowerCase(Locale.ROOT)) {
             case "admin":
                 username = "admin";
                 roles = List.of("ADMIN", "USER");

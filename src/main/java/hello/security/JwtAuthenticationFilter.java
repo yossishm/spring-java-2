@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -80,12 +81,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private List<SimpleGrantedAuthority> createAuthorities(List<String> roles, List<String> permissions) {
         List<SimpleGrantedAuthority> authorities = roles.stream()
-            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase(Locale.ROOT)))
             .collect(Collectors.toList());
         
         // Add permissions as authorities
         authorities.addAll(permissions.stream()
-            .map(permission -> new SimpleGrantedAuthority(permission.toUpperCase()))
+            .map(permission -> new SimpleGrantedAuthority(permission.toUpperCase(Locale.ROOT)))
             .collect(Collectors.toList()));
         
         return authorities;
