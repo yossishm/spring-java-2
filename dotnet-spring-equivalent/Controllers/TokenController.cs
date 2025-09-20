@@ -17,7 +17,7 @@ using SpringJavaEquivalent.Services;
 [Tags("Authentication")]
 public class TokenController : ControllerBase
 {
-    private readonly JwtService _jwtService;
+    private readonly JwtService jwtService;
     private const string CacheReadPermission = "CACHE_READ";
     private const string CacheWritePermission = "CACHE_WRITE";
     private const string DefaultRole = "USER";
@@ -33,7 +33,7 @@ public class TokenController : ControllerBase
 
     public TokenController(JwtService jwtService)
     {
-        this._jwtService = jwtService;
+        this.jwtService = jwtService;
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class TokenController : ControllerBase
             ? new List<string> { CacheReadPermission }
             : permissions.Split(',').Select(p => p.Trim()).ToList();
 
-        var token = this._jwtService.GenerateToken(username, rolesList, permissionsList);
+        var token = this.jwtService.GenerateToken(username, rolesList, permissionsList);
 
         var response = new
         {
@@ -98,7 +98,7 @@ public class TokenController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult GenerateAdminToken()
     {
-        var token = this._jwtService.GenerateToken(
+        var token = this.jwtService.GenerateToken(
             "admin",
             new List<string> { "ADMIN", "USER" },
             new List<string> { CacheReadPermission, CacheWritePermission, "ADMIN_ACCESS" });
@@ -120,7 +120,7 @@ public class TokenController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult GenerateUserToken()
     {
-        var token = this._jwtService.GenerateToken(
+        var token = this.jwtService.GenerateToken(
             "user",
             new List<string> { DefaultRole },
             new List<string> { CacheReadPermission });
@@ -142,7 +142,7 @@ public class TokenController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult GenerateReadOnlyToken()
     {
-        var token = this._jwtService.GenerateToken(
+        var token = this.jwtService.GenerateToken(
             "readonly",
             new List<string> { "READONLY" },
             new List<string> { CacheReadPermission });
@@ -164,7 +164,7 @@ public class TokenController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult GenerateWriteToken()
     {
-        var token = this._jwtService.GenerateToken(
+        var token = this.jwtService.GenerateToken(
             "writer",
             new List<string> { "WRITER" },
             new List<string> { CacheReadPermission, CacheWritePermission });
@@ -196,10 +196,10 @@ public class TokenController : ControllerBase
 
         try
         {
-            var isValid = this._jwtService.ValidateToken(token);
-            var username = this._jwtService.ExtractUsername(token);
-            var roles = this._jwtService.ExtractRoles(token);
-            var permissions = this._jwtService.ExtractPermissions(token);
+            var isValid = this.jwtService.ValidateToken(token);
+            var username = JwtService.ExtractUsername(token);
+            var roles = JwtService.ExtractRoles(token);
+            var permissions = JwtService.ExtractPermissions(token);
 
             return Ok(new
             {

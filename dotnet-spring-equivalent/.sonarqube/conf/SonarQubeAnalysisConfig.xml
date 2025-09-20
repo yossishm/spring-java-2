@@ -11,7 +11,7 @@
   <SonarQubeHostUrl>http://localhost:9000</SonarQubeHostUrl>
   <SonarQubeVersion>25.9.0.112764</SonarQubeVersion>
   <SonarProjectKey>dotnet-spring-equivalent</SonarProjectKey>
-  <SonarProjectVersion>1.0</SonarProjectVersion>
+  <SonarProjectVersion>1.1</SonarProjectVersion>
   <SonarProjectName>Spring .NET Equivalent Application</SonarProjectName>
   <AdditionalConfig>
     <ConfigSetting Id="BuildUri" />

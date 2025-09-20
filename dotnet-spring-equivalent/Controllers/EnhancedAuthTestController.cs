@@ -26,6 +26,8 @@ public class EnhancedAuthTestController : ControllerBase
     private static readonly string[] ManagementPermissions = { "MANAGEMENT_ACCESS", "APPROVE_REQUESTS" };
     private static readonly string[] IdentityProviderPermissions = { "IDENTITY_PROVIDER_ACCESS" };
     private static readonly string[] HighAuthPermissions = { "HIGH_AUTH_ACCESS" };
+    private static readonly string[] NoneRoles = { "NONE" };
+    private const string PermissionClaimType = "permission";
 
     public EnhancedAuthTestController()
     {
@@ -45,7 +47,7 @@ public class EnhancedAuthTestController : ControllerBase
             message = "Public endpoint - no authentication required",
             timestamp = DateTime.UtcNow,
             user = UnknownValue,
-            roles = new[] { "NONE" },
+            roles = NoneRoles,
             permissions = NonePermissions,
         });
     }
@@ -139,7 +141,7 @@ public class EnhancedAuthTestController : ControllerBase
             .Select(c => c.Value)
             .ToArray();
         var permissions = this.User.Claims
-            .Where(c => c.Type == "permission")
+            .Where(c => c.Type == PermissionClaimType)
             .Select(c => c.Value)
             .ToArray();
 
@@ -168,7 +170,7 @@ public class EnhancedAuthTestController : ControllerBase
             .Select(c => c.Value)
             .ToArray();
         var permissions = this.User.Claims
-            .Where(c => c.Type == "permission")
+            .Where(c => c.Type == PermissionClaimType)
             .Select(c => c.Value)
             .ToArray();
 
@@ -222,7 +224,7 @@ public class EnhancedAuthTestController : ControllerBase
             .Select(c => c.Value)
             .ToArray();
         var permissions = this.User.Claims
-            .Where(c => c.Type == "permission")
+            .Where(c => c.Type == PermissionClaimType)
             .Select(c => c.Value)
             .ToArray();
 
@@ -307,7 +309,7 @@ public class EnhancedAuthTestController : ControllerBase
             .Select(c => c.Value)
             .ToArray();
         var permissions = this.User.Claims
-            .Where(c => c.Type == "permission")
+            .Where(c => c.Type == PermissionClaimType)
             .Select(c => c.Value)
             .ToArray();
         var identityProvider = this.User.Claims

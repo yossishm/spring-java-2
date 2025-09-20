@@ -86,7 +86,7 @@ public class JwtService
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero,
-            }, out SecurityToken validatedToken);
+            }, out _);
 
             return true;
         }
@@ -99,7 +99,7 @@ public class JwtService
     /// <summary>
     /// Extract username from JWT token
     /// </summary>
-    public string ExtractUsername(string token)
+    public static string ExtractUsername(string token)
     {
         try
         {
@@ -116,7 +116,7 @@ public class JwtService
     /// <summary>
     /// Extract roles from JWT token
     /// </summary>
-    public IReadOnlyList<string> ExtractRoles(string token)
+    public static IReadOnlyList<string> ExtractRoles(string token)
     {
         try
         {
@@ -136,7 +136,7 @@ public class JwtService
     /// <summary>
     /// Extract permissions from JWT token
     /// </summary>
-    public IReadOnlyList<string> ExtractPermissions(string token)
+    public static IReadOnlyList<string> ExtractPermissions(string token)
     {
         try
         {
@@ -156,7 +156,7 @@ public class JwtService
     /// <summary>
     /// Extract authentication level from JWT token
     /// </summary>
-    public string ExtractAuthLevel(string token)
+    public static string ExtractAuthLevel(string token)
     {
         try
         {
@@ -173,7 +173,7 @@ public class JwtService
     /// <summary>
     /// Extract identity provider from JWT token
     /// </summary>
-    public string ExtractIdentityProvider(string token)
+    public static string ExtractIdentityProvider(string token)
     {
         try
         {
@@ -190,7 +190,7 @@ public class JwtService
     /// <summary>
     /// Extract all claims from JWT token
     /// </summary>
-    public Dictionary<string, string> ExtractAllClaims(string token)
+    public static Dictionary<string, string> ExtractAllClaims(string token)
     {
         try
         {
