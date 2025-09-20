@@ -49,12 +49,12 @@ jobs:
       run: |
         echo "🔍 Running Trivy Security Scan..."
         docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format table --severity HIGH,CRITICAL /workspace
-        docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format sarif --output trivy-results.sarif /workspace
+        docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format sarif --output /workspace/trivy-results.sarif /workspace
         echo "✅ Trivy Security Scan completed"
     
     - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
-      if: always()
+      uses: github/codeql-action/upload-sarif@v3
+      if: always() && hashFiles('trivy-results.sarif') != ''
       with:
         sarif_file: 'trivy-results.sarif'
     
