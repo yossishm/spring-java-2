@@ -1,0 +1,23 @@
+{
+  "summary": {
+    "generatedon": "2025-09-20T21:18:33Z",
+    "parser": "MultiReport (2x Cobertura)",
+    "assemblies": 0,
+    "classes": 0,
+    "files": 0,
+    "coveredlines": 0,
+    "uncoveredlines": 0,
+    "coverablelines": 0,
+    "totallines": 0,
+    "linecoverage": null,
+    "coveredbranches": 0,
+    "totalbranches": 0,
+    "coveredmethods": 0,
+    "totalmethods": 0,
+    "methodcoverage": null
+ },
+  "coverage": {
+    "assemblies": [
+ ]
+  }
+}

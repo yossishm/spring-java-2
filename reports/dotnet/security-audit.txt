@@ -1,0 +1,10 @@
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `SpringJavaEquivalent` has the following vulnerable packages
+   [net9.0]: 
+   Transitive Package                    Resolved   Severity   Advisory URL                                     
+   > System.Net.Http                     4.3.0      High       https://github.com/advisories/GHSA-7jgj-8wvc-jh57
+   > System.Text.RegularExpressions      4.3.0      High       https://github.com/advisories/GHSA-cmhx-cq75-c4mj
+

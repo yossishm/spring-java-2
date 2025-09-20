@@ -1,0 +1,70 @@
+Build started 20/09/2025 20:17:35.
+     1>Project "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj" on node 1 (Restore target(s)).
+     1>_GetAllRestoreProjectPathItems:
+         Determining projects to restore...
+       Restore:
+         X.509 certificate chain validation will use the fallback certificate bundle at '/usr/local/Cellar/dotnet/9.0.8/libexec/sdk/9.0.109/trustedroots/codesignctl.pem'.
+         X.509 certificate chain validation will use the fallback certificate bundle at '/usr/local/Cellar/dotnet/9.0.8/libexec/sdk/9.0.109/trustedroots/timestampctl.pem'.
+     1>/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj : warning NU1603: SpringJavaEquivalent depends on SonarAnalyzer.CSharp (>= 9.25.0.78966) but SonarAnalyzer.CSharp 9.25.0.78966 was not found. SonarAnalyzer.CSharp 9.25.0.90414 was resolved instead.
+         Assets file has not changed. Skipping assets file writing. Path: /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/obj/project.assets.json
+         Restored /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj (in 62 ms).
+         
+         NuGet Config files used:
+             /Users/yshmulev/.nuget/NuGet/NuGet.Config
+         
+         Feeds used:
+             https://api.nuget.org/v3/index.json
+             /usr/local/Cellar/dotnet/9.0.8/libexec/library-packs
+         All projects are up-to-date for restore.
+     1>Done Building Project "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj" (Restore target(s)).
+   1:7>Project "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj" on node 1 (default targets).
+     1>/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj : warning NU1603: SpringJavaEquivalent depends on SonarAnalyzer.CSharp (>= 9.25.0.78966) but SonarAnalyzer.CSharp 9.25.0.78966 was not found. SonarAnalyzer.CSharp 9.25.0.90414 was resolved instead.
+     1>GenerateTargetFrameworkMonikerAttribute:
+       Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+       CoreGenerateAssemblyInfo:
+       Skipping target "CoreGenerateAssemblyInfo" because all output files are up-to-date with respect to the input files.
+       _DiscoverMvcApplicationParts:
+       Skipping target "_DiscoverMvcApplicationParts" because all output files are up-to-date with respect to the input files.
+     1>/Users/yshmulev/.nuget/packages/microsoft.codeanalysis.netanalyzers/8.0.0/buildTransitive/Microsoft.CodeAnalysis.NetAnalyzers.targets(648,5): warning : The .NET SDK has newer analyzers with version '9.0.0' than what version '8.0.0' of 'Microsoft.CodeAnalysis.NetAnalyzers' package provides. Update or remove this package reference. You can suppress this warning by setting the MSBuild property '_SkipUpgradeNetAnalyzersNuGetWarning' to 'true'. [/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj]
+       _GenerateSourceLinkFile:
+         Source Link file 'obj/Release/net9.0/SpringJavaEquivalent.sourcelink.json' is up-to-date.
+       CoreCompile:
+       Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+       _CreateAppHost:
+       Skipping target "_CreateAppHost" because all output files are up-to-date with respect to the input files.
+       _ProcessScopedCssFiles:
+       Skipping target "_ProcessScopedCssFiles" because it has no outputs.
+       _ProcessScopedCssFiles:
+       Skipping target "_ProcessScopedCssFiles" because it has no outputs.
+       _BuildCopyStaticWebAssetsPreserveNewest:
+       Skipping target "_BuildCopyStaticWebAssetsPreserveNewest" because it has no outputs.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Skipping target "_CopyOutOfDateSourceItemsToOutputDirectory" because all output files are up-to-date with respect to the input files.
+       GenerateBuildDependencyFile:
+       Skipping target "GenerateBuildDependencyFile" because all output files are up-to-date with respect to the input files.
+       GenerateBuildRuntimeConfigurationFiles:
+       Skipping target "GenerateBuildRuntimeConfigurationFiles" because all output files are up-to-date with respect to the input files.
+       CopyFilesToOutputDirectory:
+         SpringJavaEquivalent -> /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/bin/Release/net9.0/SpringJavaEquivalent.dll
+     1>Done Building Project "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj" (default targets).
+
+Build succeeded.
+
+       "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj" (Restore target) (1) ->
+       (Restore target) -> 
+         /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj : warning NU1603: SpringJavaEquivalent depends on SonarAnalyzer.CSharp (>= 9.25.0.78966) but SonarAnalyzer.CSharp 9.25.0.78966 was not found. SonarAnalyzer.CSharp 9.25.0.90414 was resolved instead.
+
+
+       "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj" (default target) (1:7) ->
+       (ResolvePackageAssets target) -> 
+         /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj : warning NU1603: SpringJavaEquivalent depends on SonarAnalyzer.CSharp (>= 9.25.0.78966) but SonarAnalyzer.CSharp 9.25.0.78966 was not found. SonarAnalyzer.CSharp 9.25.0.90414 was resolved instead.
+
+
+       "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj" (default target) (1:7) ->
+       (_ReportUpgradeNetAnalyzersNuGetWarning target) -> 
+         /Users/yshmulev/.nuget/packages/microsoft.codeanalysis.netanalyzers/8.0.0/buildTransitive/Microsoft.CodeAnalysis.NetAnalyzers.targets(648,5): warning : The .NET SDK has newer analyzers with version '9.0.0' than what version '8.0.0' of 'Microsoft.CodeAnalysis.NetAnalyzers' package provides. Update or remove this package reference. You can suppress this warning by setting the MSBuild property '_SkipUpgradeNetAnalyzersNuGetWarning' to 'true'. [/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj]
+
+    3 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.86

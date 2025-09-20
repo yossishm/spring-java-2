@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>SpringJavaEquivalent</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>1c579789-f071-47c2-9c93-445fff238551</ProjectGuid>
+  <FullPath>/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/.sonarqube/conf/2/FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/.sonarqube/out/2/Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/.sonarqube/out/2</Property>
+    <Property Name="sonar.cs.scanner.telemetry">/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/.sonarqube/out/2/Telemetry.json</Property>
+  </AnalysisSettings>
+  <Configuration>Release</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>net9.0</TargetFramework>
+</ProjectInfo>

@@ -1,0 +1,133 @@
+name: .NET Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'dotnet-spring-equivalent/**'
+      - '.github/workflows/dotnet-security-scan.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'dotnet-spring-equivalent/**'
+      - '.github/workflows/dotnet-security-scan.yml'
+  schedule:
+    # Run security scans daily at 5 AM UTC
+    - cron: '0 5 * * *'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  checks: write
+  pull-requests: write
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  security-scan:
+    name: .NET Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        cache: true
+    
+    - name: Restore dependencies
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
+    
+    - name: .NET Security Audit
+      run: |
+        echo "🔒 Running .NET Security Audit..."
+        dotnet list dotnet-spring-equivalent/SpringJavaEquivalent.csproj package --vulnerable --include-transitive --format json > security-audit.json || echo "⚠️ Security audit completed with findings"
+        
+        # Check for high/critical vulnerabilities
+        if [ -f "security-audit.json" ]; then
+          VULNERABILITIES=$(jq -r '.vulnerabilities | length' security-audit.json 2>/dev/null || echo "0")
+          if [ "$VULNERABILITIES" -gt 0 ]; then
+            echo "❌ Found $VULNERABILITIES vulnerabilities"
+            jq -r '.vulnerabilities[] | "\(.severity): \(.title) - \(.url)"' security-audit.json
+            exit 1
+          else
+            echo "✅ No vulnerabilities found"
+          fi
+        fi
+        echo "✅ .NET Security Audit completed"
+    
+    - name: Security Scan with Trivy
+      run: |
+        echo "🔍 Running Trivy Security Scan for .NET..."
+        docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format table --severity HIGH,CRITICAL /workspace/dotnet-spring-equivalent
+        docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format sarif --output /workspace/dotnet-trivy-results.sarif /workspace/dotnet-spring-equivalent
+        echo "✅ Trivy Security Scan completed"
+    
+    - name: Verify SARIF file
+      run: |
+        if [ -f "dotnet-trivy-results.sarif" ]; then
+          echo "✅ SARIF file exists"
+          echo "File size: $(wc -c < dotnet-trivy-results.sarif) bytes"
+          echo "First few lines:"
+          head -5 dotnet-trivy-results.sarif
+        else
+          echo "⚠️ SARIF file not found, creating empty one"
+          echo '{"version": "2.1.0", "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json", "runs": [{"tool": {"driver": {"name": "Trivy", "version": "latest"}}, "results": []}]}' > dotnet-trivy-results.sarif
+        fi
+    
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always() && hashFiles('dotnet-trivy-results.sarif') != ''
+      with:
+        sarif_file: 'dotnet-trivy-results.sarif'
+    
+    - name: Upload Security Reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: dotnet-security-reports
+        path: |
+          security-audit.json
+          dotnet-trivy-results.sarif
+    
+    - name: Notify on Security Issues
+      if: failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "🚨 .NET Security Issues Found - ${{ github.repository }}"
+        to: ${{ secrets.NOTIFICATION_EMAIL }}
+        from: ${{ secrets.EMAIL_USERNAME }}
+        html_body: |
+          <h2>🚨 .NET Security Issues Found</h2>
+          
+          <p><strong>Repository:</strong> ${{ github.repository }}</p>
+          <p><strong>Branch:</strong> ${{ github.ref_name }}</p>
+          <p><strong>Commit:</strong> ${{ github.sha }}</p>
+          <p><strong>Author:</strong> ${{ github.actor }}</p>
+          
+          <h3>.NET Security Scan Results:</h3>
+          <ul>
+            <li>.NET Security Audit: Completed</li>
+            <li>Trivy Security Scan: Completed</li>
+          </ul>
+          
+          <h3>Links:</h3>
+          <ul>
+            <li><a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">View Workflow Run</a></li>
+            <li><a href="${{ github.server_url }}/${{ github.repository }}/security">View Security Tab</a></li>
+          </ul>
+          
+          <p>Please review the security reports and address any vulnerabilities found.</p>
