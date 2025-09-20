@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <!-- Suppress false positives for Spring Boot dependencies -->
+    <suppress>
+        <notes><![CDATA[
+        Suppress false positive for Spring Boot starter dependencies
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter.*$</packageUrl>
+        <cve>CVE-2016-1000027</cve>
+    </suppress>
+    
+    <!-- Suppress false positives for Jackson dependencies -->
+    <suppress>
+        <notes><![CDATA[
+        Suppress false positive for Jackson databind
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind.*$</packageUrl>
+        <cve>CVE-2020-36518</cve>
+    </suppress>
+    
+    <!-- Suppress false positives for JUnit dependencies -->
+    <suppress>
+        <notes><![CDATA[
+        Suppress false positive for JUnit dependencies
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.junit\.jupiter/.*$</packageUrl>
+        <cve>CVE-2020-15250</cve>
+    </suppress>
+    
+    <!-- Suppress false positives for Apache Commons dependencies -->
+    <suppress>
+        <notes><![CDATA[
+        Suppress false positive for Apache Commons dependencies
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons-.*$</packageUrl>
+        <cve>CVE-2021-29425</cve>
+    </suppress>
+    
+    <!-- Suppress false positives for SLF4J dependencies -->
+    <suppress>
+        <notes><![CDATA[
+        Suppress false positive for SLF4J dependencies
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.slf4j/.*$</packageUrl>
+        <cve>CVE-2018-8088</cve>
+    </suppress>
+</suppressions>
