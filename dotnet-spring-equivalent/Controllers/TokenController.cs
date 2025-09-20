@@ -2,11 +2,11 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
+namespace SpringJavaEquivalent.Controllers;
+
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using SpringJavaEquivalent.Services;
-using System.ComponentModel.DataAnnotations;
-
-namespace SpringJavaEquivalent.Controllers;
 
 /// <summary>
 /// Controller for generating JWT tokens for testing purposes.
@@ -21,6 +21,15 @@ public class TokenController : ControllerBase
     private const string CacheReadPermission = "CACHE_READ";
     private const string CacheWritePermission = "CACHE_WRITE";
     private const string DefaultRole = "USER";
+
+    private static readonly string[] AdminRoles = { "ADMIN", "USER" };
+    private static readonly string[] AdminPermissions = { CacheReadPermission, CacheWritePermission, "ADMIN_ACCESS" };
+    private static readonly string[] UserRoles = { DefaultRole };
+    private static readonly string[] UserPermissions = { CacheReadPermission };
+    private static readonly string[] ReadOnlyRoles = { "READONLY" };
+    private static readonly string[] ReadOnlyPermissions = { CacheReadPermission };
+    private static readonly string[] WriterRoles = { "WRITER" };
+    private static readonly string[] WriterPermissions = { CacheReadPermission, CacheWritePermission };
 
     public TokenController(JwtService jwtService)
     {
@@ -69,13 +78,15 @@ public class TokenController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult GeneratePredefinedToken([FromRoute] string type)
     {
-        var lowerType = type.ToLowerInvariant();
-        return lowerType switch
+        ArgumentNullException.ThrowIfNull(type);
+        
+        var upperType = type.ToUpperInvariant();
+        return upperType switch
         {
-            "admin" => this.GenerateAdminToken(),
-            "user" => this.GenerateUserToken(),
-            "readonly" => this.GenerateReadOnlyToken(),
-            "write" => this.GenerateWriteToken(),
+            "ADMIN" => this.GenerateAdminToken(),
+            "USER" => this.GenerateUserToken(),
+            "READONLY" => this.GenerateReadOnlyToken(),
+            "WRITE" => this.GenerateWriteToken(),
             _ => BadRequest($"Unknown token type: {type}"),
         };
     }
@@ -96,8 +107,8 @@ public class TokenController : ControllerBase
         {
             token,
             username = "admin",
-            roles = new[] { "ADMIN", "USER" },
-            permissions = new[] { CacheReadPermission, CacheWritePermission, "ADMIN_ACCESS" },
+            roles = AdminRoles,
+            permissions = AdminPermissions,
             expiresAt = DateTime.UtcNow.AddHours(1),
         });
     }
@@ -118,8 +129,8 @@ public class TokenController : ControllerBase
         {
             token,
             username = "user",
-            roles = new[] { DefaultRole },
-            permissions = new[] { CacheReadPermission },
+            roles = UserRoles,
+            permissions = UserPermissions,
             expiresAt = DateTime.UtcNow.AddHours(1),
         });
     }
@@ -140,8 +151,8 @@ public class TokenController : ControllerBase
         {
             token,
             username = "readonly",
-            roles = new[] { "READONLY" },
-            permissions = new[] { CacheReadPermission },
+            roles = ReadOnlyRoles,
+            permissions = ReadOnlyPermissions,
             expiresAt = DateTime.UtcNow.AddHours(1),
         });
     }
@@ -162,8 +173,8 @@ public class TokenController : ControllerBase
         {
             token,
             username = "writer",
-            roles = new[] { "WRITER" },
-            permissions = new[] { CacheReadPermission, CacheWritePermission },
+            roles = WriterRoles,
+            permissions = WriterPermissions,
             expiresAt = DateTime.UtcNow.AddHours(1),
         });
     }
@@ -176,6 +187,8 @@ public class TokenController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult ValidateToken([FromBody] Dictionary<string, string> request)
     {
+        ArgumentNullException.ThrowIfNull(request);
+        
         if (!request.TryGetValue("token", out var token))
         {
             return BadRequest("Token is required");

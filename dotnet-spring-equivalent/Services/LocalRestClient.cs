@@ -2,28 +2,28 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
+namespace SpringJavaEquivalent.Services;
+
 using System.Text;
 using System.Text.Json;
-
-namespace SpringJavaEquivalent.Services;
 
 /// <summary>
 /// Equivalent to Spring's LocalRestClient for making HTTP requests
 /// </summary>
 public class LocalRestClient : IDisposable
 {
-    private readonly HttpClient _httpClient;
-    private readonly string _server = "http://localhost:8080";
+    private readonly HttpClient httpClient;
+    private readonly string server = "http://localhost:8080";
 
     public LocalRestClient(string authorization = "")
     {
-        this._httpClient = new HttpClient();
-        this._httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
-        this._httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
+        this.httpClient = new HttpClient();
+        this.httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
+        this.httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
 
         // Equivalent to Spring's base64 encoded authorization header
         var jwsHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("Authorization: Bearer"));
-        this._httpClient.DefaultRequestHeaders.Add(jwsHeader, authorization);
+        this.httpClient.DefaultRequestHeaders.Add(jwsHeader, authorization);
     }
 
     /// <summary>
@@ -31,9 +31,11 @@ public class LocalRestClient : IDisposable
     /// </summary>
     public async Task<string> GetAsync(Uri uri)
     {
+        ArgumentNullException.ThrowIfNull(uri);
+        
         try
         {
-            var response = await this._httpClient.GetAsync(new Uri(this._server + uri.ToString())).ConfigureAwait(false);
+            var response = await this.httpClient.GetAsync(new Uri(this.server + uri.ToString())).ConfigureAwait(false);
             var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return content;
         }
@@ -48,10 +50,13 @@ public class LocalRestClient : IDisposable
     /// </summary>
     public async Task<string> PostAsync(Uri uri, string json)
     {
+        ArgumentNullException.ThrowIfNull(uri);
+        ArgumentNullException.ThrowIfNull(json);
+        
         try
         {
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await this._httpClient.PostAsync(new Uri(this._server + uri.ToString()), content).ConfigureAwait(false);
+            var response = await this.httpClient.PostAsync(new Uri(this.server + uri.ToString()), content).ConfigureAwait(false);
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return responseContent;
         }
@@ -66,10 +71,13 @@ public class LocalRestClient : IDisposable
     /// </summary>
     public async Task<string> PutAsync(Uri uri, string json)
     {
+        ArgumentNullException.ThrowIfNull(uri);
+        ArgumentNullException.ThrowIfNull(json);
+        
         try
         {
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await this._httpClient.PutAsync(new Uri(this._server + uri.ToString()), content).ConfigureAwait(false);
+            var response = await this.httpClient.PutAsync(new Uri(this.server + uri.ToString()), content).ConfigureAwait(false);
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return responseContent;
         }
@@ -84,9 +92,11 @@ public class LocalRestClient : IDisposable
     /// </summary>
     public async Task<string> DeleteAsync(Uri uri)
     {
+        ArgumentNullException.ThrowIfNull(uri);
+        
         try
         {
-            var response = await this._httpClient.DeleteAsync(new Uri(this._server + uri.ToString())).ConfigureAwait(false);
+            var response = await this.httpClient.DeleteAsync(new Uri(this.server + uri.ToString())).ConfigureAwait(false);
             var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return content;
         }
@@ -98,7 +108,15 @@ public class LocalRestClient : IDisposable
 
     public void Dispose()
     {
-        this._httpClient?.Dispose();
+        this.Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            this.httpClient?.Dispose();
+        }
     }
 }

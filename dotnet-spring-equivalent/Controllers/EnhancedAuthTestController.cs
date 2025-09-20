@@ -2,11 +2,11 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
+namespace SpringJavaEquivalent.Controllers;
+
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-
-namespace SpringJavaEquivalent.Controllers;
 
 /// <summary>
 /// Enhanced Authentication Test Controller demonstrating advanced authorization levels.
@@ -18,6 +18,14 @@ namespace SpringJavaEquivalent.Controllers;
 public class EnhancedAuthTestController : ControllerBase
 {
     private const string UnknownValue = "Unknown";
+
+    private static readonly string[] NonePermissions = { "NONE" };
+    private static readonly string[] BasicPermissions = { "BASIC_ACCESS" };
+    private static readonly string[] UserPermissions = { "USER_ACCESS", "READ_DATA" };
+    private static readonly string[] AdminPermissions = { "ADMIN_ACCESS", "WRITE_DATA", "DELETE_DATA" };
+    private static readonly string[] ManagementPermissions = { "MANAGEMENT_ACCESS", "APPROVE_REQUESTS" };
+    private static readonly string[] IdentityProviderPermissions = { "IDENTITY_PROVIDER_ACCESS" };
+    private static readonly string[] HighAuthPermissions = { "HIGH_AUTH_ACCESS" };
 
     public EnhancedAuthTestController()
     {
@@ -38,7 +46,7 @@ public class EnhancedAuthTestController : ControllerBase
             timestamp = DateTime.UtcNow,
             user = UnknownValue,
             roles = new[] { "NONE" },
-            permissions = new[] { "NONE" },
+            permissions = NonePermissions,
         });
     }
 
@@ -63,7 +71,7 @@ public class EnhancedAuthTestController : ControllerBase
             timestamp = DateTime.UtcNow,
             user,
             roles,
-            permissions = new[] { "BASIC_ACCESS" },
+            permissions = BasicPermissions,
         });
     }
 
@@ -88,7 +96,7 @@ public class EnhancedAuthTestController : ControllerBase
             timestamp = DateTime.UtcNow,
             user,
             roles,
-            permissions = new[] { "USER_ACCESS", "READ_DATA" },
+            permissions = UserPermissions,
         });
     }
 
@@ -113,7 +121,7 @@ public class EnhancedAuthTestController : ControllerBase
             timestamp = DateTime.UtcNow,
             user,
             roles,
-            permissions = new[] { "ADMIN_ACCESS", "WRITE_DATA", "DELETE_DATA" },
+            permissions = AdminPermissions,
         });
     }
 
@@ -196,7 +204,7 @@ public class EnhancedAuthTestController : ControllerBase
             timestamp = DateTime.UtcNow,
             user,
             roles,
-            permissions = new[] { "MANAGEMENT_ACCESS", "APPROVE_REQUESTS" },
+            permissions = ManagementPermissions,
         });
     }
 
@@ -253,7 +261,7 @@ public class EnhancedAuthTestController : ControllerBase
             user,
             roles,
             identityProvider,
-            permissions = new[] { "IDENTITY_PROVIDER_ACCESS" },
+            permissions = IdentityProviderPermissions,
         });
     }
 
@@ -281,7 +289,7 @@ public class EnhancedAuthTestController : ControllerBase
             user,
             roles,
             authLevel,
-            permissions = new[] { "HIGH_AUTH_ACCESS" },
+            permissions = HighAuthPermissions,
         });
     }
 

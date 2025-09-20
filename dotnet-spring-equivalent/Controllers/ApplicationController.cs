@@ -2,22 +2,22 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
+namespace SpringJavaEquivalent.Controllers;
+
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
-
-namespace SpringJavaEquivalent.Controllers;
 
 [ApiController]
 [Route("")]
 [Tags("Cache Services")]
 public class ApplicationController : ControllerBase
 {
-    private readonly ILogger<ApplicationController> _logger;
+    private readonly ILogger<ApplicationController> logger;
 
     public ApplicationController(ILogger<ApplicationController> logger)
     {
-        this._logger = logger;
+        this.logger = logger;
     }
 
     /// <summary>
@@ -28,12 +28,12 @@ public class ApplicationController : ControllerBase
     {
         // Equivalent to Spring's base64 encoding of "Authorization: Bearer"
         var jwsHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("Authorization: Bearer"));
-        this._logger.LogInformation("jws header base64 is: {JwsHeader}", jwsHeader);
+        this.logger.LogInformation("jws header base64 is: {JwsHeader}", jwsHeader);
 
         // Log all headers (equivalent to Spring's header iteration)
         foreach (var header in this.Request.Headers)
         {
-            this._logger.LogInformation("Header '{Key}' = {Value}", header.Key, header.Value);
+                this.logger.LogInformation("Header '{Key}' = {Value}", header.Key, header.Value);
         }
 
         return Ok("Hello Docker Yossi World");
@@ -49,7 +49,7 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(403)]
     public IActionResult GetObject([FromQuery] string id)
     {
-        this._logger.LogInformation("Get: {Id} Called", id);
+        this.logger.LogInformation("Get: {Id} Called", id);
         return Ok("get");
     }
 
@@ -63,7 +63,7 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(403)]
     public IActionResult PutObject([FromQuery] string id)
     {
-        this._logger.LogInformation("Put: {Id} Called", id);
+        this.logger.LogInformation("Put: {Id} Called", id);
         return Ok("put");
     }
 
@@ -77,7 +77,7 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(403)]
     public IActionResult DeleteObject([FromQuery] string id)
     {
-        this._logger.LogInformation("Delete: {Id} Called", id);
+        this.logger.LogInformation("Delete: {Id} Called", id);
         return Ok("delete");
     }
 }

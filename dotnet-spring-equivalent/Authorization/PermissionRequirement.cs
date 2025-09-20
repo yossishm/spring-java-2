@@ -2,9 +2,9 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
-using Microsoft.AspNetCore.Authorization;
-
 namespace SpringJavaEquivalent.Authorization;
+
+using Microsoft.AspNetCore.Authorization;
 
 /// <summary>
 /// Authorization requirement for permission-based access control

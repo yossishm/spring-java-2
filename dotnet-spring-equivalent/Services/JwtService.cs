@@ -2,13 +2,13 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
-using Microsoft.IdentityModel.Tokens;
+namespace SpringJavaEquivalent.Services;
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-
-namespace SpringJavaEquivalent.Services;
+using Microsoft.IdentityModel.Tokens;
 
 /// <summary>
 /// JWT service for token generation, validation, and claims extraction.
@@ -16,13 +16,13 @@ namespace SpringJavaEquivalent.Services;
 /// </summary>
 public class JwtService
 {
-    private readonly string _secretKey;
-    private readonly int _expirationHours;
+    private readonly string secretKey;
+    private readonly int expirationHours;
 
     public JwtService(IConfiguration configuration)
     {
-        this._secretKey = configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret must be configured");
-        this._expirationHours = int.Parse(configuration["Jwt:ExpirationHours"] ?? "24", System.Globalization.CultureInfo.InvariantCulture);
+        this.secretKey = configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret must be configured");
+        this.expirationHours = int.Parse(configuration["Jwt:ExpirationHours"] ?? "24", System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>
@@ -31,8 +31,12 @@ public class JwtService
     public string GenerateToken(string username, IReadOnlyList<string> roles, IReadOnlyList<string> permissions,
         string authLevel = "AAL1", string idp = "local")
     {
+        ArgumentNullException.ThrowIfNull(username);
+        ArgumentNullException.ThrowIfNull(roles);
+        ArgumentNullException.ThrowIfNull(permissions);
+        
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(this._secretKey);
+        var key = Encoding.ASCII.GetBytes(this.secretKey);
 
         var claims = new List<Claim>
         {
@@ -57,7 +61,7 @@ public class JwtService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(this._expirationHours),
+            Expires = DateTime.UtcNow.AddHours(this.expirationHours),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
         };
 
@@ -73,7 +77,7 @@ public class JwtService
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this._secretKey);
+            var key = Encoding.ASCII.GetBytes(this.secretKey);
 
             tokenHandler.ValidateToken(token, new TokenValidationParameters
             {

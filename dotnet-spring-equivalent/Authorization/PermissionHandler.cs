@@ -2,10 +2,10 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-
 namespace SpringJavaEquivalent.Authorization;
+
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 /// <summary>
 /// Authorization handler for permission-based access control

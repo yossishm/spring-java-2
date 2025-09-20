@@ -2,11 +2,11 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Metrics;
-using System.Diagnostics;
-
 namespace SpringJavaEquivalent.Controllers;
+
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -2,11 +2,11 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
-using Microsoft.AspNetCore.Mvc;
+namespace SpringJavaEquivalent.Controllers;
+
 using System.Text;
 using System.Text.Json;
-
-namespace SpringJavaEquivalent.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/jwt")]
@@ -90,6 +90,8 @@ public class VulnerableJwtController : ControllerBase
     [HttpGet("decode")]
     public IActionResult DecodeToken([FromQuery] string token)
     {
+        ArgumentNullException.ThrowIfNull(token);
+        
         try
         {
             // Vulnerable: Decoding without verification - same as Spring version
