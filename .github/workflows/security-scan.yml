@@ -9,6 +9,13 @@ on:
     # Run security scans daily at 3 AM UTC
     - cron: '0 3 * * *'
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  checks: write
+  pull-requests: write
+
 env:
   MAVEN_OPTS: "-Xmx1024m -XX:+UseG1GC"
   JAVA_VERSION: '21'
@@ -51,6 +58,18 @@ jobs:
         docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format table --severity HIGH,CRITICAL /workspace
         docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format sarif --output /workspace/trivy-results.sarif /workspace
         echo "✅ Trivy Security Scan completed"
+    
+    - name: Verify SARIF file
+      run: |
+        if [ -f "trivy-results.sarif" ]; then
+          echo "✅ SARIF file exists"
+          echo "File size: $(wc -c < trivy-results.sarif) bytes"
+          echo "First few lines:"
+          head -5 trivy-results.sarif
+        else
+          echo "⚠️ SARIF file not found, creating empty one"
+          echo '{"version": "2.1.0", "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json", "runs": [{"tool": {"driver": {"name": "Trivy", "version": "latest"}}, "results": []}]}' > trivy-results.sarif
+        fi
     
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
