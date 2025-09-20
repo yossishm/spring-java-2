@@ -78,7 +78,7 @@ jobs:
         subject: "🚨 Security Issues Found - ${{ github.repository }}"
         to: ${{ secrets.NOTIFICATION_EMAIL }}
         from: ${{ secrets.EMAIL_USERNAME }}
-        body: |
+        html_body: |
           <h2>🚨 Security Issues Found</h2>
           
           <p><strong>Repository:</strong> ${{ github.repository }}</p>
@@ -99,4 +99,3 @@ jobs:
           </ul>
           
           <p>Please review the security reports and address any vulnerabilities found.</p>
-        html: true
