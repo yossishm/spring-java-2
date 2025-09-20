@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
@@ -5,6 +6,7 @@ namespace SpringJavaEquivalent.Controllers;
 
 [ApiController]
 [Route("")]
+[Tags("Cache Services")]
 public class ApplicationController : ControllerBase
 {
     private readonly ILogger<ApplicationController> _logger;
@@ -37,6 +39,10 @@ public class ApplicationController : ControllerBase
     /// Cache service - get object endpoint
     /// </summary>
     [HttpGet("api/v1/cacheServices/getObject")]
+    [Authorize(Policy = "RequireCacheReadOrAdminPermission")]
+    [ProducesResponseType(typeof(string), 200)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult GetObject([FromQuery] string id)
     {
         _logger.LogInformation("Get: {Id} Called", id);
@@ -47,6 +53,10 @@ public class ApplicationController : ControllerBase
     /// Cache service - put object endpoint
     /// </summary>
     [HttpPut("api/v1/cacheServices/putObject")]
+    [Authorize(Policy = "RequireCacheWriteOrAdminPermission")]
+    [ProducesResponseType(typeof(string), 200)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult PutObject([FromQuery] string id)
     {
         _logger.LogInformation("Put: {Id} Called", id);
@@ -57,6 +67,10 @@ public class ApplicationController : ControllerBase
     /// Cache service - delete object endpoint
     /// </summary>
     [HttpDelete("api/v1/cacheServices/deleteObject")]
+    [Authorize(Policy = "RequireCacheDeleteOrAdminPermission")]
+    [ProducesResponseType(typeof(string), 200)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult DeleteObject([FromQuery] string id)
     {
         _logger.LogInformation("Delete: {Id} Called", id);
