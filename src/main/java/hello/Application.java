@@ -5,6 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import hello.security.RequirePermission;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.*;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +40,7 @@ import java.nio.file.*;
 
 @SpringBootApplication
 @RestController
+@Tag(name = "Cache Services", description = "Cache management operations with JWT authorization")
 public class Application {
 
   // OpenTelemetry bean removed - using Spring Boot native OTLP
@@ -42,7 +49,20 @@ public class Application {
    @RequestMapping("/api/v1/cacheServices/getObject")
    @PreAuthorize("hasAuthority('CACHE_READ') or hasAuthority('CACHE_ADMIN')")
    @RequirePermission(value = {"CACHE_READ", "CACHE_ADMIN"})
-   public String getObject( @RequestHeader Map<String, String> headers , @RequestParam(name = "id") String id) {  
+   @Operation(
+       summary = "Get cache object",
+       description = "Retrieves an object from cache. Requires CACHE_READ or CACHE_ADMIN permission.",
+       security = @SecurityRequirement(name = "bearer-jwt")
+   )
+   @ApiResponses(value = {
+       @ApiResponse(responseCode = "200", description = "Object retrieved successfully"),
+       @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token"),
+       @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions (requires CACHE_READ or CACHE_ADMIN)")
+   })
+   public String getObject(
+       @RequestHeader Map<String, String> headers,
+       @Parameter(description = "Cache object ID", required = true, example = "123")
+       @RequestParam(name = "id") String id) {  
     System.out.println ("Get: " + id + " Called");
     return "get";
    }
@@ -52,7 +72,20 @@ public class Application {
   @PutMapping("/api/v1/cacheServices/putObject")
   @PreAuthorize("hasAuthority('CACHE_WRITE') or hasAuthority('CACHE_ADMIN')")
   @RequirePermission(value = {"CACHE_WRITE", "CACHE_ADMIN"})
-  public String putObject( @RequestHeader Map<String, String> headers , @RequestParam(name = "id") String id) {
+  @Operation(
+      summary = "Put cache object",
+      description = "Stores an object in cache. Requires CACHE_WRITE or CACHE_ADMIN permission.",
+      security = @SecurityRequirement(name = "bearer-jwt")
+  )
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Object stored successfully"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token"),
+      @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions (requires CACHE_WRITE or CACHE_ADMIN)")
+  })
+  public String putObject(
+      @RequestHeader Map<String, String> headers,
+      @Parameter(description = "Cache object ID", required = true, example = "123")
+      @RequestParam(name = "id") String id) {
     System.out.println ("Put: " + id + " Called");
     return "put";
   }
@@ -61,7 +94,20 @@ public class Application {
   @DeleteMapping("/api/v1/cacheServices/deleteObject")
   @PreAuthorize("hasAuthority('CACHE_DELETE') or hasAuthority('CACHE_ADMIN')")
   @RequirePermission(value = {"CACHE_DELETE", "CACHE_ADMIN"})
-  public String deleteObject( @RequestHeader Map<String, String> headers , @RequestParam(name = "id") String id) {
+  @Operation(
+      summary = "Delete cache object",
+      description = "Removes an object from cache. Requires CACHE_DELETE or CACHE_ADMIN permission.",
+      security = @SecurityRequirement(name = "bearer-jwt")
+  )
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Object deleted successfully"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token"),
+      @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions (requires CACHE_DELETE or CACHE_ADMIN)")
+  })
+  public String deleteObject(
+      @RequestHeader Map<String, String> headers,
+      @Parameter(description = "Cache object ID", required = true, example = "123")
+      @RequestParam(name = "id") String id) {
     System.out.println ("Delete: " + id + " Called");
     return "delete";
   }

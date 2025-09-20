@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: Spring Boot Authorization API
+  description: |
+    Enhanced API with JWT authentication and auth_level claims for authorization.
+    
+    **Authentication Assurance Levels (AAL):**
+    - `AAL1` - Single-factor authentication (password only)
+    - `AAL2` - Multi-factor authentication (password + MFA)
+    - `AAL3` - Hardware-based authentication (FIDO2, smart cards)
+    
+    **Identity Providers (IDP):**
+    - `local` - Local authentication
+    - `azure-ad` - Microsoft Azure Active Directory
+    - `okta` - Okta Identity Provider
+    - `enterprise-ldap` - Enterprise LDAP
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /api/v1/cacheServices/getObject:
+    get:
+      summary: Get cache object
+      description: Retrieve an object from cache. Requires CACHE_READ permission.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Object retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "cached_data"
+        '401':
+          description: Unauthorized - No token provided or token is invalid
+        '403':
+          description: Forbidden - Token is valid, but insufficient permissions (missing CACHE_READ)
+
+  /api/v1/auth/token/{type}:
+    get:
+      summary: Generate JWT token
+      description: |
+        Generate JWT tokens with predefined roles and permissions for testing.
+        
+        **Available token types:**
+        - `admin` - Full admin access (AAL3, enterprise-ldap, ADMIN role, all permissions)
+        - `user` - Basic user access (AAL1, local, USER role, CACHE_READ permission)
+        - `cache-admin` - Cache administration (AAL2, azure-ad, USER role, all cache permissions)
+        - `cache-writer` - Cache read/write access (AAL2, okta, USER role, CACHE_READ + CACHE_WRITE)
+        - `cache-reader` - Cache read-only access (AAL1, local, USER role, CACHE_READ only)
+        - `aal1-user` - AAL1 authentication level (local IDP)
+        - `aal2-user` - AAL2 authentication level (azure-ad IDP)
+        - `aal3-user` - AAL3 authentication level (enterprise-ldap IDP)
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [admin, user, cache-admin, cache-writer, cache-reader, aal1-user, aal2-user, aal3-user]
+      responses:
+        '200':
+          description: Token generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token
+                  username:
+                    type: string
+                    example: "admin"
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                    example: ["ADMIN", "USER"]
+                  permissions:
+                    type: array
+                    items:
+                      type: string
+                    example: ["CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN"]
+                  auth_level:
+                    type: string
+                    enum: [AAL1, AAL2, AAL3]
+                    example: "AAL3"
+                  idp:
+                    type: string
+                    example: "enterprise-ldap"
+                  type:
+                    type: string
+                    example: "admin"
+                  expiresIn:
+                    type: string
+                    example: "24 hours"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token for API authentication with enhanced auth_level claims.
+        
+        **Custom Claims:**
+        - `auth_level`: (string) Authentication Assurance Level (AAL1/AAL2/AAL3)
+        - `idp`: (string) Identity Provider (local, azure-ad, okta, enterprise-ldap)
+        - `roles`: (array) User roles (ADMIN, USER)
+        - `permissions`: (array) User permissions (CACHE_READ, CACHE_WRITE, CACHE_DELETE, CACHE_ADMIN)
+        
+        **Example JWT Payload:**
+        ```json
+        {
+          "sub": "admin",
+          "roles": ["ADMIN", "USER"],
+          "permissions": ["CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN"],
+          "auth_level": "AAL3",
+          "idp": "enterprise-ldap",
+          "iat": 1695123456,
+          "exp": 1695209856
+        }
+        ```
+
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "admin"
+        username:
+          type: string
+          example: "admin"
+        authLevel:
+          type: string
+          enum: [AAL1, AAL2, AAL3]
+          example: "AAL3"
+        idp:
+          type: string
+          example: "enterprise-ldap"
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["ADMIN", "USER"]
+        permissions:
+          type: array
+          items:
+            type: string
+          example: ["CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN"]

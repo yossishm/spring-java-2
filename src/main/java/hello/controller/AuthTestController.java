@@ -4,6 +4,11 @@ import hello.security.RequirePermission;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,12 +19,20 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/v1/test")
+@Tag(name = "Authorization Test", description = "Test endpoints demonstrating different authorization levels")
 public class AuthTestController {
 
     /**
      * Public endpoint - no authentication required
      */
     @GetMapping("/public")
+    @Operation(
+        summary = "Public endpoint",
+        description = "Public endpoint that requires no authentication. Demonstrates Level 1 authorization."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Access granted - no authentication required")
+    })
     public ResponseEntity<Map<String, Object>> publicEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "This is a public endpoint");
@@ -31,6 +44,15 @@ public class AuthTestController {
      * Protected endpoint - requires authentication
      */
     @GetMapping("/protected")
+    @Operation(
+        summary = "Protected endpoint",
+        description = "Protected endpoint that requires valid JWT authentication. Demonstrates Level 2 authorization.",
+        security = @SecurityRequirement(name = "bearer-jwt")
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Access granted with valid JWT token"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token")
+    })
     public ResponseEntity<Map<String, Object>> protectedEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "This is a protected endpoint");
@@ -44,6 +66,16 @@ public class AuthTestController {
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     @RequirePermission(roles = {"ADMIN"})
+    @Operation(
+        summary = "Admin endpoint",
+        description = "Admin-only endpoint that requires ADMIN role. Demonstrates Level 3 authorization (Role-based).",
+        security = @SecurityRequirement(name = "bearer-jwt")
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Access granted with ADMIN role"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing JWT token"),
+        @ApiResponse(responseCode = "403", description = "Forbidden - ADMIN role required")
+    })
     public ResponseEntity<Map<String, Object>> adminEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "This is an admin-only endpoint");

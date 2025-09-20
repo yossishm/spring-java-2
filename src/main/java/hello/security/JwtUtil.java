@@ -84,6 +84,33 @@ public class JwtUtil {
     }
 
     /**
+     * Extract authentication level from JWT token
+     * AAL1: Single-factor authentication
+     * AAL2: Multi-factor authentication  
+     * AAL3: Hardware-based authentication
+     */
+    public String extractAuthLevel(String token) {
+        Claims claims = extractAllClaims(token);
+        Object authLevel = claims.get("auth_level");
+        if (authLevel instanceof String) {
+            return (String) authLevel;
+        }
+        return "AAL1"; // Default to lowest level
+    }
+
+    /**
+     * Extract identity provider from JWT token
+     */
+    public String extractIdentityProvider(String token) {
+        Claims claims = extractAllClaims(token);
+        Object idp = claims.get("idp");
+        if (idp instanceof String) {
+            return (String) idp;
+        }
+        return "local"; // Default to local provider
+    }
+
+    /**
      * Extract custom claims from JWT token
      */
     public Map<String, Object> extractCustomClaims(String token) {
@@ -175,17 +202,33 @@ public class JwtUtil {
      * Generate JWT token (for testing purposes)
      */
     public String generateToken(String username, List<String> roles, List<String> permissions) {
-        return createToken(username, roles, permissions);
+        return createToken(username, roles, permissions, "AAL1", "local");
+    }
+
+    /**
+     * Generate JWT token with authentication level and IDP
+     */
+    public String generateToken(String username, List<String> roles, List<String> permissions, String authLevel, String idp) {
+        return createToken(username, roles, permissions, authLevel, idp);
     }
 
     /**
      * Create JWT token with claims
      */
     private String createToken(String subject, List<String> roles, List<String> permissions) {
+        return createToken(subject, roles, permissions, "AAL1", "local");
+    }
+
+    /**
+     * Create JWT token with claims including auth_level and idp
+     */
+    private String createToken(String subject, List<String> roles, List<String> permissions, String authLevel, String idp) {
         return Jwts.builder()
                 .subject(subject)
                 .claim("roles", roles)
                 .claim("permissions", permissions)
+                .claim("auth_level", authLevel)
+                .claim("idp", idp)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())
