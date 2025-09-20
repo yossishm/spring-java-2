@@ -1,0 +1,139 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2025-09-19T14:34:17.004135718Z",
+  "ArtifactName": "spring-app-fixed:latest",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "Size": 284164096,
+    "OS": {
+      "Family": "alpine",
+      "Name": "3.22.1"
+    },
+    "ImageID": "sha256:42fc91481246657021692962f58391a4cb805ef06d3e66a43740032d52c848c1",
+    "DiffIDs": [
+      "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+      "sha256:fe180f694ec8849e8e2c2b0a53d6a6bf1b2d4cdffc43d7883d0b2df209a9718f",
+      "sha256:88e3a674383fcb031a4f3f7d379e91c61503bef0528a280301c29f09b6f99b42",
+      "sha256:19e77cd4516772ea8fd23ea0bfb1e2b2968f5274bc1994721c0440d220bacb34",
+      "sha256:bfd5da2bbb245a50b3625a61d3724b6bcfa0fb5254894de4bc9749356a57bc88"
+    ],
+    "RepoTags": [
+      "spring-app-fixed:latest"
+    ],
+    "ImageConfig": {
+      "architecture": "arm64",
+      "created": "2025-09-19T14:31:11.497514799Z",
+      "history": [
+        {
+          "created": "2025-07-15T11:01:16Z",
+          "created_by": "ADD alpine-minirootfs-3.22.1-aarch64.tar.gz / # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-07-15T11:01:16Z",
+          "created_by": "CMD [\"/bin/sh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-09-19T14:31:11Z",
+          "created_by": "RUN /bin/sh -c apk add --no-cache openjdk21-jre-headless \u0026\u0026     rm -rf /var/cache/apk/* /etc/apk \u0026\u0026     addgroup -g 65532 -S nonroot \u0026\u0026     adduser -u 65532 -S nonroot -G nonroot # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:31:11Z",
+          "created_by": "WORKDIR /app",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:31:11Z",
+          "created_by": "COPY /build/app.jar /app/app.jar # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:31:11Z",
+          "created_by": "RUN /bin/sh -c chown -R nonroot:nonroot /app # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:31:11Z",
+          "created_by": "USER nonroot:nonroot",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-09-19T14:31:11Z",
+          "created_by": "EXPOSE map[8080/tcp:{}]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-09-19T14:31:11Z",
+          "created_by": "ENTRYPOINT [\"java\" \"-jar\" \"/app/app.jar\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+          "sha256:fe180f694ec8849e8e2c2b0a53d6a6bf1b2d4cdffc43d7883d0b2df209a9718f",
+          "sha256:88e3a674383fcb031a4f3f7d379e91c61503bef0528a280301c29f09b6f99b42",
+          "sha256:19e77cd4516772ea8fd23ea0bfb1e2b2968f5274bc1994721c0440d220bacb34",
+          "sha256:bfd5da2bbb245a50b3625a61d3724b6bcfa0fb5254894de4bc9749356a57bc88"
+        ]
+      },
+      "config": {
+        "Entrypoint": [
+          "java",
+          "-jar",
+          "/app/app.jar"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "User": "nonroot:nonroot",
+        "WorkingDir": "/app",
+        "ExposedPorts": {
+          "8080/tcp": {}
+        }
+      }
+    },
+    "Layers": [
+      {
+        "Size": 8790016,
+        "DiffID": "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a"
+      },
+      {
+        "Size": 199014400,
+        "DiffID": "sha256:fe180f694ec8849e8e2c2b0a53d6a6bf1b2d4cdffc43d7883d0b2df209a9718f"
+      },
+      {
+        "Size": 1536,
+        "DiffID": "sha256:88e3a674383fcb031a4f3f7d379e91c61503bef0528a280301c29f09b6f99b42"
+      },
+      {
+        "Size": 38178816,
+        "DiffID": "sha256:19e77cd4516772ea8fd23ea0bfb1e2b2968f5274bc1994721c0440d220bacb34"
+      },
+      {
+        "Size": 38179328,
+        "DiffID": "sha256:bfd5da2bbb245a50b3625a61d3724b6bcfa0fb5254894de4bc9749356a57bc88"
+      }
+    ]
+  },
+  "Results": [
+    {
+      "Target": "spring-app-fixed:latest (alpine 3.22.1)",
+      "Class": "os-pkgs",
+      "Type": "alpine"
+    },
+    {
+      "Target": "Java",
+      "Class": "lang-pkgs",
+      "Type": "jar"
+    }
+  ]
+}

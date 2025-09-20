@@ -1,0 +1,195 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2025-09-19T14:38:09.430949298Z",
+  "ArtifactName": "spring-app:latest",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "Size": 272050176,
+    "OS": {
+      "Family": "alpine",
+      "Name": "3.22.1"
+    },
+    "ImageID": "sha256:86477315f34856253f018d4487aa2bd8ed54fc8026246eb3760706ad2b9b3ef0",
+    "DiffIDs": [
+      "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+      "sha256:8174100eb7c3e67958d944bd7df2573cdf600016e2e0f040eb2637bcb0106ecf",
+      "sha256:8c18f0f1ef51234706657ca514692120d4827e2cb93546590122c3eefab21457",
+      "sha256:d92dd6c5510dd64c0fc41858528a79cbd6266ea3c4c4220cf81fb0c49706e116",
+      "sha256:67a54edee0cca1b6e4ee7c81ed01ea64fb8ed8a0de6c9eb69ad58062f8c5af48"
+    ],
+    "RepoTags": [
+      "spring-app:latest"
+    ],
+    "ImageConfig": {
+      "architecture": "arm64",
+      "created": "2025-09-19T14:17:38.276442422Z",
+      "history": [
+        {
+          "created": "2025-07-15T11:01:16Z",
+          "created_by": "ADD alpine-minirootfs-3.22.1-aarch64.tar.gz / # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-07-15T11:01:16Z",
+          "created_by": "CMD [\"/bin/sh\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-09-19T14:17:38Z",
+          "created_by": "RUN /bin/sh -c apk add --no-cache openjdk21-jre-headless \u0026\u0026     rm -rf /var/cache/apk/* /etc/apk \u0026\u0026     addgroup -g 65532 -S nonroot \u0026\u0026     adduser -u 65532 -S nonroot -G nonroot # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:17:38Z",
+          "created_by": "WORKDIR /app",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:17:38Z",
+          "created_by": "COPY /build/app.jar /app/app.jar # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:17:38Z",
+          "created_by": "RUN /bin/sh -c chown -R nonroot:nonroot /app # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2025-09-19T14:17:38Z",
+          "created_by": "USER nonroot:nonroot",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-09-19T14:17:38Z",
+          "created_by": "EXPOSE map[8080/tcp:{}]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2025-09-19T14:17:38Z",
+          "created_by": "ENTRYPOINT [\"java\" \"-jar\" \"/app/app.jar\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a",
+          "sha256:8174100eb7c3e67958d944bd7df2573cdf600016e2e0f040eb2637bcb0106ecf",
+          "sha256:8c18f0f1ef51234706657ca514692120d4827e2cb93546590122c3eefab21457",
+          "sha256:d92dd6c5510dd64c0fc41858528a79cbd6266ea3c4c4220cf81fb0c49706e116",
+          "sha256:67a54edee0cca1b6e4ee7c81ed01ea64fb8ed8a0de6c9eb69ad58062f8c5af48"
+        ]
+      },
+      "config": {
+        "Entrypoint": [
+          "java",
+          "-jar",
+          "/app/app.jar"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "User": "nonroot:nonroot",
+        "WorkingDir": "/app",
+        "ExposedPorts": {
+          "8080/tcp": {}
+        }
+      }
+    },
+    "Layers": [
+      {
+        "Size": 8790016,
+        "DiffID": "sha256:0b83d017db6efafadf6b3f18d087d2ce1d67d8f0e927dc7254b0ad088074cd3a"
+      },
+      {
+        "Size": 199014400,
+        "DiffID": "sha256:8174100eb7c3e67958d944bd7df2573cdf600016e2e0f040eb2637bcb0106ecf"
+      },
+      {
+        "Size": 1536,
+        "DiffID": "sha256:8c18f0f1ef51234706657ca514692120d4827e2cb93546590122c3eefab21457"
+      },
+      {
+        "Size": 32121856,
+        "DiffID": "sha256:d92dd6c5510dd64c0fc41858528a79cbd6266ea3c4c4220cf81fb0c49706e116"
+      },
+      {
+        "Size": 32122368,
+        "DiffID": "sha256:67a54edee0cca1b6e4ee7c81ed01ea64fb8ed8a0de6c9eb69ad58062f8c5af48"
+      }
+    ]
+  },
+  "Results": [
+    {
+      "Target": "spring-app:latest (alpine 3.22.1)",
+      "Class": "os-pkgs",
+      "Type": "alpine"
+    },
+    {
+      "Target": "Java",
+      "Class": "lang-pkgs",
+      "Type": "jar",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2025-41249",
+          "PkgName": "org.springframework:spring-core",
+          "PkgPath": "app/app.jar/BOOT-INF/lib/spring-core-6.2.10.jar",
+          "PkgIdentifier": {
+            "PURL": "pkg:maven/org.springframework/spring-core@6.2.10",
+            "UID": "ac6692177f50f2f3"
+          },
+          "InstalledVersion": "6.2.10",
+          "FixedVersion": "6.2.11",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:d92dd6c5510dd64c0fc41858528a79cbd6266ea3c4c4220cf81fb0c49706e116"
+          },
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-41249",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Maven",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"
+          },
+          "Title": "org.springframework/spring-core: Spring Framework Annotation Detection Vulnerability",
+          "Description": "The Spring Framework annotation detection mechanism may not correctly resolve annotations on methods within type hierarchies with a parameterized super type with unbounded generics. This can be an issue if such annotations are used for authorization decisions.\n\nYour application may be affected by this if you are using Spring Security's @EnableMethodSecurity feature.\n\nYou are not affected by this if you are not using @EnableMethodSecurity or if you do not use security annotations on methods in generic superclasses or generic interfaces.\n\nThis CVE is published in conjunction with  CVE-2025-41248 https://spring.io/security/cve-2025-41248 .",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-285"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2025-41249",
+            "https://github.com/spring-projects/spring-framework",
+            "https://github.com/spring-projects/spring-framework/commit/6d710d482a6785b069e35022e81758953afc21ff",
+            "https://github.com/spring-projects/spring-framework/issues/35342",
+            "https://github.com/spring-projects/spring-framework/releases/tag/v6.2.11",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-41249",
+            "https://spring.io/security/cve-2025-41249",
+            "https://www.cve.org/CVERecord?id=CVE-2025-41249"
+          ],
+          "PublishedDate": "2025-09-16T11:15:30.887Z",
+          "LastModifiedDate": "2025-09-16T20:15:35.127Z"
+        }
+      ]
+    }
+  ]
+}
