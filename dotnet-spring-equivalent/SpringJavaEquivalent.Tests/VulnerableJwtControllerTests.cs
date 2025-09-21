@@ -84,4 +84,178 @@ public class VulnerableJwtControllerTests
         var okResult = result as OkObjectResult;
         Assert.NotNull(okResult!.Value);
     }
+
+    [Fact]
+    public void CreateToken_WithEmptyPayload_ShouldReturnOkResult()
+    {
+        // Arrange
+        var payload = new Dictionary<string, object>();
+
+        // Act
+        var result = _controller.CreateToken(payload);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+        Assert.IsType<string>(okResult.Value);
+    }
+
+    [Fact]
+    public void CreateToken_WithNullPayload_ShouldReturnOkResult()
+    {
+        // Arrange
+        Dictionary<string, object> payload = null!;
+
+        // Act
+        var result = _controller.CreateToken(payload);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+        Assert.IsType<string>(okResult.Value);
+    }
+
+    [Fact]
+    public void CreateToken_WithComplexPayload_ShouldReturnOkResult()
+    {
+        // Arrange
+        var payload = new Dictionary<string, object>
+        {
+            { "username", "testuser" },
+            { "role", "admin" },
+            { "permissions", new[] { "read", "write", "delete" } },
+            { "metadata", new Dictionary<string, object> { { "department", "IT" } } }
+        };
+
+        // Act
+        var result = _controller.CreateToken(payload);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+        Assert.IsType<string>(okResult.Value);
+    }
+
+    [Fact]
+    public void VerifyToken_WithInvalidToken_ShouldReturnOkResult()
+    {
+        // Arrange
+        var request = new Dictionary<string, string> { { "token", "invalid.token.signature" } };
+
+        // Act
+        var result = _controller.VerifyToken(request);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+    }
+
+    [Fact]
+    public void VerifyToken_WithEmptyToken_ShouldReturnOkResult()
+    {
+        // Arrange
+        var request = new Dictionary<string, string> { { "token", "" } };
+
+        // Act
+        var result = _controller.VerifyToken(request);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+    }
+
+    [Fact]
+    public void VerifyToken_WithNullRequest_ShouldReturnBadRequest()
+    {
+        // Arrange
+        Dictionary<string, string> request = null!;
+
+        // Act
+        var result = _controller.VerifyToken(request);
+
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
+        var badRequestResult = result as BadRequestObjectResult;
+        Assert.Equal("Request is required", badRequestResult!.Value);
+    }
+
+    [Fact]
+    public void DecodeToken_WithInvalidToken_ShouldReturnOkResult()
+    {
+        // Arrange
+        var invalidToken = "invalid.token.signature";
+
+        // Act
+        var result = _controller.DecodeToken(invalidToken);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+    }
+
+    [Fact]
+    public void DecodeToken_WithEmptyToken_ShouldReturnOkResult()
+    {
+        // Arrange
+        var emptyToken = "";
+
+        // Act
+        var result = _controller.DecodeToken(emptyToken);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+    }
+
+    [Fact]
+    public void VerifyAnyAlgorithm_WithInvalidToken_ShouldReturnOkResult()
+    {
+        // Arrange
+        var request = new Dictionary<string, string> { { "token", "invalid.token.signature" } };
+
+        // Act
+        var result = _controller.VerifyAnyAlgorithm(request);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+    }
+
+    [Fact]
+    public void VerifyAnyAlgorithm_WithEmptyToken_ShouldReturnOkResult()
+    {
+        // Arrange
+        var request = new Dictionary<string, string> { { "token", "" } };
+
+        // Act
+        var result = _controller.VerifyAnyAlgorithm(request);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.NotNull(okResult!.Value);
+    }
+
+    [Fact]
+    public void VerifyAnyAlgorithm_WithNullRequest_ShouldReturnBadRequest()
+    {
+        // Arrange
+        Dictionary<string, string> request = null!;
+
+        // Act
+        var result = _controller.VerifyAnyAlgorithm(request);
+
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
+        var badRequestResult = result as BadRequestObjectResult;
+        Assert.Equal("Request is required", badRequestResult!.Value);
+    }
 }

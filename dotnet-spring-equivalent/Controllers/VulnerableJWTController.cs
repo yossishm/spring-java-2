@@ -56,8 +56,13 @@ public class VulnerableJwtController : ControllerBase
     /// Verify a JWT token - equivalent to Spring's verify endpoint
     /// </summary>
     [HttpPost("verify")]
-    public IActionResult VerifyToken([FromBody] Dictionary<string, string> request)
+    public IActionResult VerifyToken([FromBody] Dictionary<string, string>? request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request is required");
+        }
+
         try
         {
             var token = request.GetValueOrDefault(TokenKey, string.Empty);
@@ -122,8 +127,13 @@ public class VulnerableJwtController : ControllerBase
     /// Verify token with any algorithm - equivalent to Spring's verify-any-algorithm endpoint
     /// </summary>
     [HttpPost("verify-any-algorithm")]
-    public IActionResult VerifyAnyAlgorithm([FromBody] Dictionary<string, string> request)
+    public IActionResult VerifyAnyAlgorithm([FromBody] Dictionary<string, string>? request)
     {
+        if (request == null)
+        {
+            return BadRequest("Request is required");
+        }
+
         try
         {
             var token = request.GetValueOrDefault(TokenKey, string.Empty);

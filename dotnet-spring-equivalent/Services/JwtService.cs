@@ -34,11 +34,11 @@ public class JwtService
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
-            return jsonToken.Claims.FirstOrDefault(x => x.Type == "username")?.Value ?? string.Empty;
+            return jsonToken.Claims.FirstOrDefault(x => x.Type == "username")?.Value;
         }
         catch
         {
-            return string.Empty;
+            return null;
         }
     }
 
@@ -52,7 +52,7 @@ public class JwtService
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
             return jsonToken.Claims
-                .Where(x => x.Type == ClaimTypes.Role)
+                .Where(x => x.Type == "role")
                 .Select(x => x.Value)
                 .ToList();
         }

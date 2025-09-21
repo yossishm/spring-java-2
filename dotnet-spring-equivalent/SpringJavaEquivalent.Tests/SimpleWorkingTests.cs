@@ -35,16 +35,17 @@ public class SimpleWorkingTests
     }
 
     [Fact]
-    public void MetricsController_TestMetrics_ShouldReturnString()
+    public async Task MetricsController_TestMetrics_ShouldReturnString()
     {
         // Arrange
         var controller = new MetricsController();
 
         // Act
-        var result = controller.TestMetrics();
+        var result = await controller.TestMetrics();
 
         // Assert
-        Assert.IsType<Task<string>>(result);
+        Assert.IsType<string>(result);
+        Assert.Equal("Metrics test completed", result);
     }
 
     [Fact]

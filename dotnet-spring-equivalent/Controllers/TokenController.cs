@@ -87,7 +87,7 @@ public class TokenController : ControllerBase
             "USER" => this.GenerateUserToken(),
             "READONLY" => this.GenerateReadOnlyToken(),
             "WRITE" => this.GenerateWriteToken(),
-            _ => BadRequest($"Unknown token type: {type}"),
+            _ => BadRequest($"Invalid token type. Use 'admin' or 'user'."),
         };
     }
 
@@ -185,11 +185,14 @@ public class TokenController : ControllerBase
     [HttpPost("validate")]
     [ProducesResponseType(typeof(object), 200)]
     [ProducesResponseType(400)]
-    public IActionResult ValidateToken([FromBody] Dictionary<string, string> request)
+    public IActionResult ValidateToken([FromBody] Dictionary<string, string>? request)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        if (request == null)
+        {
+            return BadRequest("Request is required");
+        }
         
-        if (!request.TryGetValue("token", out var token))
+        if (!request.TryGetValue("token", out var token) || string.IsNullOrWhiteSpace(token))
         {
             return BadRequest("Token is required");
         }

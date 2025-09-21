@@ -16,6 +16,10 @@ public class PermissionRequirement : IAuthorizationRequirement
     public PermissionRequirement(string permission)
     {
         this.Permission = permission ?? throw new ArgumentNullException(nameof(permission));
+        if (string.IsNullOrWhiteSpace(permission))
+        {
+            throw new ArgumentException("Permission cannot be empty or whitespace", nameof(permission));
+        }
     }
 }
 

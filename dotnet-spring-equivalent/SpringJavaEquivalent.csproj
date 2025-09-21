@@ -51,4 +51,18 @@
     <None Remove="SpringJavaEquivalent.Tests/**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="JwtDebug/**" />
+    <Content Remove="JwtDebug/**" />
+    <EmbeddedResource Remove="JwtDebug/**" />
+    <None Remove="JwtDebug/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="debug-jwt.cs" />
+    <Content Remove="debug-jwt.cs" />
+    <EmbeddedResource Remove="debug-jwt.cs" />
+    <None Remove="debug-jwt.cs" />
+  </ItemGroup>
+
 </Project>

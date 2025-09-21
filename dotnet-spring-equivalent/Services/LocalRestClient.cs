@@ -15,16 +15,15 @@ public class LocalRestClient : IDisposable
     private readonly HttpClient httpClient;
     private readonly string server = "http://localhost:8080";
 
-    public LocalRestClient(string authorization = "")
-    {
-        this.httpClient = new HttpClient();
-        this.httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
-        this.httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
+        public LocalRestClient(string authorization = "")
+        {
+            this.httpClient = new HttpClient();
+            this.httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
 
-        // Equivalent to Spring's base64 encoded authorization header
-        var jwsHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("Authorization: Bearer"));
-        this.httpClient.DefaultRequestHeaders.Add(jwsHeader, authorization);
-    }
+            // Equivalent to Spring's base64 encoded authorization header
+            var jwsHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("Authorization: Bearer"));
+            this.httpClient.DefaultRequestHeaders.Add(jwsHeader, authorization);
+        }
 
     /// <summary>
     /// Make a GET request - equivalent to Spring's get method

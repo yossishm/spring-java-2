@@ -10,12 +10,17 @@ using Microsoft.AspNetCore.Authorization;
 /// <summary>
 /// Authorization handler for permission-based access control
 /// </summary>
-internal class PermissionHandler : AuthorizationHandler<PermissionRequirement>
+public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(requirement);
+
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Task.CompletedTask;
+        }
 
         var hasPermission = context.User.HasClaim("permission", requirement.Permission);
 

@@ -28,12 +28,15 @@ public class ApplicationController : ControllerBase
     {
         // Equivalent to Spring's base64 encoding of "Authorization: Bearer"
         var jwsHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes("Authorization: Bearer"));
-        this.logger.LogInformation("jws header base64 is: {JwsHeader}", jwsHeader);
+        this.logger?.LogInformation("jws header base64 is: {JwsHeader}", jwsHeader);
 
         // Log all headers (equivalent to Spring's header iteration)
-        foreach (var header in this.Request.Headers)
+        if (this.Request?.Headers != null)
         {
-                this.logger.LogInformation("Header '{Key}' = {Value}", header.Key, header.Value);
+            foreach (var header in this.Request.Headers)
+            {
+                this.logger?.LogInformation("Header '{Key}' = {Value}", header.Key, header.Value);
+            }
         }
 
         return Ok("Hello Docker Yossi World");
