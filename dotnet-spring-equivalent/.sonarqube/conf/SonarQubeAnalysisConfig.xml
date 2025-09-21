@@ -152,8 +152,8 @@
   <LocalSettings>
     <Property Name="sonar.host.url">http://localhost:9000</Property>
     <Property Name="sonar.cs.vstest.reportsPaths">TestResults/*.trx</Property>
-    <Property Name="sonar.cs.opencover.reportsPaths">TestResults/*/coverage.cobertura.xml</Property>
-    <Property Name="sonar.exclusions">TestResults/*/coverage.cobertura.xml</Property>
+    <Property Name="sonar.cs.opencover.reportsPaths">coverage.opencover.xml</Property>
+    <Property Name="sonar.exclusions">coverage.opencover.xml</Property>
   </LocalSettings>
   <ScannerOptsSettings />
   <AnalyzersSettings>

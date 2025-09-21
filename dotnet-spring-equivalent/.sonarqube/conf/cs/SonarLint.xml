@@ -7,7 +7,7 @@
     </Setting>
     <Setting>
       <Key>sonar.cs.opencover.reportsPaths</Key>
-      <Value>TestResults/*/coverage.cobertura.xml</Value>
+      <Value>coverage.opencover.xml</Value>
     </Setting>
     <Setting>
       <Key>sonar.cs.ignoreHeaderComments</Key>
