@@ -3565,272 +3565,341 @@ Dictionary
 ШШ 	
 }
 ЩЩ 
-}ЪЪ ≠&
-a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs
+}ЪЪ с-
+_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.cs
 	namespace 	 
 SpringJavaEquivalent
  
-. 
-Authorization ,
-;, -
-public 
-class !
-PermissionRequirement "
-:# $%
-IAuthorizationRequirement% >
-{ 
-public 
-
-string 
-
-Permission 
-{ 
-get "
-;" #
-}$ %
-public 
+. 
+Controllers *
+;* +
+[ 
+ApiController 
+] 
+[ 
+Route 
+( 
+$str 	
+)	 
+
+]
+ 
+[ 
+Tags 
+( 
+$str 
+) 
+] 
+public 
+class !
+ApplicationController "
+:# $
+ControllerBase% 3
+{ 
+private 
+readonly 
+ILogger 
+< !
+ApplicationController 2
+>2 3
+logger4 :
+;: ;
+public 
 !
-PermissionRequirement  
-(  !
-string! '
-
-permission( 2
-)2 3
-{ 
-this 
-. 
-
-Permission 
-= 
-
-permission $
-??% '
-throw( -
-new. 1!
-ArgumentNullException2 G
-(G H
-nameofH N
-(N O
-
-permissionO Y
-)Y Z
-)Z [
-;[ \
-} 
-} 
-public 
-class $
-AnyPermissionRequirement %
-:& '%
-IAuthorizationRequirement( A
-{ 
+ApplicationController  
+(  !
+ILogger! (
+<( )!
+ApplicationController) >
+>> ?
+logger@ F
+)F G
+{ 
+this 
+. 
+logger 
+= 
+logger 
+; 
+} 
+[ 
+HttpGet 
+] 
 public 
-
-string 
-[ 
-] 
-Permissions 
-{  !
-get" %
-;% &
-}' (
-public 
-$
-AnyPermissionRequirement #
-(# $
-params$ *
-string+ 1
-[1 2
-]2 3
-permissions4 ?
-)? @
-{ 
+
+IActionResult 
+Home 
+( 
+) 
+{ 
+var 
+	jwsHeader 
+= 
+Convert 
+.  
+ToBase64String  .
+(. /
+Encoding/ 7
+.7 8
+UTF88 <
+.< =
+GetBytes= E
+(E F
+$strF ]
+)] ^
+)^ _
+;_ `
 this 
-. 
-Permissions 
-= 
-permissions &
-??' )
-throw* /
-new0 3!
-ArgumentNullException4 I
-(I J
-nameofJ P
-(P Q
-permissionsQ \
-)\ ]
-)] ^
-;^ _
-}   
-}!! 
-public&& 
-class&& %
-AllPermissionsRequirement&& &
-:&&' (%
-IAuthorizationRequirement&&) B
-{'' 
-public(( 
-
-string(( 
-[(( 
-](( 
-Permissions(( 
-{((  !
-get((" %
-;((% &
-}((' (
-public** 
-%
-AllPermissionsRequirement** $
-(**$ %
-params**% +
-string**, 2
-[**2 3
-]**3 4
-permissions**5 @
-)**@ A
-{++ 
-this,, 
-.,, 
-Permissions,, 
-=,, 
-permissions,, &
-??,,' )
-throw,,* /
-new,,0 3!
-ArgumentNullException,,4 I
-(,,I J
-nameof,,J P
-(,,P Q
-permissions,,Q \
-),,\ ]
-),,] ^
-;,,^ _
-}-- 
-}.. 
-public33 
-class33  
-AuthLevelRequirement33 !
-:33" #%
-IAuthorizationRequirement33$ =
-{44 
-public55 
-
-string55 
-RequiredAuthLevel55 #
-{55$ %
-get55& )
-;55) *
-}55+ ,
-public77 
- 
-AuthLevelRequirement77 
-(77  
-string77  &
-requiredAuthLevel77' 8
-)778 9
-{88 
-this99 
-.99 
-RequiredAuthLevel99 
-=99  
-requiredAuthLevel99! 2
-??993 5
-throw996 ;
-new99< ?!
-ArgumentNullException99@ U
-(99U V
-nameof99V \
-(99\ ]
-requiredAuthLevel99] n
-)99n o
-)99o p
-;99p q
-}:: 
-};; 
-public@@ 
-class@@ '
-IdentityProviderRequirement@@ (
-:@@) *%
-IAuthorizationRequirement@@+ D
-{AA 
-publicBB 
-
-stringBB $
-RequiredIdentityProviderBB *
-{BB+ ,
-getBB- 0
-;BB0 1
-}BB2 3
-publicDD 
-'
-IdentityProviderRequirementDD &
-(DD& '
-stringDD' -$
-requiredIdentityProviderDD. F
-)DDF G
-{EE 
-thisFF 
-.FF $
-RequiredIdentityProviderFF %
-=FF& '$
-requiredIdentityProviderFF( @
-??FFA C
-throwFFD I
-newFFJ M!
-ArgumentNullExceptionFFN c
-(FFc d
-nameofFFd j
-(FFj k%
-requiredIdentityProvider	FFk Г
-)
-FFГ Д
-)
-FFД Е
-;
-FFЕ Ж
-}GG 
-}HH 
-publicMM 
-classMM 
-RoleRequirementMM 
-:MM %
-IAuthorizationRequirementMM 8
-{NN 
-publicOO 
-
-stringOO 
-RoleOO 
-{OO 
-getOO 
-;OO 
-}OO 
-publicQQ 
-
-RoleRequirementQQ 
-(QQ 
-stringQQ !
-roleQQ" &
-)QQ& '
-{RR 
-thisSS 
-.SS 
-RoleSS 
-=SS 
-roleSS 
-??SS 
-throwSS !
-newSS" %!
-ArgumentNullExceptionSS& ;
-(SS; <
-nameofSS< B
-(SSB C
-roleSSC G
-)SSG H
-)SSH I
-;SSI J
-}TT 
-}UU а'
+. 
+logger 
+. 
+LogInformation "
+(" #
+$str# F
+,F G
+	jwsHeaderH Q
+)Q R
+;R S
+foreach"" 
+("" 
+var"" 
+header"" 
+in"" 
+this"" #
+.""# $
+Request""$ +
+.""+ ,
+Headers"", 3
+)""3 4
+{## 	
+this$$ 
+.$$ 
+logger$$ 
+.$$ 
+LogInformation$$ *
+($$* +
+$str$$+ E
+,$$E F
+header$$G M
+.$$M N
+Key$$N Q
+,$$Q R
+header$$S Y
+.$$Y Z
+Value$$Z _
+)$$_ `
+;$$` a
+}%% 	
+return'' 
+Ok'' 
+('' 
+$str'' ,
+)'', -
+;''- .
+}(( 
+[-- 
+HttpGet-- 
+(-- 
+$str-- -
+)--- .
+]--. /
+[.. 
+	Authorize.. 
+(.. 
+Policy.. 
+=.. 
+$str.. ;
+)..; <
+]..< =
+[//  
+ProducesResponseType// 
+(// 
+typeof//  
+(//  !
+string//! '
+)//' (
+,//( )
+$num//* -
+)//- .
+]//. /
+[00  
+ProducesResponseType00 
+(00 
+$num00 
+)00 
+]00 
+[11  
+ProducesResponseType11 
+(11 
+$num11 
+)11 
+]11 
+public22 
+
+IActionResult22 
+	GetObject22 "
+(22" #
+[22# $
+	FromQuery22$ -
+]22- .
+string22/ 5
+id226 8
+)228 9
+{33 
+this44 
+.44 
+logger44 
+.44 
+LogInformation44 "
+(44" #
+$str44# 5
+,445 6
+id447 9
+)449 :
+;44: ;
+return55 
+Ok55 
+(55 
+$str55 
+)55 
+;55 
+}66 
+[;; 
+HttpPut;; 
+(;; 
+$str;; -
+);;- .
+];;. /
+[<< 
+	Authorize<< 
+(<< 
+Policy<< 
+=<< 
+$str<< <
+)<<< =
+]<<= >
+[==  
+ProducesResponseType== 
+(== 
+typeof==  
+(==  !
+string==! '
+)==' (
+,==( )
+$num==* -
+)==- .
+]==. /
+[>>  
+ProducesResponseType>> 
+(>> 
+$num>> 
+)>> 
+]>> 
+[??  
+ProducesResponseType?? 
+(?? 
+$num?? 
+)?? 
+]?? 
+public@@ 
+
+IActionResult@@ 
+	PutObject@@ "
+(@@" #
+[@@# $
+	FromQuery@@$ -
+]@@- .
+string@@/ 5
+id@@6 8
+)@@8 9
+{AA 
+thisBB 
+.BB 
+loggerBB 
+.BB 
+LogInformationBB "
+(BB" #
+$strBB# 5
+,BB5 6
+idBB7 9
+)BB9 :
+;BB: ;
+returnCC 
+OkCC 
+(CC 
+$strCC 
+)CC 
+;CC 
+}DD 
+[II 
+
+HttpDeleteII 
+(II 
+$strII 3
+)II3 4
+]II4 5
+[JJ 
+	AuthorizeJJ 
+(JJ 
+PolicyJJ 
+=JJ 
+$strJJ =
+)JJ= >
+]JJ> ?
+[KK  
+ProducesResponseTypeKK 
+(KK 
+typeofKK  
+(KK  !
+stringKK! '
+)KK' (
+,KK( )
+$numKK* -
+)KK- .
+]KK. /
+[LL  
+ProducesResponseTypeLL 
+(LL 
+$numLL 
+)LL 
+]LL 
+[MM  
+ProducesResponseTypeMM 
+(MM 
+$numMM 
+)MM 
+]MM 
+publicNN 
+
+IActionResultNN 
+DeleteObjectNN %
+(NN% &
+[NN& '
+	FromQueryNN' 0
+]NN0 1
+stringNN2 8
+idNN9 ;
+)NN; <
+{OO 
+thisPP 
+.PP 
+loggerPP 
+.PP 
+LogInformationPP "
+(PP" #
+$strPP# 8
+,PP8 9
+idPP: <
+)PP< =
+;PP= >
+returnQQ 
+OkQQ 
+(QQ 
+$strQQ 
+)QQ 
+;QQ 
+}RR 
+}SS а'
 [/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/MetricsController.cs
 	namespace 	 
 SpringJavaEquivalent
@@ -4122,7 +4191,272 @@ permissionO Y
 ;AAD E
 }BB 	
 }CC 
-}DD ‘С
+}DD ≠&
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs
+	namespace 	 
+SpringJavaEquivalent
+ 
+. 
+Authorization ,
+;, -
+public 
+class !
+PermissionRequirement "
+:# $%
+IAuthorizationRequirement% >
+{ 
+public 
+
+string 
+
+Permission 
+{ 
+get "
+;" #
+}$ %
+public 
+!
+PermissionRequirement  
+(  !
+string! '
+
+permission( 2
+)2 3
+{ 
+this 
+. 
+
+Permission 
+= 
+
+permission $
+??% '
+throw( -
+new. 1!
+ArgumentNullException2 G
+(G H
+nameofH N
+(N O
+
+permissionO Y
+)Y Z
+)Z [
+;[ \
+} 
+} 
+public 
+class $
+AnyPermissionRequirement %
+:& '%
+IAuthorizationRequirement( A
+{ 
+public 
+
+string 
+[ 
+] 
+Permissions 
+{  !
+get" %
+;% &
+}' (
+public 
+$
+AnyPermissionRequirement #
+(# $
+params$ *
+string+ 1
+[1 2
+]2 3
+permissions4 ?
+)? @
+{ 
+this 
+. 
+Permissions 
+= 
+permissions &
+??' )
+throw* /
+new0 3!
+ArgumentNullException4 I
+(I J
+nameofJ P
+(P Q
+permissionsQ \
+)\ ]
+)] ^
+;^ _
+}   
+}!! 
+public&& 
+class&& %
+AllPermissionsRequirement&& &
+:&&' (%
+IAuthorizationRequirement&&) B
+{'' 
+public(( 
+
+string(( 
+[(( 
+](( 
+Permissions(( 
+{((  !
+get((" %
+;((% &
+}((' (
+public** 
+%
+AllPermissionsRequirement** $
+(**$ %
+params**% +
+string**, 2
+[**2 3
+]**3 4
+permissions**5 @
+)**@ A
+{++ 
+this,, 
+.,, 
+Permissions,, 
+=,, 
+permissions,, &
+??,,' )
+throw,,* /
+new,,0 3!
+ArgumentNullException,,4 I
+(,,I J
+nameof,,J P
+(,,P Q
+permissions,,Q \
+),,\ ]
+),,] ^
+;,,^ _
+}-- 
+}.. 
+public33 
+class33  
+AuthLevelRequirement33 !
+:33" #%
+IAuthorizationRequirement33$ =
+{44 
+public55 
+
+string55 
+RequiredAuthLevel55 #
+{55$ %
+get55& )
+;55) *
+}55+ ,
+public77 
+ 
+AuthLevelRequirement77 
+(77  
+string77  &
+requiredAuthLevel77' 8
+)778 9
+{88 
+this99 
+.99 
+RequiredAuthLevel99 
+=99  
+requiredAuthLevel99! 2
+??993 5
+throw996 ;
+new99< ?!
+ArgumentNullException99@ U
+(99U V
+nameof99V \
+(99\ ]
+requiredAuthLevel99] n
+)99n o
+)99o p
+;99p q
+}:: 
+};; 
+public@@ 
+class@@ '
+IdentityProviderRequirement@@ (
+:@@) *%
+IAuthorizationRequirement@@+ D
+{AA 
+publicBB 
+
+stringBB $
+RequiredIdentityProviderBB *
+{BB+ ,
+getBB- 0
+;BB0 1
+}BB2 3
+publicDD 
+'
+IdentityProviderRequirementDD &
+(DD& '
+stringDD' -$
+requiredIdentityProviderDD. F
+)DDF G
+{EE 
+thisFF 
+.FF $
+RequiredIdentityProviderFF %
+=FF& '$
+requiredIdentityProviderFF( @
+??FFA C
+throwFFD I
+newFFJ M!
+ArgumentNullExceptionFFN c
+(FFc d
+nameofFFd j
+(FFj k%
+requiredIdentityProvider	FFk Г
+)
+FFГ Д
+)
+FFД Е
+;
+FFЕ Ж
+}GG 
+}HH 
+publicMM 
+classMM 
+RoleRequirementMM 
+:MM %
+IAuthorizationRequirementMM 8
+{NN 
+publicOO 
+
+stringOO 
+RoleOO 
+{OO 
+getOO 
+;OO 
+}OO 
+publicQQ 
+
+RoleRequirementQQ 
+(QQ 
+stringQQ !
+roleQQ" &
+)QQ& '
+{RR 
+thisSS 
+.SS 
+RoleSS 
+=SS 
+roleSS 
+??SS 
+throwSS !
+newSS" %!
+ArgumentNullExceptionSS& ;
+(SS; <
+nameofSS< B
+(SSB C
+roleSSC G
+)SSG H
+)SSH I
+;SSI J
+}TT 
+}UU ‘С
 Y/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/TokenController.cs
 	namespace 	 
 SpringJavaEquivalent
@@ -5528,341 +5862,7 @@ JwtService
 ЁЁ 	
 }
 ёё 
-}яя с-
-_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.cs
-	namespace 	 
-SpringJavaEquivalent
- 
-. 
-Controllers *
-;* +
-[ 
-ApiController 
-] 
-[ 
-Route 
-( 
-$str 	
-)	 
-
-]
- 
-[ 
-Tags 
-( 
-$str 
-) 
-] 
-public 
-class !
-ApplicationController "
-:# $
-ControllerBase% 3
-{ 
-private 
-readonly 
-ILogger 
-< !
-ApplicationController 2
->2 3
-logger4 :
-;: ;
-public 
-!
-ApplicationController  
-(  !
-ILogger! (
-<( )!
-ApplicationController) >
->> ?
-logger@ F
-)F G
-{ 
-this 
-. 
-logger 
-= 
-logger 
-; 
-} 
-[ 
-HttpGet 
-] 
-public 
-
-IActionResult 
-Home 
-( 
-) 
-{ 
-var 
-	jwsHeader 
-= 
-Convert 
-.  
-ToBase64String  .
-(. /
-Encoding/ 7
-.7 8
-UTF88 <
-.< =
-GetBytes= E
-(E F
-$strF ]
-)] ^
-)^ _
-;_ `
-this 
-. 
-logger 
-. 
-LogInformation "
-(" #
-$str# F
-,F G
-	jwsHeaderH Q
-)Q R
-;R S
-foreach"" 
-("" 
-var"" 
-header"" 
-in"" 
-this"" #
-.""# $
-Request""$ +
-.""+ ,
-Headers"", 3
-)""3 4
-{## 	
-this$$ 
-.$$ 
-logger$$ 
-.$$ 
-LogInformation$$ *
-($$* +
-$str$$+ E
-,$$E F
-header$$G M
-.$$M N
-Key$$N Q
-,$$Q R
-header$$S Y
-.$$Y Z
-Value$$Z _
-)$$_ `
-;$$` a
-}%% 	
-return'' 
-Ok'' 
-('' 
-$str'' ,
-)'', -
-;''- .
-}(( 
-[-- 
-HttpGet-- 
-(-- 
-$str-- -
-)--- .
-]--. /
-[.. 
-	Authorize.. 
-(.. 
-Policy.. 
-=.. 
-$str.. ;
-)..; <
-]..< =
-[//  
-ProducesResponseType// 
-(// 
-typeof//  
-(//  !
-string//! '
-)//' (
-,//( )
-$num//* -
-)//- .
-]//. /
-[00  
-ProducesResponseType00 
-(00 
-$num00 
-)00 
-]00 
-[11  
-ProducesResponseType11 
-(11 
-$num11 
-)11 
-]11 
-public22 
-
-IActionResult22 
-	GetObject22 "
-(22" #
-[22# $
-	FromQuery22$ -
-]22- .
-string22/ 5
-id226 8
-)228 9
-{33 
-this44 
-.44 
-logger44 
-.44 
-LogInformation44 "
-(44" #
-$str44# 5
-,445 6
-id447 9
-)449 :
-;44: ;
-return55 
-Ok55 
-(55 
-$str55 
-)55 
-;55 
-}66 
-[;; 
-HttpPut;; 
-(;; 
-$str;; -
-);;- .
-];;. /
-[<< 
-	Authorize<< 
-(<< 
-Policy<< 
-=<< 
-$str<< <
-)<<< =
-]<<= >
-[==  
-ProducesResponseType== 
-(== 
-typeof==  
-(==  !
-string==! '
-)==' (
-,==( )
-$num==* -
-)==- .
-]==. /
-[>>  
-ProducesResponseType>> 
-(>> 
-$num>> 
-)>> 
-]>> 
-[??  
-ProducesResponseType?? 
-(?? 
-$num?? 
-)?? 
-]?? 
-public@@ 
-
-IActionResult@@ 
-	PutObject@@ "
-(@@" #
-[@@# $
-	FromQuery@@$ -
-]@@- .
-string@@/ 5
-id@@6 8
-)@@8 9
-{AA 
-thisBB 
-.BB 
-loggerBB 
-.BB 
-LogInformationBB "
-(BB" #
-$strBB# 5
-,BB5 6
-idBB7 9
-)BB9 :
-;BB: ;
-returnCC 
-OkCC 
-(CC 
-$strCC 
-)CC 
-;CC 
-}DD 
-[II 
-
-HttpDeleteII 
-(II 
-$strII 3
-)II3 4
-]II4 5
-[JJ 
-	AuthorizeJJ 
-(JJ 
-PolicyJJ 
-=JJ 
-$strJJ =
-)JJ= >
-]JJ> ?
-[KK  
-ProducesResponseTypeKK 
-(KK 
-typeofKK  
-(KK  !
-stringKK! '
-)KK' (
-,KK( )
-$numKK* -
-)KK- .
-]KK. /
-[LL  
-ProducesResponseTypeLL 
-(LL 
-$numLL 
-)LL 
-]LL 
-[MM  
-ProducesResponseTypeMM 
-(MM 
-$numMM 
-)MM 
-]MM 
-publicNN 
-
-IActionResultNN 
-DeleteObjectNN %
-(NN% &
-[NN& '
-	FromQueryNN' 0
-]NN0 1
-stringNN2 8
-idNN9 ;
-)NN; <
-{OO 
-thisPP 
-.PP 
-loggerPP 
-.PP 
-LogInformationPP "
-(PP" #
-$strPP# 8
-,PP8 9
-idPP: <
-)PP< =
-;PP= >
-returnQQ 
-OkQQ 
-(QQ 
-$strQQ 
-)QQ 
-;QQ 
-}RR 
-}SS ид
+}яя ид
 d/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/EnhancedAuthTestController.cs
 	namespace 	 
 SpringJavaEquivalent

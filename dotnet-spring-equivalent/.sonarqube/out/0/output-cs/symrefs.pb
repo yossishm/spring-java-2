@@ -137,47 +137,7 @@ Q/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.
 ¾¾ 
 
 ¼¼ 
-ÁÁ< ?í
-E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.csÊ
-       NN UU ]] vv ww xx yy zz {{ ~~  ‚‚ †† 
-‹‹) 0˜˜ 
-šš
- 
-     
-OO QQ 
-^^" (__ 
-``# )aa 
-bb$ *cc 
-dd) /ee 
-ff" (gg 
-hh4 :ii 
-ii  'jj kk 
-ll5 ;mm 
-mm  'nn oo 
-pp6 <qq 
-qq  'rr ss 
-
-‡‡ 
-‡‡# +
-
- 
- #
-
-‘‘ 
-‘‘ #Œ
-
-šš 
- 
-ŸŸ 
-   ¤¤ §§ ¨¨ «« ®® ³³ ¹¹ 
-¼¼ ¿¿ 
-
-°° 
-°° 
-
-µµ 
-
-¼¼ ½½ ë
+ÁÁ< ?ë
 a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.cs
 
  $
@@ -235,7 +195,39 @@ a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/Vulnerab
  
 
 ‘‘ 
-—— ð
+—— ç
+_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.cs
+ " 2) >F
+4 :  $$ 44 BB PP 
+@ F 
+
+ 
+ H Q
+
+22 "
+226 8447 9
+
+@@ "
+@@6 8BB7 9
+
+NN %
+NN9 ;PP: <‹
+[/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/MetricsController.cs
+
+ 
+" '; @= B(
+* 8 ,, 33 
+. :%% AA 
+# ) #;; #
+
+ )(
+  $$ %%  (
+
+** "
+**3 8,,  --) .
+
+11 *(
+55 66 @@ AA  (ð
 a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs
 
  "
@@ -260,23 +252,7 @@ a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/Permis
 
 MM 
 OO SS 
-QQ" &SS SSC G‹
-[/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/MetricsController.cs
-
- 
-" '; @= B(
-* 8 ,, 33 
-. :%% AA 
-# ) #;; #
-
- )(
-  $$ %%  (
-
-** "
-**3 8,,  --) .
-
-11 *(
-55 66 @@ AA  (Ã
+QQ" &SS SSC GÃ
 
 Y/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/TokenController.cs
 
@@ -359,23 +335,7 @@ Y/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/TokenCon
 ÐÐ 
 
 ÊÊ 
-ÑÑ ç
-_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.cs
- " 2) >F
-4 :  $$ 44 BB PP 
-@ F 
-
- 
- H Q
-
-22 "
-226 8447 9
-
-@@ "
-@@6 8BB7 9
-
-NN %
-NN9 ;PP: <—
+ÑÑ —
 d/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/EnhancedAuthTestController.cs
 
  '¶
@@ -584,7 +544,47 @@ d/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/Enhanced
 ÉÉ 
 
 ¾¾ 
-¾¾! "Ÿ
+¾¾! "í
+E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.csÊ
+       NN UU ]] vv ww xx yy zz {{ ~~  ‚‚ †† 
+‹‹) 0˜˜ 
+šš
+ 
+     
+OO QQ 
+^^" (__ 
+``# )aa 
+bb$ *cc 
+dd) /ee 
+ff" (gg 
+hh4 :ii 
+ii  'jj kk 
+ll5 ;mm 
+mm  'nn oo 
+pp6 <qq 
+qq  'rr ss 
+
+‡‡ 
+‡‡# +
+
+ 
+ #
+
+‘‘ 
+‘‘ #Œ
+
+šš 
+ 
+ŸŸ 
+   ¤¤ §§ ¨¨ «« ®® ³³ ¹¹ 
+¼¼ ¿¿ 
+
+°° 
+°° 
+
+µµ 
+
+¼¼ ½½ Ÿ
 ]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.cs
 
   
