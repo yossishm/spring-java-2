@@ -36,12 +36,17 @@ public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
 /// <summary>
 /// Authorization handler for multiple permissions (ANY)
 /// </summary>
-internal class AnyPermissionHandler : AuthorizationHandler<AnyPermissionRequirement>
+public class AnyPermissionHandler : AuthorizationHandler<AnyPermissionRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AnyPermissionRequirement requirement)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(requirement);
+
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Task.CompletedTask;
+        }
 
         var hasAnyPermission = requirement.Permissions.Any(permission =>
             context.User.HasClaim("permission", permission));
@@ -58,12 +63,17 @@ internal class AnyPermissionHandler : AuthorizationHandler<AnyPermissionRequirem
 /// <summary>
 /// Authorization handler for multiple permissions (ALL)
 /// </summary>
-internal class AllPermissionsHandler : AuthorizationHandler<AllPermissionsRequirement>
+public class AllPermissionsHandler : AuthorizationHandler<AllPermissionsRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AllPermissionsRequirement requirement)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(requirement);
+
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Task.CompletedTask;
+        }
 
         var hasAllPermissions = requirement.Permissions.All(permission =>
             context.User.HasClaim("permission", permission));
@@ -80,12 +90,17 @@ internal class AllPermissionsHandler : AuthorizationHandler<AllPermissionsRequir
 /// <summary>
 /// Authorization handler for role-based access control
 /// </summary>
-internal class RoleHandler : AuthorizationHandler<RoleRequirement>
+public class RoleHandler : AuthorizationHandler<RoleRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleRequirement requirement)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(requirement);
+
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Task.CompletedTask;
+        }
 
         var hasRole = context.User.IsInRole(requirement.Role);
 
@@ -101,12 +116,17 @@ internal class RoleHandler : AuthorizationHandler<RoleRequirement>
 /// <summary>
 /// Authorization handler for identity provider requirements
 /// </summary>
-internal class IdentityProviderHandler : AuthorizationHandler<IdentityProviderRequirement>
+public class IdentityProviderHandler : AuthorizationHandler<IdentityProviderRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IdentityProviderRequirement requirement)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(requirement);
+
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Task.CompletedTask;
+        }
 
         var identityProvider = context.User.FindFirst("identity_provider")?.Value;
 
@@ -122,12 +142,17 @@ internal class IdentityProviderHandler : AuthorizationHandler<IdentityProviderRe
 /// <summary>
 /// Authorization handler for authentication level requirements
 /// </summary>
-internal class AuthLevelHandler : AuthorizationHandler<AuthLevelRequirement>
+public class AuthLevelHandler : AuthorizationHandler<AuthLevelRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthLevelRequirement requirement)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(requirement);
+
+        if (context.User?.Identity?.IsAuthenticated != true)
+        {
+            return Task.CompletedTask;
+        }
 
         var authLevel = context.User.FindFirst("auth_level")?.Value;
 

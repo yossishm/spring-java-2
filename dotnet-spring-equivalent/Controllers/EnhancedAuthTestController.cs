@@ -299,7 +299,10 @@ public class EnhancedAuthTestController : ControllerBase
     /// Level 10: Maximum security - All requirements
     /// </summary>
     [HttpGet("maximum-security")]
-    [Authorize(Roles = "ADMIN", Policy = "CacheWritePolicy,IdentityProviderPolicy,AuthLevelPolicy")]
+    [Authorize(Roles = "ADMIN")]
+    [Authorize(Policy = "CacheWritePolicy")]
+    [Authorize(Policy = "IdentityProviderPolicy")]
+    [Authorize(Policy = "AuthLevelPolicy")]
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult MaximumSecurityEndpoint()
     {

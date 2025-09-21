@@ -150,8 +150,11 @@ builder.Services.AddOpenTelemetry()
         .AddRuntimeInstrumentation()
         .AddOtlpExporter());
 
-// Add Prometheus metrics
-builder.Services.AddSingleton<MetricServer>();
+// Add Prometheus metrics (skip in test environment)
+if (!builder.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddSingleton<MetricServer>();
+}
 
 var app = builder.Build();
 
@@ -186,8 +189,14 @@ app.MapHealthChecks("/health/live", new HealthCheckOptions
 // Map Prometheus metrics endpoint
 app.MapMetrics();
 
-// Start the Prometheus metrics server
-var metricServer = app.Services.GetRequiredService<MetricServer>();
-metricServer.Start();
+// Start the Prometheus metrics server (skip in test environment)
+if (!app.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalIgnoreCase))
+{
+    var metricServer = app.Services.GetRequiredService<MetricServer>();
+    metricServer.Start();
+}
 
 app.Run();
+
+// Make Program class accessible for testing
+public partial class Program { }

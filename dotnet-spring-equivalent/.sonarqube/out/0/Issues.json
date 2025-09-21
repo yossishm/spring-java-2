@@ -11,7 +11,79 @@
         "language": "en-IL"
       },
       "results": [
-      ]
+        {
+          "ruleId": "S1118",
+          "level": "warning",
+          "message": "Add a 'protected' constructor or the 'static' keyword to the class declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.cs",
+                "region": {
+                  "startLine": 202,
+                  "startColumn": 22,
+                  "endLine": 202,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "SA1502",
+          "level": "warning",
+          "message": "Element should not be on a single line",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.cs",
+                "region": {
+                  "startLine": 202,
+                  "startColumn": 30,
+                  "endLine": 202,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "S1118": {
+          "id": "S1118",
+          "shortDescription": "Utility classes should not have public constructors",
+          "fullDescription": "Whenever there are portions of code that are duplicated and do not depend on the state of their container class, they can be centralized inside a \"utility class\". A utility class is a class that only has static members, hence it should not be instantiated.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1118",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "SA1502": {
+          "id": "SA1502",
+          "shortDescription": "Element should not be on a single line",
+          "fullDescription": "A C# element containing opening and closing braces is written completely on a single line.",
+          "defaultLevel": "warning",
+          "helpUri": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1502.md",
+          "properties": {
+            "category": "StyleCop.CSharp.LayoutRules",
+            "isEnabledByDefault": true
+          }
+        }
+      }
     }
   ]
 }
