@@ -7884,492 +7884,7 @@ ClaimTypes
  
 }
 ÀÀ 
-}ÃÃ ÍF
-]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.cs
-	namespace 	 
-SpringJavaEquivalent
- 
-. 
-Authorization ,
-;, -
-internal 
-class	 
-PermissionHandler  
-:! " 
-AuthorizationHandler# 7
-<7 8!
-PermissionRequirement8 M
->M N
-{ 
-	protected 
-override 
-Task "
-HandleRequirementAsync 2
-(2 3'
-AuthorizationHandlerContext3 N
-contextO V
-,V W!
-PermissionRequirementX m
-requirementn y
-)y z
-{ !
-ArgumentNullException 
-. 
-ThrowIfNull )
-() *
-context* 1
-)1 2
-;2 3!
-ArgumentNullException 
-. 
-ThrowIfNull )
-() *
-requirement* 5
-)5 6
-;6 7
-var 
-hasPermission 
-= 
-context #
-.# $
-User$ (
-.( )
-HasClaim) 1
-(1 2
-$str2 >
-,> ?
-requirement@ K
-.K L
-
-PermissionL V
-)V W
-;W X
-if 
-
-( 
-hasPermission 
-) 
-{ 	
-context 
-. 
-Succeed 
-( 
-requirement '
-)' (
-;( )
-} 	
-return 
-Task 
-. 
-CompletedTask !
-;! "
-} 
-} 
-internal"" 
-class""	  
-AnyPermissionHandler"" #
-:""$ % 
-AuthorizationHandler""& :
-<"": ;$
-AnyPermissionRequirement""; S
->""S T
-{## 
-	protected$$ 
-override$$ 
-Task$$ "
-HandleRequirementAsync$$ 2
-($$2 3'
-AuthorizationHandlerContext$$3 N
-context$$O V
-,$$V W$
-AnyPermissionRequirement$$X p
-requirement$$q |
-)$$| }
-{%% !
-ArgumentNullException&& 
-.&& 
-ThrowIfNull&& )
-(&&) *
-context&&* 1
-)&&1 2
-;&&2 3!
-ArgumentNullException'' 
-.'' 
-ThrowIfNull'' )
-('') *
-requirement''* 5
-)''5 6
-;''6 7
-var)) 
-hasAnyPermission)) 
-=)) 
-requirement)) *
-.))* +
-Permissions))+ 6
-.))6 7
-Any))7 :
-()): ;
-
-permission)); E
-=>))F H
-context** 
-.** 
-User** 
-.** 
-HasClaim** !
-(**! "
-$str**" .
-,**. /
-
-permission**0 :
-)**: ;
-)**; <
-;**< =
-if,, 
-
-(,, 
-hasAnyPermission,, 
-),, 
-{-- 	
-context.. 
-... 
-Succeed.. 
-(.. 
-requirement.. '
-)..' (
-;..( )
-}// 	
-return11 
-Task11 
-.11 
-CompletedTask11 !
-;11! "
-}22 
-}33 
-internal88 
-class88	 !
-AllPermissionsHandler88 $
-:88% & 
-AuthorizationHandler88' ;
-<88; <%
-AllPermissionsRequirement88< U
->88U V
-{99 
-	protected:: 
-override:: 
-Task:: "
-HandleRequirementAsync:: 2
-(::2 3'
-AuthorizationHandlerContext::3 N
-context::O V
-,::V W%
-AllPermissionsRequirement::X q
-requirement::r }
-)::} ~
-{;; !
-ArgumentNullException<< 
-.<< 
-ThrowIfNull<< )
-(<<) *
-context<<* 1
-)<<1 2
-;<<2 3!
-ArgumentNullException== 
-.== 
-ThrowIfNull== )
-(==) *
-requirement==* 5
-)==5 6
-;==6 7
-var?? 
-hasAllPermissions?? 
-=?? 
-requirement??  +
-.??+ ,
-Permissions??, 7
-.??7 8
-All??8 ;
-(??; <
-
-permission??< F
-=>??G I
-context@@ 
-.@@ 
-User@@ 
-.@@ 
-HasClaim@@ !
-(@@! "
-$str@@" .
-,@@. /
-
-permission@@0 :
-)@@: ;
-)@@; <
-;@@< =
-ifBB 
-
-(BB 
-hasAllPermissionsBB 
-)BB 
-{CC 	
-contextDD 
-.DD 
-SucceedDD 
-(DD 
-requirementDD '
-)DD' (
-;DD( )
-}EE 	
-returnGG 
-TaskGG 
-.GG 
-CompletedTaskGG !
-;GG! "
-}HH 
-}II 
-internalNN 
-classNN	 
-RoleHandlerNN 
-:NN  
-AuthorizationHandlerNN 1
-<NN1 2
-RoleRequirementNN2 A
->NNA B
-{OO 
-	protectedPP 
-overridePP 
-TaskPP "
-HandleRequirementAsyncPP 2
-(PP2 3'
-AuthorizationHandlerContextPP3 N
-contextPPO V
-,PPV W
-RoleRequirementPPX g
-requirementPPh s
-)PPs t
-{QQ !
-ArgumentNullExceptionRR 
-.RR 
-ThrowIfNullRR )
-(RR) *
-contextRR* 1
-)RR1 2
-;RR2 3!
-ArgumentNullExceptionSS 
-.SS 
-ThrowIfNullSS )
-(SS) *
-requirementSS* 5
-)SS5 6
-;SS6 7
-varUU 
-hasRoleUU 
-=UU 
-contextUU 
-.UU 
-UserUU "
-.UU" #
-IsInRoleUU# +
-(UU+ ,
-requirementUU, 7
-.UU7 8
-RoleUU8 <
-)UU< =
-;UU= >
-ifWW 
-
-(WW 
-hasRoleWW 
-)WW 
-{XX 	
-contextYY 
-.YY 
-SucceedYY 
-(YY 
-requirementYY '
-)YY' (
-;YY( )
-}ZZ 	
-return\\ 
-Task\\ 
-.\\ 
-CompletedTask\\ !
-;\\! "
-}]] 
-}^^ 
-internalcc 
-classcc	 #
-IdentityProviderHandlercc &
-:cc' ( 
-AuthorizationHandlercc) =
-<cc= >'
-IdentityProviderRequirementcc> Y
->ccY Z
-{dd 
-	protectedee 
-overrideee 
-Taskee "
-HandleRequirementAsyncee 2
-(ee2 3'
-AuthorizationHandlerContextee3 N
-contexteeO V
-,eeV W'
-IdentityProviderRequirementeeX s
-requirementeet 
-)	ee Ä
-{ff !
-ArgumentNullExceptiongg 
-.gg 
-ThrowIfNullgg )
-(gg) *
-contextgg* 1
-)gg1 2
-;gg2 3!
-ArgumentNullExceptionhh 
-.hh 
-ThrowIfNullhh )
-(hh) *
-requirementhh* 5
-)hh5 6
-;hh6 7
-varjj 
-identityProviderjj 
-=jj 
-contextjj &
-.jj& '
-Userjj' +
-.jj+ ,
-	FindFirstjj, 5
-(jj5 6
-$strjj6 I
-)jjI J
-?jjJ K
-.jjK L
-ValuejjL Q
-;jjQ R
-ifll 
-
-(ll 
-identityProviderll 
-==ll 
-requirementll  +
-.ll+ ,$
-RequiredIdentityProviderll, D
-)llD E
-{mm 	
-contextnn 
-.nn 
-Succeednn 
-(nn 
-requirementnn '
-)nn' (
-;nn( )
-}oo 	
-returnqq 
-Taskqq 
-.qq 
-CompletedTaskqq !
-;qq! "
-}rr 
-}ss 
-internalxx 
-classxx	 
-AuthLevelHandlerxx 
-:xx  ! 
-AuthorizationHandlerxx" 6
-<xx6 7 
-AuthLevelRequirementxx7 K
->xxK L
-{yy 
-	protectedzz 
-overridezz 
-Taskzz "
-HandleRequirementAsynczz 2
-(zz2 3'
-AuthorizationHandlerContextzz3 N
-contextzzO V
-,zzV W 
-AuthLevelRequirementzzX l
-requirementzzm x
-)zzx y
-{{{ !
-ArgumentNullException|| 
-.|| 
-ThrowIfNull|| )
-(||) *
-context||* 1
-)||1 2
-;||2 3!
-ArgumentNullException}} 
-.}} 
-ThrowIfNull}} )
-(}}) *
-requirement}}* 5
-)}}5 6
-;}}6 7
-var 
-	authLevel 
-= 
-context 
-.  
-User  $
-.$ %
-	FindFirst% .
-(. /
-$str/ ;
-); <
-?< =
-.= >
-Value> C
-;C D
-if
-ÅÅ 
-
-(
-ÅÅ 
-	authLevel
-ÅÅ 
-==
-ÅÅ 
-requirement
-ÅÅ $
-.
-ÅÅ$ %
-RequiredAuthLevel
-ÅÅ% 6
-)
-ÅÅ6 7
-{
-ÇÇ 	
-context
-ÉÉ 
-.
-ÉÉ 
-Succeed
-ÉÉ 
-(
-ÉÉ 
-requirement
-ÉÉ '
-)
-ÉÉ' (
-;
-ÉÉ( )
-}
-ÑÑ 	
-return
-ÜÜ 
-Task
-ÜÜ 
-.
-ÜÜ 
-CompletedTask
-ÜÜ !
-;
-ÜÜ! "
-}
-áá 
-}àà Ò-
+}ÃÃ Ò-
 _/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.cs
 	namespace 	 
 SpringJavaEquivalent
@@ -8968,4 +8483,489 @@ permissionO Y
 )SSH I
 ;SSI J
 }TT 
-}UU 
+}UU ÍF
+]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.cs
+	namespace 	 
+SpringJavaEquivalent
+ 
+. 
+Authorization ,
+;, -
+internal 
+class	 
+PermissionHandler  
+:! " 
+AuthorizationHandler# 7
+<7 8!
+PermissionRequirement8 M
+>M N
+{ 
+	protected 
+override 
+Task "
+HandleRequirementAsync 2
+(2 3'
+AuthorizationHandlerContext3 N
+contextO V
+,V W!
+PermissionRequirementX m
+requirementn y
+)y z
+{ !
+ArgumentNullException 
+. 
+ThrowIfNull )
+() *
+context* 1
+)1 2
+;2 3!
+ArgumentNullException 
+. 
+ThrowIfNull )
+() *
+requirement* 5
+)5 6
+;6 7
+var 
+hasPermission 
+= 
+context #
+.# $
+User$ (
+.( )
+HasClaim) 1
+(1 2
+$str2 >
+,> ?
+requirement@ K
+.K L
+
+PermissionL V
+)V W
+;W X
+if 
+
+( 
+hasPermission 
+) 
+{ 	
+context 
+. 
+Succeed 
+( 
+requirement '
+)' (
+;( )
+} 	
+return 
+Task 
+. 
+CompletedTask !
+;! "
+} 
+} 
+internal"" 
+class""	  
+AnyPermissionHandler"" #
+:""$ % 
+AuthorizationHandler""& :
+<"": ;$
+AnyPermissionRequirement""; S
+>""S T
+{## 
+	protected$$ 
+override$$ 
+Task$$ "
+HandleRequirementAsync$$ 2
+($$2 3'
+AuthorizationHandlerContext$$3 N
+context$$O V
+,$$V W$
+AnyPermissionRequirement$$X p
+requirement$$q |
+)$$| }
+{%% !
+ArgumentNullException&& 
+.&& 
+ThrowIfNull&& )
+(&&) *
+context&&* 1
+)&&1 2
+;&&2 3!
+ArgumentNullException'' 
+.'' 
+ThrowIfNull'' )
+('') *
+requirement''* 5
+)''5 6
+;''6 7
+var)) 
+hasAnyPermission)) 
+=)) 
+requirement)) *
+.))* +
+Permissions))+ 6
+.))6 7
+Any))7 :
+()): ;
+
+permission)); E
+=>))F H
+context** 
+.** 
+User** 
+.** 
+HasClaim** !
+(**! "
+$str**" .
+,**. /
+
+permission**0 :
+)**: ;
+)**; <
+;**< =
+if,, 
+
+(,, 
+hasAnyPermission,, 
+),, 
+{-- 	
+context.. 
+... 
+Succeed.. 
+(.. 
+requirement.. '
+)..' (
+;..( )
+}// 	
+return11 
+Task11 
+.11 
+CompletedTask11 !
+;11! "
+}22 
+}33 
+internal88 
+class88	 !
+AllPermissionsHandler88 $
+:88% & 
+AuthorizationHandler88' ;
+<88; <%
+AllPermissionsRequirement88< U
+>88U V
+{99 
+	protected:: 
+override:: 
+Task:: "
+HandleRequirementAsync:: 2
+(::2 3'
+AuthorizationHandlerContext::3 N
+context::O V
+,::V W%
+AllPermissionsRequirement::X q
+requirement::r }
+)::} ~
+{;; !
+ArgumentNullException<< 
+.<< 
+ThrowIfNull<< )
+(<<) *
+context<<* 1
+)<<1 2
+;<<2 3!
+ArgumentNullException== 
+.== 
+ThrowIfNull== )
+(==) *
+requirement==* 5
+)==5 6
+;==6 7
+var?? 
+hasAllPermissions?? 
+=?? 
+requirement??  +
+.??+ ,
+Permissions??, 7
+.??7 8
+All??8 ;
+(??; <
+
+permission??< F
+=>??G I
+context@@ 
+.@@ 
+User@@ 
+.@@ 
+HasClaim@@ !
+(@@! "
+$str@@" .
+,@@. /
+
+permission@@0 :
+)@@: ;
+)@@; <
+;@@< =
+ifBB 
+
+(BB 
+hasAllPermissionsBB 
+)BB 
+{CC 	
+contextDD 
+.DD 
+SucceedDD 
+(DD 
+requirementDD '
+)DD' (
+;DD( )
+}EE 	
+returnGG 
+TaskGG 
+.GG 
+CompletedTaskGG !
+;GG! "
+}HH 
+}II 
+internalNN 
+classNN	 
+RoleHandlerNN 
+:NN  
+AuthorizationHandlerNN 1
+<NN1 2
+RoleRequirementNN2 A
+>NNA B
+{OO 
+	protectedPP 
+overridePP 
+TaskPP "
+HandleRequirementAsyncPP 2
+(PP2 3'
+AuthorizationHandlerContextPP3 N
+contextPPO V
+,PPV W
+RoleRequirementPPX g
+requirementPPh s
+)PPs t
+{QQ !
+ArgumentNullExceptionRR 
+.RR 
+ThrowIfNullRR )
+(RR) *
+contextRR* 1
+)RR1 2
+;RR2 3!
+ArgumentNullExceptionSS 
+.SS 
+ThrowIfNullSS )
+(SS) *
+requirementSS* 5
+)SS5 6
+;SS6 7
+varUU 
+hasRoleUU 
+=UU 
+contextUU 
+.UU 
+UserUU "
+.UU" #
+IsInRoleUU# +
+(UU+ ,
+requirementUU, 7
+.UU7 8
+RoleUU8 <
+)UU< =
+;UU= >
+ifWW 
+
+(WW 
+hasRoleWW 
+)WW 
+{XX 	
+contextYY 
+.YY 
+SucceedYY 
+(YY 
+requirementYY '
+)YY' (
+;YY( )
+}ZZ 	
+return\\ 
+Task\\ 
+.\\ 
+CompletedTask\\ !
+;\\! "
+}]] 
+}^^ 
+internalcc 
+classcc	 #
+IdentityProviderHandlercc &
+:cc' ( 
+AuthorizationHandlercc) =
+<cc= >'
+IdentityProviderRequirementcc> Y
+>ccY Z
+{dd 
+	protectedee 
+overrideee 
+Taskee "
+HandleRequirementAsyncee 2
+(ee2 3'
+AuthorizationHandlerContextee3 N
+contexteeO V
+,eeV W'
+IdentityProviderRequirementeeX s
+requirementeet 
+)	ee Ä
+{ff !
+ArgumentNullExceptiongg 
+.gg 
+ThrowIfNullgg )
+(gg) *
+contextgg* 1
+)gg1 2
+;gg2 3!
+ArgumentNullExceptionhh 
+.hh 
+ThrowIfNullhh )
+(hh) *
+requirementhh* 5
+)hh5 6
+;hh6 7
+varjj 
+identityProviderjj 
+=jj 
+contextjj &
+.jj& '
+Userjj' +
+.jj+ ,
+	FindFirstjj, 5
+(jj5 6
+$strjj6 I
+)jjI J
+?jjJ K
+.jjK L
+ValuejjL Q
+;jjQ R
+ifll 
+
+(ll 
+identityProviderll 
+==ll 
+requirementll  +
+.ll+ ,$
+RequiredIdentityProviderll, D
+)llD E
+{mm 	
+contextnn 
+.nn 
+Succeednn 
+(nn 
+requirementnn '
+)nn' (
+;nn( )
+}oo 	
+returnqq 
+Taskqq 
+.qq 
+CompletedTaskqq !
+;qq! "
+}rr 
+}ss 
+internalxx 
+classxx	 
+AuthLevelHandlerxx 
+:xx  ! 
+AuthorizationHandlerxx" 6
+<xx6 7 
+AuthLevelRequirementxx7 K
+>xxK L
+{yy 
+	protectedzz 
+overridezz 
+Taskzz "
+HandleRequirementAsynczz 2
+(zz2 3'
+AuthorizationHandlerContextzz3 N
+contextzzO V
+,zzV W 
+AuthLevelRequirementzzX l
+requirementzzm x
+)zzx y
+{{{ !
+ArgumentNullException|| 
+.|| 
+ThrowIfNull|| )
+(||) *
+context||* 1
+)||1 2
+;||2 3!
+ArgumentNullException}} 
+.}} 
+ThrowIfNull}} )
+(}}) *
+requirement}}* 5
+)}}5 6
+;}}6 7
+var 
+	authLevel 
+= 
+context 
+.  
+User  $
+.$ %
+	FindFirst% .
+(. /
+$str/ ;
+); <
+?< =
+.= >
+Value> C
+;C D
+if
+ÅÅ 
+
+(
+ÅÅ 
+	authLevel
+ÅÅ 
+==
+ÅÅ 
+requirement
+ÅÅ $
+.
+ÅÅ$ %
+RequiredAuthLevel
+ÅÅ% 6
+)
+ÅÅ6 7
+{
+ÇÇ 	
+context
+ÉÉ 
+.
+ÉÉ 
+Succeed
+ÉÉ 
+(
+ÉÉ 
+requirement
+ÉÉ '
+)
+ÉÉ' (
+;
+ÉÉ( )
+}
+ÑÑ 	
+return
+ÜÜ 
+Task
+ÜÜ 
+.
+ÜÜ 
+CompletedTask
+ÜÜ !
+;
+ÜÜ! "
+}
+áá 
+}àà 

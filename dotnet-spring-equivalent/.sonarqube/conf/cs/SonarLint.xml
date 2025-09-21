@@ -2,6 +2,14 @@
 <AnalysisInput>
   <Settings>
     <Setting>
+      <Key>sonar.cs.vstest.reportsPaths</Key>
+      <Value>TestResults/*.trx</Value>
+    </Setting>
+    <Setting>
+      <Key>sonar.cs.opencover.reportsPaths</Key>
+      <Value>TestResults/*/coverage.cobertura.xml</Value>
+    </Setting>
+    <Setting>
       <Key>sonar.cs.ignoreHeaderComments</Key>
       <Value>true</Value>
     </Setting>
