@@ -2,5 +2,5 @@ projectKey=dotnet-spring-equivalent
 serverUrl=http://localhost:9000
 serverVersion=25.9.0.112764
 dashboardUrl=http://localhost:9000/dashboard?id=dotnet-spring-equivalent
-ceTaskId=29321317-cdb8-4d05-a20c-bce0e6f23bd5
-ceTaskUrl=http://localhost:9000/api/ce/task?id=29321317-cdb8-4d05-a20c-bce0e6f23bd5
+ceTaskId=71db69e5-27af-41d1-9295-a453db9a8e59
+ceTaskUrl=http://localhost:9000/api/ce/task?id=71db69e5-27af-41d1-9295-a453db9a8e59

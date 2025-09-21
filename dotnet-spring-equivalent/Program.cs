@@ -199,4 +199,6 @@ if (!app.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalI
 app.Run();
 
 // Make Program class accessible for testing
-public partial class Program { }
+public static partial class Program
+{
+}

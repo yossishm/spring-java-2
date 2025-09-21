@@ -1740,7 +1740,7 @@ WriteToken
 ÌÌ 	
 }
 ÍÍ 
-}ÎÎ …u
+}ÎÎ —u
 E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.cs
 var 
 builder 
@@ -2830,17 +2830,17 @@ MapMetrics
 ;
 ÇÇ	 
 
-publicÊÊ 
+publicÊÊ 
+static
+ÊÊ 
 partial
-ÊÊ 
+ÊÊ 
 class
-ÊÊ 
+ÊÊ 
 Program
-ÊÊ 
-{
-ÊÊ 
-}
-ÊÊ  ùb
+ÊÊ #
+{ËË 
+}ÌÌ ùb
 a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.cs
 	namespace 	 
 SpringJavaEquivalent

@@ -142,7 +142,7 @@ Q/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.
 ÇÇ 
 ÉÉ 
 ËË 
-ËË ù
+ËË ‰
 E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.cs
  ?
  +
@@ -200,9 +200,10 @@ E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.cs
 ÁÁ7 G
 ÃÃ 
 ÃÃ7 CÉÉ ,ÊÊ 
-ÊÊ 
-ÊÊ 
-ÊÊ ã
+ÊÊ 
+ÊÊ 
+ÊÊ 
+ÊÊ #ã
 a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.cs
  O
  +
