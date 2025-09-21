@@ -28,13 +28,13 @@ public class JwtService
     /// <summary>
     /// Extract username from JWT token
     /// </summary>
-    public static string ExtractUsername(string token)
+    public static string? ExtractUsername(string token)
     {
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
-            return jsonToken.Claims.FirstOrDefault(x => x.Type == "username")?.Value;
+            return jsonToken.Claims.FirstOrDefault(x => x.Type == "username")?.Value ?? null;
         }
         catch
         {

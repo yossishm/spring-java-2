@@ -2,6 +2,8 @@
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

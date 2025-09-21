@@ -15,7 +15,7 @@ public class LocalRestClient : IDisposable
     private readonly HttpClient httpClient;
     private readonly string server = "http://localhost:8080";
 
-        public LocalRestClient(string authorization = "")
+    public LocalRestClient(string authorization = "")
         {
             this.httpClient = new HttpClient();
             this.httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
