@@ -12,11 +12,77 @@
       },
       "results": [
         {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 20,
+                  "endLine": 37,
+                  "endColumn": 85
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8603",
+          "level": "warning",
+          "message": "Possible null reference return.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.cs",
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 20,
+                  "endLine": 41,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
           "ruleId": "CA1016",
           "level": "warning",
           "message": "Mark assemblies with assembly version",
           "properties": {
             "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "SA1137",
+          "level": "warning",
+          "message": "Elements should have the same indentation",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/LocalRestClient.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 1,
+                  "endLine": 18,
+                  "endColumn": 9
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "ExpectedIndentation": "    "
+            }
           }
         },
         {
@@ -46,6 +112,20 @@
             ]
           }
         },
+        "CS8603": {
+          "id": "CS8603",
+          "shortDescription": "Possible null reference return.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8603)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
         "S3904": {
           "id": "S3904",
           "shortDescription": "Assemblies should have version information",
@@ -60,6 +140,17 @@
               "MainSourceScope",
               "SonarWay"
             ]
+          }
+        },
+        "SA1137": {
+          "id": "SA1137",
+          "shortDescription": "Elements should have the same indentation",
+          "fullDescription": "Elements at the same level in the syntax tree should have the same indentation.",
+          "defaultLevel": "warning",
+          "helpUri": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1137.md",
+          "properties": {
+            "category": "StyleCop.CSharp.ReadabilityRules",
+            "isEnabledByDefault": true
           }
         }
       }

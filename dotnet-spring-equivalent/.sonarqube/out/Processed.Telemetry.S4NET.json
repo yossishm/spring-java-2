@@ -1,5 +1,0 @@
-{"dotnetenterprise.s4net.params.sonar_cs_vstest_reportspaths.source":"CLI"}
-{"dotnetenterprise.s4net.params.sonar_cs_vstest_reportspaths.value":"relative"}
-{"dotnetenterprise.s4net.params.sonar_cs_opencover_reportspaths.source":"CLI"}
-{"dotnetenterprise.s4net.serverInfo.product":"SQ_Server"}
-{"dotnetenterprise.s4net.serverInfo.serverUrl":"localhost"}
