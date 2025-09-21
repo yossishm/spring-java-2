@@ -26,77 +26,6 @@ public class JwtService
     }
 
     /// <summary>
-    /// Generate JWT token with roles and permissions
-    /// </summary>
-    public string GenerateToken(string username, IReadOnlyList<string> roles, IReadOnlyList<string> permissions,
-        string authLevel = "AAL1", string idp = "local")
-    {
-        ArgumentNullException.ThrowIfNull(username);
-        ArgumentNullException.ThrowIfNull(roles);
-        ArgumentNullException.ThrowIfNull(permissions);
-        
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(this.secretKey);
-
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Name, username),
-            new("username", username),
-            new("auth_level", authLevel),
-            new("identity_provider", idp),
-        };
-
-        // Add role claims
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
-
-        // Add permission claims
-        foreach (var permission in permissions)
-        {
-            claims.Add(new Claim("permission", permission));
-        }
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(this.expirationHours),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-        };
-
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
-
-    /// <summary>
-    /// Validate JWT token
-    /// </summary>
-    public bool ValidateToken(string token)
-    {
-        try
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this.secretKey);
-
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero,
-            }, out _);
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    /// <summary>
     /// Extract username from JWT token
     /// </summary>
     public static string ExtractUsername(string token)
@@ -201,6 +130,77 @@ public class JwtService
         catch
         {
             return new Dictionary<string, string>();
+        }
+    }
+
+    /// <summary>
+    /// Generate JWT token with roles and permissions
+    /// </summary>
+    public string GenerateToken(string username, IReadOnlyList<string> roles, IReadOnlyList<string> permissions,
+        string authLevel = "AAL1", string idp = "local")
+    {
+        ArgumentNullException.ThrowIfNull(username);
+        ArgumentNullException.ThrowIfNull(roles);
+        ArgumentNullException.ThrowIfNull(permissions);
+        
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(this.secretKey);
+
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, username),
+            new("username", username),
+            new("auth_level", authLevel),
+            new("identity_provider", idp),
+        };
+
+        // Add role claims
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
+        // Add permission claims
+        foreach (var permission in permissions)
+        {
+            claims.Add(new Claim("permission", permission));
+        }
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddHours(this.expirationHours),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+
+    /// <summary>
+    /// Validate JWT token
+    /// </summary>
+    public bool ValidateToken(string token)
+    {
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(this.secretKey);
+
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero,
+            }, out _);
+
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 }

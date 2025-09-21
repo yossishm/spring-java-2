@@ -90,44 +90,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // Add Authorization
-builder.Services.AddAuthorization(options =>
-{
-    // Cache Read Policy
-    options.AddPolicy("CacheReadPolicy", policy =>
-        policy.Requirements.Add(new PermissionRequirement("CACHE_READ")));
-
-    // Cache Write Policy
-    options.AddPolicy("CacheWritePolicy", policy =>
-        policy.Requirements.Add(new PermissionRequirement("CACHE_WRITE")));
-
-    // Cache Delete Policy
-    options.AddPolicy("CacheDeletePolicy", policy =>
-        policy.Requirements.Add(new PermissionRequirement("CACHE_DELETE")));
-
-    // Identity Provider Policy
-    options.AddPolicy("IdentityProviderPolicy", policy =>
-        policy.Requirements.Add(new IdentityProviderRequirement("enterprise")));
-
-    // Auth Level Policy
-    options.AddPolicy("AuthLevelPolicy", policy =>
-        policy.Requirements.Add(new AuthLevelRequirement("AAL2")));
-
-    // Combined policies for cache operations
-    options.AddPolicy("RequireCacheReadOrAdminPermission", policy =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("CacheReadPolicy", policy =>
+        policy.Requirements.Add(new PermissionRequirement("CACHE_READ")))
+    .AddPolicy("CacheWritePolicy", policy =>
+        policy.Requirements.Add(new PermissionRequirement("CACHE_WRITE")))
+    .AddPolicy("CacheDeletePolicy", policy =>
+        policy.Requirements.Add(new PermissionRequirement("CACHE_DELETE")))
+    .AddPolicy("IdentityProviderPolicy", policy =>
+        policy.Requirements.Add(new IdentityProviderRequirement("enterprise")))
+    .AddPolicy("AuthLevelPolicy", policy =>
+        policy.Requirements.Add(new AuthLevelRequirement("AAL2")))
+    .AddPolicy("RequireCacheReadOrAdminPermission", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim("permission", "CACHE_READ") ||
-            context.User.IsInRole("ADMIN")));
-
-    options.AddPolicy("RequireCacheWriteOrAdminPermission", policy =>
+            context.User.IsInRole("ADMIN")))
+    .AddPolicy("RequireCacheWriteOrAdminPermission", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim("permission", "CACHE_WRITE") ||
-            context.User.IsInRole("ADMIN")));
-
-    options.AddPolicy("RequireCacheDeleteOrAdminPermission", policy =>
+            context.User.IsInRole("ADMIN")))
+    .AddPolicy("RequireCacheDeleteOrAdminPermission", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim("permission", "CACHE_DELETE") ||
             context.User.IsInRole("ADMIN")));
-});
 
 // Add Authorization Handlers
 builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
