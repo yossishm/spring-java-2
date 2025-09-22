@@ -199,6 +199,7 @@ if (!app.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalI
 app.Run();
 
 // Make Program class accessible for testing
-public static partial class Program
+public partial class Program
 {
+    protected Program() { }
 }

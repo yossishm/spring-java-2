@@ -11,6 +11,8 @@
   <SonarQubeHostUrl>http://localhost:9000</SonarQubeHostUrl>
   <SonarQubeVersion>25.9.0.112764</SonarQubeVersion>
   <SonarProjectKey>dotnet-spring-equivalent</SonarProjectKey>
+  <SonarProjectVersion>1.0</SonarProjectVersion>
+  <SonarProjectName>dotnet-spring-equivalent</SonarProjectName>
   <AdditionalConfig>
     <ConfigSetting Id="BuildUri" />
     <ConfigSetting Id="TfsUri" />
@@ -85,7 +87,7 @@
     <Property Name="sonar.text.activate">true</Property>
     <Property Name="provisioning.gitlab.enabled">false</Property>
     <Property Name="sonar.go.file.suffixes">.go</Property>
-    <Property Name="sonar.cs.analyzeRazorCode">true</Property>
+    <Property Name="sonar.cs.analyzeRazorCode">false</Property>
     <Property Name="sonar.auth.saml.applicationId">sonarqube</Property>
     <Property Name="sonar.dbcleaner.weeksBeforeKeepingOnlyAnalysesWithVersion">104</Property>
     <Property Name="sonar.qualitygate.ignoreSmallChanges">true</Property>
@@ -146,11 +148,13 @@
     <Property Name="sonar.updatecenter.url">https://downloads.sonarsource.com/sonarqube/update/update-center.properties</Property>
     <Property Name="sonar.core.startTime">21/09/2025 0:17:50</Property>
     <Property Name="sonar.core.id">147B411E-AZlo_YznrYka1j6wWl-m</Property>
+    <Property Name="sonar.cs.opencover.reportsPaths">/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/coverage.opencover.xml</Property>
   </ServerSettings>
   <LocalSettings>
     <Property Name="sonar.host.url">http://localhost:9000</Property>
+    <Property Name="sonar.language">cs</Property>
     <Property Name="sonar.cs.opencover.reportsPaths">dotnet-spring-equivalent/coverage.opencover.xml</Property>
-    <Property Name="sonar.cs.vstest.reportsPaths">dotnet-spring-equivalent/TestResults/**/*.trx</Property>
+    <Property Name="sonar.test.inclusions">**/*Test*.cs</Property>
     <Property Name="sonar.exclusions">dotnet-spring-equivalent/coverage.opencover.xml</Property>
   </LocalSettings>
   <ScannerOptsSettings />

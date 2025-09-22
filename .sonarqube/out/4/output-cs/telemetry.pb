@@ -1,0 +1,1 @@
+çRw/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/SpringJavaEquivalent.Tests.csproj¢net9.0ÚCSharp13

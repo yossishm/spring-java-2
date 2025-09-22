@@ -1,0 +1,16 @@
+﻿/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/ApplicationControllerTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationIntegrationTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationRequirementTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/EnhancedAuthTestControllerAdvancedTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/EnhancedAuthTestControllerTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/JwtServiceTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/LocalRestClientTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/MetricsControllerTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/SimpleWorkingTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/TokenControllerTests.cs
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/VulnerableJwtControllerTests.cs
+/Users/yshmulev/.nuget/packages/microsoft.net.test.sdk/17.12.0/build/netcoreapp3.1/Microsoft.NET.Test.Sdk.Program.cs
+/Users/yshmulev/.nuget/packages/xunit.runner.visualstudio/2.8.2/build/net6.0/xunit.runner.visualstudio.testadapter.dll
+/Users/yshmulev/.nuget/packages/xunit.runner.visualstudio/2.8.2/build/net6.0/xunit.runner.reporters.netcoreapp10.dll
+/Users/yshmulev/.nuget/packages/xunit.runner.visualstudio/2.8.2/build/net6.0/xunit.runner.utility.netcoreapp10.dll

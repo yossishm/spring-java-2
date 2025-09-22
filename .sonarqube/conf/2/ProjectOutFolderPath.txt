@@ -1,0 +1,1 @@
+/Users/yshmulev/dev/spring-java-2/.sonarqube/out/2

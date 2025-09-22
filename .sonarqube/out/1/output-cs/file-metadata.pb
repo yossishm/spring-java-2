@@ -1,0 +1,15 @@
+è
+É/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/obj/Debug/net9.0/SpringJavaEquivalent.MvcApplicationPartsAssemblyInfo.csutf-8{
+p/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/obj/Debug/net9.0/SpringJavaEquivalent.AssemblyInfo.csutf-8Ö
+z/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.csutf-8}
+r/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/obj/Debug/net9.0/SpringJavaEquivalent.GlobalUsings.g.csutf-8_
+V/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/LocalRestClient.csutf-8Z
+Q/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.csutf-8N
+E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.csutf-8j
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.csutf-8b
+Y/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/TokenController.csutf-8d
+[/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/MetricsController.csutf-8m
+d/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/EnhancedAuthTestController.csutf-8h
+_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.csutf-8j
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.csutf-8f
+]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.csutf-8

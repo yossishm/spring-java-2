@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.12.0.0",
+        "fileVersion": "4.12.0-3.25329.7 (a1e39f97)",
+        "semanticVersion": "4.12.0",
+        "language": "en-IL"
+      },
+      "results": [
+        {
+          "ruleId": "CS0718",
+          "level": "error",
+          "message": "'Program': static types cannot be used as type arguments",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationIntegrationTests.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 14,
+                  "endLine": 16,
+                  "endColumn": 43
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0718",
+          "level": "error",
+          "message": "'Program': static types cannot be used as type arguments",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationIntegrationTests.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 53,
+                  "endLine": 18,
+                  "endColumn": 61
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CS0718",
+          "level": "error",
+          "message": "'Program': static types cannot be used as type arguments",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationIntegrationTests.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 73,
+                  "endLine": 21,
+                  "endColumn": 80
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "CS0718": {
+          "id": "CS0718",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0718)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

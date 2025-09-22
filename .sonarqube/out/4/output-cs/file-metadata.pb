@@ -1,0 +1,16 @@
+°
+ï/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.csutf-8ü
+ì/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/obj/Debug/net9.0/SpringJavaEquivalent.Tests.GlobalUsings.g.csutf-8
+t/Users/yshmulev/.nuget/packages/microsoft.net.test.sdk/17.12.0/build/netcoreapp3.1/Microsoft.NET.Test.Sdk.Program.csutf-8~
+u/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/VulnerableJwtControllerTests.csutf-8v
+m/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/TokenControllerTests.csutf-8t
+k/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/SimpleWorkingTests.csutf-8x
+o/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/MetricsControllerTests.csutf-8v
+m/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/LocalRestClientTests.csutf-8q
+h/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/JwtServiceTests.csutf-8Å
+x/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/EnhancedAuthTestControllerTests.csutf-8ä
+Ä/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/EnhancedAuthTestControllerAdvancedTests.csutf-8t
+k/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationTests.csutf-8
+v/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationRequirementTests.csutf-8
+v/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/AuthorizationIntegrationTests.csutf-8|
+s/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SpringJavaEquivalent.Tests/ApplicationControllerTests.csutf-8
