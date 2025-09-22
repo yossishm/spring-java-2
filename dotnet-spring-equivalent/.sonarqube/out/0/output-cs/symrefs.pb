@@ -137,7 +137,7 @@ Q/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Services/JwtService.
 ¾¾ 
 
 ¼¼ 
-ÁÁ< ?›
+ÁÁ< ?µ
 E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.csÜ
          PP WW __ xx yy zz {{ || }} €€  „„ ˆˆ 
 ) 0
@@ -183,7 +183,10 @@ E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.csÜ
 ÃÃ 
 ÄÄ 
 
-ÊÊ …
+ÊÊ 
+
+ÌÌ +
+ÑÑ ,…
 a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.cs
 
  $
@@ -568,7 +571,32 @@ _/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/Applicat
 CC6 8EE7 9
 
 QQ %
-QQ9 ;SS: <ù
+QQ9 ;SS: <„
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs
+
+ "
+  2
+( 2 $O Y& 0[ e
+
+ %
+ ## 
+!!4 ?## &##Q \
+
+** &
+,, 00 
+..5 @00 &00Q \
+
+77 !
+99 #== 
+;;' 8==! 2==] n
+
+DD (
+FF *JJ %
+HH. FJJ( @	JJk ƒ
+
+QQ 
+SS WW 
+UU" &WW WWC Gù
 ]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.cs
 
  
@@ -630,29 +658,4 @@ _/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/Applicat
 ¡¡ '
 
  
-ŸŸ „
-a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs
-
- "
-  2
-( 2 $O Y& 0[ e
-
- %
- ## 
-!!4 ?## &##Q \
-
-** &
-,, 00 
-..5 @00 &00Q \
-
-77 !
-99 #== 
-;;' 8==! 2==] n
-
-DD (
-FF *JJ %
-HH. FJJ( @	JJk ƒ
-
-QQ 
-SS WW 
-UU" &WW WWC G
+ŸŸ 

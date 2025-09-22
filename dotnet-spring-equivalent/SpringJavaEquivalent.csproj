@@ -62,10 +62,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="debug-jwt.cs" />
-    <Content Remove="debug-jwt.cs" />
-    <EmbeddedResource Remove="debug-jwt.cs" />
-    <None Remove="debug-jwt.cs" />
+    <Compile Remove="debug/**" />
+    <Content Remove="debug/**" />
+    <EmbeddedResource Remove="debug/**" />
+    <None Remove="debug/**" />
   </ItemGroup>
 
 </Project>

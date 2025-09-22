@@ -1740,7 +1740,7 @@ WriteToken
 ÌÌ 	
 }
 ÍÍ 
-}ÎÎ õu
+}ÎÎ ¥x
 E/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.cs
 var 
 builder 
@@ -2837,20 +2837,48 @@ MapMetrics
 ÊÊ 
 Program
 ÊÊ 
-{ËË 
+{ËË 
+private
+ÌÌ 
+const
+ÌÌ 
+string
+ÌÌ  
+ConstructorMessage
+ÌÌ +
+=
+ÌÌ, -
+$str
+ÌÌ. J
+;
+ÌÌJ K
 	protected
-ÌÌ 
+ÎÎ 
 Program
-ÌÌ 
+ÎÎ 
 (
-ÌÌ 
+ÎÎ 
 )
-ÌÌ 
+ÎÎ 
 {
-ÌÌ 
+ÏÏ 
+Console
+ÑÑ 
+.
+ÑÑ 
+	WriteLine
+ÑÑ 
+(
+ÑÑ  
+ConstructorMessage
+ÑÑ ,
+)
+ÑÑ, -
+;
+ÑÑ- .
 }
-ÌÌ 
-}ÍÍ ùb
+ÓÓ 
+}ÔÔ ùb
 a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/VulnerableJWTController.cs
 	namespace 	 
 SpringJavaEquivalent
@@ -8473,7 +8501,298 @@ HttpDeleteLL 
 )TT 
 ;TT 
 }UU 
-}VV òY
+}VV Í)
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs
+	namespace 	 
+SpringJavaEquivalent
+ 
+. 
+Authorization ,
+;, -
+public 
+class !
+PermissionRequirement "
+:# $%
+IAuthorizationRequirement% >
+{ 
+public 
+
+string 
+
+Permission 
+{ 
+get "
+;" #
+}$ %
+public 
+!
+PermissionRequirement  
+(  !
+string! '
+
+permission( 2
+)2 3
+{ 
+this 
+. 
+
+Permission 
+= 
+
+permission $
+??% '
+throw( -
+new. 1!
+ArgumentNullException2 G
+(G H
+nameofH N
+(N O
+
+permissionO Y
+)Y Z
+)Z [
+;[ \
+if 
+
+( 
+string 
+. 
+IsNullOrWhiteSpace %
+(% &
+
+permission& 0
+)0 1
+)1 2
+{ 	
+throw 
+new 
+ArgumentException '
+(' (
+$str( R
+,R S
+nameofT Z
+(Z [
+
+permission[ e
+)e f
+)f g
+;g h
+} 	
+} 
+} 
+public 
+class $
+AnyPermissionRequirement %
+:& '%
+IAuthorizationRequirement( A
+{ 
+public 
+
+string 
+[ 
+] 
+Permissions 
+{  !
+get" %
+;% &
+}' (
+public!! 
+$
+AnyPermissionRequirement!! #
+(!!# $
+params!!$ *
+string!!+ 1
+[!!1 2
+]!!2 3
+permissions!!4 ?
+)!!? @
+{"" 
+this## 
+.## 
+Permissions## 
+=## 
+permissions## &
+??##' )
+throw##* /
+new##0 3!
+ArgumentNullException##4 I
+(##I J
+nameof##J P
+(##P Q
+permissions##Q \
+)##\ ]
+)##] ^
+;##^ _
+}$$ 
+}%% 
+public** 
+class** %
+AllPermissionsRequirement** &
+:**' (%
+IAuthorizationRequirement**) B
+{++ 
+public,, 
+
+string,, 
+[,, 
+],, 
+Permissions,, 
+{,,  !
+get,," %
+;,,% &
+},,' (
+public.. 
+%
+AllPermissionsRequirement.. $
+(..$ %
+params..% +
+string.., 2
+[..2 3
+]..3 4
+permissions..5 @
+)..@ A
+{// 
+this00 
+.00 
+Permissions00 
+=00 
+permissions00 &
+??00' )
+throw00* /
+new000 3!
+ArgumentNullException004 I
+(00I J
+nameof00J P
+(00P Q
+permissions00Q \
+)00\ ]
+)00] ^
+;00^ _
+}11 
+}22 
+public77 
+class77  
+AuthLevelRequirement77 !
+:77" #%
+IAuthorizationRequirement77$ =
+{88 
+public99 
+
+string99 
+RequiredAuthLevel99 #
+{99$ %
+get99& )
+;99) *
+}99+ ,
+public;; 
+ 
+AuthLevelRequirement;; 
+(;;  
+string;;  &
+requiredAuthLevel;;' 8
+);;8 9
+{<< 
+this== 
+.== 
+RequiredAuthLevel== 
+===  
+requiredAuthLevel==! 2
+??==3 5
+throw==6 ;
+new==< ?!
+ArgumentNullException==@ U
+(==U V
+nameof==V \
+(==\ ]
+requiredAuthLevel==] n
+)==n o
+)==o p
+;==p q
+}>> 
+}?? 
+publicDD 
+classDD '
+IdentityProviderRequirementDD (
+:DD) *%
+IAuthorizationRequirementDD+ D
+{EE 
+publicFF 
+
+stringFF $
+RequiredIdentityProviderFF *
+{FF+ ,
+getFF- 0
+;FF0 1
+}FF2 3
+publicHH 
+'
+IdentityProviderRequirementHH &
+(HH& '
+stringHH' -$
+requiredIdentityProviderHH. F
+)HHF G
+{II 
+thisJJ 
+.JJ $
+RequiredIdentityProviderJJ %
+=JJ& '$
+requiredIdentityProviderJJ( @
+??JJA C
+throwJJD I
+newJJJ M!
+ArgumentNullExceptionJJN c
+(JJc d
+nameofJJd j
+(JJj k%
+requiredIdentityProvider	JJk ƒ
+)
+JJƒ „
+)
+JJ„ …
+;
+JJ… †
+}KK 
+}LL 
+publicQQ 
+classQQ 
+RoleRequirementQQ 
+:QQ %
+IAuthorizationRequirementQQ 8
+{RR 
+publicSS 
+
+stringSS 
+RoleSS 
+{SS 
+getSS 
+;SS 
+}SS 
+publicUU 
+
+RoleRequirementUU 
+(UU 
+stringUU !
+roleUU" &
+)UU& '
+{VV 
+thisWW 
+.WW 
+RoleWW 
+=WW 
+roleWW 
+??WW 
+throwWW !
+newWW" %!
+ArgumentNullExceptionWW& ;
+(WW; <
+nameofWW< B
+(WWB C
+roleWWC G
+)WWG H
+)WWH I
+;WWI J
+}XX 
+}YY òY
 ]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.cs
 	namespace 	 
 SpringJavaEquivalent
@@ -9203,295 +9522,4 @@ permissionOO0 :
 ¤¤! "
 }
 ¥¥ 
-}¦¦ Í)
-a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.cs
-	namespace 	 
-SpringJavaEquivalent
- 
-. 
-Authorization ,
-;, -
-public 
-class !
-PermissionRequirement "
-:# $%
-IAuthorizationRequirement% >
-{ 
-public 
-
-string 
-
-Permission 
-{ 
-get "
-;" #
-}$ %
-public 
-!
-PermissionRequirement  
-(  !
-string! '
-
-permission( 2
-)2 3
-{ 
-this 
-. 
-
-Permission 
-= 
-
-permission $
-??% '
-throw( -
-new. 1!
-ArgumentNullException2 G
-(G H
-nameofH N
-(N O
-
-permissionO Y
-)Y Z
-)Z [
-;[ \
-if 
-
-( 
-string 
-. 
-IsNullOrWhiteSpace %
-(% &
-
-permission& 0
-)0 1
-)1 2
-{ 	
-throw 
-new 
-ArgumentException '
-(' (
-$str( R
-,R S
-nameofT Z
-(Z [
-
-permission[ e
-)e f
-)f g
-;g h
-} 	
-} 
-} 
-public 
-class $
-AnyPermissionRequirement %
-:& '%
-IAuthorizationRequirement( A
-{ 
-public 
-
-string 
-[ 
-] 
-Permissions 
-{  !
-get" %
-;% &
-}' (
-public!! 
-$
-AnyPermissionRequirement!! #
-(!!# $
-params!!$ *
-string!!+ 1
-[!!1 2
-]!!2 3
-permissions!!4 ?
-)!!? @
-{"" 
-this## 
-.## 
-Permissions## 
-=## 
-permissions## &
-??##' )
-throw##* /
-new##0 3!
-ArgumentNullException##4 I
-(##I J
-nameof##J P
-(##P Q
-permissions##Q \
-)##\ ]
-)##] ^
-;##^ _
-}$$ 
-}%% 
-public** 
-class** %
-AllPermissionsRequirement** &
-:**' (%
-IAuthorizationRequirement**) B
-{++ 
-public,, 
-
-string,, 
-[,, 
-],, 
-Permissions,, 
-{,,  !
-get,," %
-;,,% &
-},,' (
-public.. 
-%
-AllPermissionsRequirement.. $
-(..$ %
-params..% +
-string.., 2
-[..2 3
-]..3 4
-permissions..5 @
-)..@ A
-{// 
-this00 
-.00 
-Permissions00 
-=00 
-permissions00 &
-??00' )
-throw00* /
-new000 3!
-ArgumentNullException004 I
-(00I J
-nameof00J P
-(00P Q
-permissions00Q \
-)00\ ]
-)00] ^
-;00^ _
-}11 
-}22 
-public77 
-class77  
-AuthLevelRequirement77 !
-:77" #%
-IAuthorizationRequirement77$ =
-{88 
-public99 
-
-string99 
-RequiredAuthLevel99 #
-{99$ %
-get99& )
-;99) *
-}99+ ,
-public;; 
- 
-AuthLevelRequirement;; 
-(;;  
-string;;  &
-requiredAuthLevel;;' 8
-);;8 9
-{<< 
-this== 
-.== 
-RequiredAuthLevel== 
-===  
-requiredAuthLevel==! 2
-??==3 5
-throw==6 ;
-new==< ?!
-ArgumentNullException==@ U
-(==U V
-nameof==V \
-(==\ ]
-requiredAuthLevel==] n
-)==n o
-)==o p
-;==p q
-}>> 
-}?? 
-publicDD 
-classDD '
-IdentityProviderRequirementDD (
-:DD) *%
-IAuthorizationRequirementDD+ D
-{EE 
-publicFF 
-
-stringFF $
-RequiredIdentityProviderFF *
-{FF+ ,
-getFF- 0
-;FF0 1
-}FF2 3
-publicHH 
-'
-IdentityProviderRequirementHH &
-(HH& '
-stringHH' -$
-requiredIdentityProviderHH. F
-)HHF G
-{II 
-thisJJ 
-.JJ $
-RequiredIdentityProviderJJ %
-=JJ& '$
-requiredIdentityProviderJJ( @
-??JJA C
-throwJJD I
-newJJJ M!
-ArgumentNullExceptionJJN c
-(JJc d
-nameofJJd j
-(JJj k%
-requiredIdentityProvider	JJk ƒ
-)
-JJƒ „
-)
-JJ„ …
-;
-JJ… †
-}KK 
-}LL 
-publicQQ 
-classQQ 
-RoleRequirementQQ 
-:QQ %
-IAuthorizationRequirementQQ 8
-{RR 
-publicSS 
-
-stringSS 
-RoleSS 
-{SS 
-getSS 
-;SS 
-}SS 
-publicUU 
-
-RoleRequirementUU 
-(UU 
-stringUU !
-roleUU" &
-)UU& '
-{VV 
-thisWW 
-.WW 
-RoleWW 
-=WW 
-roleWW 
-??WW 
-throwWW !
-newWW" %!
-ArgumentNullExceptionWW& ;
-(WW; <
-nameofWW< B
-(WWB C
-roleWWC G
-)WWG H
-)WWH I
-;WWI J
-}XX 
-}YY 
+}¦¦ 

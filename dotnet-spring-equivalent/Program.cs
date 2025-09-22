@@ -201,5 +201,12 @@ app.Run();
 // Make Program class accessible for testing
 public partial class Program
 {
-    protected Program() { }
+    private const string ConstructorMessage = "Program constructor called";
+    
+    protected Program() 
+    { 
+        #pragma warning disable CA1303 // Do not pass literals as localized parameters
+        Console.WriteLine(ConstructorMessage);
+        #pragma warning restore CA1303 // Do not pass literals as localized parameters
+    }
 }

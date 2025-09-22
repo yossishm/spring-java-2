@@ -10,6 +10,6 @@ a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/Vulnerab
 Y/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/TokenController.csutf-8d
 [/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/MetricsController.csutf-8m
 d/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/EnhancedAuthTestController.csutf-8h
-_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.csutf-8f
-]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.csutf-8j
-a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.csutf-8
+_/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Controllers/ApplicationController.csutf-8j
+a/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionRequirement.csutf-8f
+]/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Authorization/PermissionHandler.csutf-8

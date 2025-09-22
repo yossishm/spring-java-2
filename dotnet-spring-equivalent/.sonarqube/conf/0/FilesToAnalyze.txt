@@ -30,12 +30,14 @@
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/README.md
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/SECURITY-CONFIGURATION.md
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/181cf6d6-e861-4031-ac6b-479c09c133c8/coverage.cobertura.xml
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/1faa27cb-72e9-495a-b9ef-453357b47218/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/5bd1fa5e-1a7a-4257-90b0-5b91d141bd1c/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/6b8f9fa6-62da-490e-b03d-8824636b579b/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/950b6099-7cf7-4a53-9ed1-1ed4eb863ed9/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/98478848-273e-488b-9524-3b61adb157ef/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/aff6f051-1470-4303-9d07-c116348adf1e/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/c6375e15-c7f9-473e-9022-c001dd256c30/coverage.cobertura.xml
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/e861d6a6-47e5-4091-85dc-70e3ba108e1c/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-21_17_16_46.trx
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-21_17_16_46/In/yshmulev-mac/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-21_17_27_22.trx
@@ -44,3 +46,7 @@
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-21_22_53_06/In/yshmulev-mac/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-21_23_56_29.trx
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-21_23_56_29/In/yshmulev-mac/coverage.cobertura.xml
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-22_12_28_04.trx
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-22_12_28_04/In/yshmulev-mac/coverage.cobertura.xml
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-22_12_28_54.trx
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-22_12_28_54/In/yshmulev-mac/coverage.cobertura.xml

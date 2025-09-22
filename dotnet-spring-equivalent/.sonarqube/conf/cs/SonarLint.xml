@@ -2,6 +2,10 @@
 <AnalysisInput>
   <Settings>
     <Setting>
+      <Key>sonar.cs.opencover.reportsPaths</Key>
+      <Value>/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/coverage.opencover.xml</Value>
+    </Setting>
+    <Setting>
       <Key>sonar.cs.ignoreHeaderComments</Key>
       <Value>true</Value>
     </Setting>

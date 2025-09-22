@@ -12,18 +12,21 @@
       },
       "results": [
         {
-          "ruleId": "SA1502",
+          "ruleId": "CA1303",
           "level": "warning",
-          "message": "Element should not be on a single line",
+          "message": "Method 'Program.Program()' passes a literal string as parameter 'value' of a call to 'void Console.WriteLine(string? value)'. Retrieve the following string(s) from a resource table instead: \"Program constructor called\".",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
           "locations": [
             {
               "resultFile": {
                 "uri": "file:///Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/Program.cs",
                 "region": {
-                  "startLine": 204,
-                  "startColumn": 25,
-                  "endLine": 204,
-                  "endColumn": 26
+                  "startLine": 209,
+                  "startColumn": 27,
+                  "endLine": 209,
+                  "endColumn": 45
                 }
               }
             }
@@ -34,15 +37,21 @@
         }
       ],
       "rules": {
-        "SA1502": {
-          "id": "SA1502",
-          "shortDescription": "Element should not be on a single line",
-          "fullDescription": "A C# element containing opening and closing braces is written completely on a single line.",
+        "CA1303": {
+          "id": "CA1303",
+          "shortDescription": "Do not pass literals as localized parameters",
+          "fullDescription": "A method passes a string literal as a parameter to a constructor or method in the .NET Framework class library and that string should be localizable. To fix a violation of this rule, replace the string literal with a string retrieved through an instance of the ResourceManager class.",
           "defaultLevel": "warning",
-          "helpUri": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1502.md",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1303",
           "properties": {
-            "category": "StyleCop.CSharp.LayoutRules",
-            "isEnabledByDefault": true
+            "category": "Globalization",
+            "isEnabledByDefault": false,
+            "tags": [
+              "PortedFromFxCop",
+              "Dataflow",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
           }
         }
       }
