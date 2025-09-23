@@ -191,9 +191,6 @@ jobs:
     name: .NET SonarCloud Analysis
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
-    defaults:
-      run:
-        working-directory: dotnet-spring-equivalent
 
     steps:
     - name: Checkout code
@@ -206,26 +203,27 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         cache: true
-        cache-dependency-path: |
-          dotnet-spring-equivalent/*.csproj
-          dotnet-spring-equivalent/**/*.csproj
+        cache-dependency-path: dotnet-spring-equivalent/SpringJavaEquivalent.csproj
 
     - name: Restore dependencies
-      run: dotnet restore SpringJavaEquivalent.csproj --disable-lock-file-packages
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages
+      working-directory: .
 
     - name: Build and test with coverage
       run: |
-        dotnet build SpringJavaEquivalent.csproj --configuration Release --no-restore
-        dotnet test SpringJavaEquivalent.csproj --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
+        dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-restore
+        dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./dotnet-spring-equivalent/TestResults
+      working-directory: .
 
     - name: Generate SonarQube coverage report
       run: |
         # Find and copy coverage file
-        find ./TestResults -name "coverage.cobertura.xml" -exec cp {} ./TestResults/coverage.xml \; 2>/dev/null || true
+        find ./dotnet-spring-equivalent/TestResults -name "coverage.cobertura.xml" -exec cp {} ./dotnet-spring-equivalent/TestResults/coverage.xml \; 2>/dev/null || true
 
         # Generate SonarQube-compatible coverage format
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./TestResults/coverage.xml" -targetdir:"./TestResults" -reporttypes:"SonarQube" -sourcedirs:"."
+        reportgenerator -reports:"./dotnet-spring-equivalent/TestResults/coverage.xml" -targetdir:"./dotnet-spring-equivalent/TestResults" -reporttypes:"SonarQube" -sourcedirs:"./dotnet-spring-equivalent"
+      working-directory: .
 
     - name: SonarCloud Analysis
       uses: sonarsource/sonarcloud-github-action@v2
@@ -233,6 +231,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
+        projectBaseDir: dotnet-spring-equivalent
         args: >
           -Dsonar.projectKey=spring-java-2-dotnet-spring-equivalent
           -Dsonar.organization=yossishm
