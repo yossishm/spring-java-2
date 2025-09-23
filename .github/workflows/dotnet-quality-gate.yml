@@ -217,10 +217,17 @@ jobs:
         dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.Tests/SpringJavaEquivalent.Tests.csproj --configuration Release --no-restore
 
         echo "🧪 Running tests with coverage..."
-        dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./dotnet-spring-equivalent/TestResults --settings ./dotnet-spring-equivalent/coverlet.runsettings --verbosity normal
+        dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./dotnet-spring-equivalent/coverlet.runsettings --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+        echo "📊 Checking for test results in default location..."
+        find . -name "*.trx" -o -name "coverage.cobertura.xml" | head -10 || echo "No test result files found"
+
+        echo "📂 Creating TestResults directory and copying coverage files..."
+        mkdir -p ./dotnet-spring-equivalent/TestResults
+        find . -name "coverage.cobertura.xml" -exec cp {} ./dotnet-spring-equivalent/TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
 
         echo "📊 Checking test results..."
-        ls -la ./dotnet-spring-equivalent/TestResults/ || echo "❌ TestResults directory not created"
+        ls -la ./dotnet-spring-equivalent/TestResults/ || echo "❌ TestResults directory empty"
       working-directory: .
 
     - name: Generate SonarQube coverage report
