@@ -213,6 +213,17 @@ jobs:
 
     - name: SonarScanner Begin
       run: |
+        echo "🔍 Current working directory for SonarCloud:"
+        pwd
+        echo "🔍 Directory structure:"
+        ls -la
+        echo "🔍 TestResults directory:"
+        ls -la TestResults/ || echo "TestResults directory not found"
+        echo "🔍 JaCoCo directory:"
+        ls -la TestResults/JaCoCo/ || echo "JaCoCo directory not found"
+        echo "🔍 Looking for SonarQube.xml:"
+        find . -name "SonarQube.xml" -type f || echo "SonarQube.xml not found"
+        echo "🔍 Starting SonarScanner..."
         dotnet sonarscanner begin \
           /k:"spring-java-2-dotnet" \
           /o:"yossishm" \
@@ -332,19 +343,19 @@ jobs:
     - name: SonarScanner End
       run: |
         echo "🔍 Final check before SonarCloud analysis..."
+        echo "🔍 Current working directory:"
+        pwd
         ls -la ./TestResults/ || echo "TestResults directory not found"
         echo "🔍 Looking for SonarQube.xml file..."
         find . -name "SonarQube.xml" -type f || echo "SonarQube.xml not found"
-        echo "🔍 Current working directory:"
-        pwd
         echo "🔍 Directory structure:"
         ls -la
         echo "🔍 Checking if SonarQube.xml exists at expected path:"
-        if [ -f "./TestResults/SonarQube.xml" ]; then
-          echo "✅ SonarQube.xml found at ./TestResults/SonarQube.xml"
-          echo "File size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
+        if [ -f "./TestResults/JaCoCo/SonarQube.xml" ]; then
+          echo "✅ SonarQube.xml found at ./TestResults/JaCoCo/SonarQube.xml"
+          echo "File size: $(wc -c < ./TestResults/JaCoCo/SonarQube.xml) bytes"
         else
-          echo "❌ SonarQube.xml NOT found at ./TestResults/SonarQube.xml"
+          echo "❌ SonarQube.xml NOT found at ./TestResults/JaCoCo/SonarQube.xml"
         fi
         dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       working-directory: dotnet-spring-equivalent
