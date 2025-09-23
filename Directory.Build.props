@@ -1,7 +1,0 @@
-<Project>
-  <!-- Disable package lock files for all projects in this workspace -->
-  <PropertyGroup>
-    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
-    <RestoreLockedMode>false</RestoreLockedMode>
-  </PropertyGroup>
-</Project>

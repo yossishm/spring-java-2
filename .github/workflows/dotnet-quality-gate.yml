@@ -42,10 +42,10 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-        cache: true
+        cache: false
     
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
 
     - name: Build project
       run: dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-restore
@@ -149,10 +149,10 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-        cache: true
+        cache: false
     
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
     
     - name: Security Scan with Trivy
       run: |
