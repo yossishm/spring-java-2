@@ -240,15 +240,16 @@ jobs:
         fi
 
         # Generate SonarQube-compatible coverage format
-        if [ -f "./dotnet-spring-equivalent/TestResults/coverage.xml" ]; then
-          echo "🔄 Converting coverage.xml to SonarQube format..."
-          echo "Coverage file size: $(wc -c < ./dotnet-spring-equivalent/TestResults/coverage.xml) bytes"
-          echo "First few lines of coverage.xml:"
-          head -10 ./dotnet-spring-equivalent/TestResults/coverage.xml
+        if [ -f "./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" ]; then
+          echo "✅ Found coverage.cobertura.xml"
+          echo "Coverage file size: $(wc -c < ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml) bytes"
+          echo "First few lines of coverage.cobertura.xml:"
+          head -10 ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml
 
+          echo "🔄 Converting coverage.cobertura.xml to SonarQube format..."
           dotnet tool install -g dotnet-reportgenerator-globaltool
           echo "Running reportgenerator..."
-          reportgenerator "-reports:./dotnet-spring-equivalent/TestResults/coverage.xml" "-targetdir:./dotnet-spring-equivalent/TestResults" "-reporttypes:SonarQube" "-sourcedirs:./dotnet-spring-equivalent" || echo "Reportgenerator failed with exit code $?"
+          reportgenerator "-reports:./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" "-targetdir:./dotnet-spring-equivalent/TestResults" "-reporttypes:SonarQube" "-sourcedirs:./dotnet-spring-equivalent"
 
           echo "✅ Checking if SonarQube.xml was created..."
           if [ -f "./dotnet-spring-equivalent/TestResults/SonarQube.xml" ]; then
@@ -257,12 +258,14 @@ jobs:
             echo "First few lines of SonarQube.xml:"
             head -5 ./dotnet-spring-equivalent/TestResults/SonarQube.xml
           else
-            echo "❌ SonarQube.xml not created"
-            echo "Checking reportgenerator output..."
+            echo "❌ SonarQube.xml not created - failing workflow"
             ls -la ./dotnet-spring-equivalent/TestResults/
+            exit 1
           fi
         else
-          echo "❌ No coverage.xml file available for SonarQube report generation"
+          echo "❌ No coverage.cobertura.xml file found - failing workflow"
+          ls -la ./dotnet-spring-equivalent/TestResults/ || echo "TestResults directory not found"
+          exit 1
         fi
       working-directory: .
 
