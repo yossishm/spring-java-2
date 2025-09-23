@@ -1,4 +1,4 @@
-// <copyright file="AuthorizationTests.cs" company="SpringJavaEquivalent">
+// <copyright file="PermissionRequirementTests.cs" company="SpringJavaEquivalent">
 // Copyright (c) SpringJavaEquivalent. All rights reserved.
 // </copyright>
 

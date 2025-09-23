@@ -1,4 +1,4 @@
-// <copyright file="PermissionHandlerTests.cs" company="SpringJavaEquivalent">
+// <copyright file="AdvancedPermissionHandlerTests.cs" company="SpringJavaEquivalent">
 // Copyright (c) SpringJavaEquivalent. All rights reserved.
 // </copyright>
 

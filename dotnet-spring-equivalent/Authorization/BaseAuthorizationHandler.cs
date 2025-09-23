@@ -1,4 +1,4 @@
-// <copyright file="PermissionHandler.cs" company="SpringJavaEquivalent">
+// <copyright file="BaseAuthorizationHandler.cs" company="SpringJavaEquivalent">
 // Copyright (c) 2024. All rights reserved.
 // </copyright>
 
