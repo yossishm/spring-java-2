@@ -19,14 +19,14 @@ public class EnhancedAuthTestControllerTests
         {
             HttpContext = new DefaultHttpContext()
         };
-        _controller.ControllerContext = context;
+        this._controller.ControllerContext = context;
     }
 
     [Fact]
     public void PublicEndpoint_ShouldReturnOkResult()
     {
         // Act
-        var result = _controller.PublicEndpoint();
+        var result = this._controller.PublicEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -38,10 +38,10 @@ public class EnhancedAuthTestControllerTests
     public void AuthenticatedEndpoint_WithAuthenticatedUser_ShouldReturnOkResult()
     {
         // Arrange
-        SetupAuthenticatedUser();
+        this.SetupAuthenticatedUser();
 
         // Act
-        var result = _controller.AuthenticatedEndpoint();
+        var result = this._controller.AuthenticatedEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -53,10 +53,10 @@ public class EnhancedAuthTestControllerTests
     public void UserRoleEndpoint_WithUserRole_ShouldReturnOkResult()
     {
         // Arrange
-        SetupUserRole();
+        this.SetupUserRole();
 
         // Act
-        var result = _controller.UserRoleEndpoint();
+        var result = this._controller.UserRoleEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -68,10 +68,10 @@ public class EnhancedAuthTestControllerTests
     public void AdminRoleEndpoint_WithAdminRole_ShouldReturnOkResult()
     {
         // Arrange
-        SetupAdminRole();
+        this.SetupAdminRole();
 
         // Act
-        var result = _controller.AdminRoleEndpoint();
+        var result = this._controller.AdminRoleEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -83,10 +83,10 @@ public class EnhancedAuthTestControllerTests
     public void CacheReadEndpoint_WithReadPermission_ShouldReturnOkResult()
     {
         // Arrange
-        SetupReadPermission();
+        this.SetupReadPermission();
 
         // Act
-        var result = _controller.CacheReadEndpoint();
+        var result = this._controller.CacheReadEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -98,10 +98,10 @@ public class EnhancedAuthTestControllerTests
     public void CacheWriteEndpoint_WithWritePermission_ShouldReturnOkResult()
     {
         // Arrange
-        SetupWritePermission();
+        this.SetupWritePermission();
 
         // Act
-        var result = _controller.CacheWriteEndpoint();
+        var result = this._controller.CacheWriteEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -119,7 +119,7 @@ public class EnhancedAuthTestControllerTests
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
         
-        _controller.ControllerContext.HttpContext.User = principal;
+        this._controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupUserRole()
@@ -133,7 +133,7 @@ public class EnhancedAuthTestControllerTests
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
         
-        _controller.ControllerContext.HttpContext.User = principal;
+        this._controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupAdminRole()
@@ -147,7 +147,7 @@ public class EnhancedAuthTestControllerTests
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
         
-        _controller.ControllerContext.HttpContext.User = principal;
+        this._controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupReadPermission()
@@ -161,7 +161,7 @@ public class EnhancedAuthTestControllerTests
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
         
-        _controller.ControllerContext.HttpContext.User = principal;
+        this._controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupWritePermission()
@@ -175,6 +175,6 @@ public class EnhancedAuthTestControllerTests
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
         
-        _controller.ControllerContext.HttpContext.User = principal;
+        this._controller.ControllerContext.HttpContext.User = principal;
     }
 }

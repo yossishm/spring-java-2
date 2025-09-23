@@ -17,7 +17,7 @@ public class MetricsControllerTests
     public async Task TestMetrics_ShouldReturnString()
     {
         // Act
-        var result = await _controller.TestMetrics();
+        var result = await this._controller.TestMetrics();
 
         // Assert
         Assert.IsType<string>(result);
@@ -28,7 +28,7 @@ public class MetricsControllerTests
     public void IncrementCounter_ShouldReturnString()
     {
         // Act
-        var result = _controller.IncrementCounter(5);
+        var result = this._controller.IncrementCounter(5);
 
         // Assert
         Assert.IsType<string>(result);
@@ -39,7 +39,7 @@ public class MetricsControllerTests
     public async Task SlowEndpoint_ShouldReturnString()
     {
         // Act
-        var result = await _controller.SlowEndpoint();
+        var result = await this._controller.SlowEndpoint();
 
         // Assert
         Assert.IsType<string>(result);
