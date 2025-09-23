@@ -202,10 +202,11 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-        cache: false
+        cache: true
+        cache-dependency-path: dotnet-spring-equivalent/packages.lock.json
 
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
       working-directory: .
 
     - name: Build and test with coverage
