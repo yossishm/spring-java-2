@@ -1,3 +1,7 @@
+// <copyright file="JwtServiceTests.cs" company="SpringJavaEquivalent">
+// Copyright (c) SpringJavaEquivalent. All rights reserved.
+// </copyright>
+
 namespace SpringJavaEquivalent.Tests;
 
 using Microsoft.Extensions.Configuration;
@@ -7,16 +11,16 @@ using Xunit;
 
 public class JwtServiceTests
 {
-    private readonly Mock<IConfiguration> _mockConfiguration;
-    private readonly JwtService _jwtService;
+    private readonly Mock<IConfiguration> mockConfiguration;
+    private readonly JwtService jwtService;
 
     public JwtServiceTests()
     {
-        _mockConfiguration = new Mock<IConfiguration>();
-        _mockConfiguration.Setup(x => x["Jwt:Secret"]).Returns("test-secret-key-that-is-long-enough-for-hmac-sha256");
-        _mockConfiguration.Setup(x => x["Jwt:ExpirationHours"]).Returns("24");
+        this.mockConfiguration = new Mock<IConfiguration>();
+        this.mockConfiguration.Setup(x => x["Jwt:Secret"]).Returns("test-secret-key-that-is-long-enough-for-hmac-sha256");
+        this.mockConfiguration.Setup(x => x["Jwt:ExpirationHours"]).Returns("24");
 
-        _jwtService = new JwtService(_mockConfiguration.Object);
+        this.jwtService = new JwtService(this.mockConfiguration.Object);
     }
 
     [Fact]
@@ -28,7 +32,7 @@ public class JwtServiceTests
         var permissions = new List<string> { "READ", "WRITE" };
 
         // Act
-        var token = _jwtService.GenerateToken(username, roles, permissions);
+        var token = this.jwtService.GenerateToken(username, roles, permissions);
 
         // Assert
         Assert.NotNull(token);
@@ -43,7 +47,7 @@ public class JwtServiceTests
         var permissions = new List<string> { "READ" };
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => _jwtService.GenerateToken(null!, roles, permissions));
+        Assert.Throws<ArgumentNullException>(() => this.jwtService.GenerateToken(null!, roles, permissions));
     }
 
     [Fact]
@@ -53,10 +57,10 @@ public class JwtServiceTests
         var username = "testuser";
         var roles = new List<string> { "USER" };
         var permissions = new List<string> { "READ" };
-        var token = _jwtService.GenerateToken(username, roles, permissions);
+        var token = this.jwtService.GenerateToken(username, roles, permissions);
 
         // Act
-        var isValid = _jwtService.ValidateToken(token);
+        var isValid = this.jwtService.ValidateToken(token);
 
         // Assert
         Assert.True(isValid);
@@ -69,7 +73,7 @@ public class JwtServiceTests
         var invalidToken = "invalid.token.here";
 
         // Act
-        var isValid = _jwtService.ValidateToken(invalidToken);
+        var isValid = this.jwtService.ValidateToken(invalidToken);
 
         // Assert
         Assert.False(isValid);
@@ -82,7 +86,7 @@ public class JwtServiceTests
         var username = "testuser";
         var roles = new List<string> { "USER" };
         var permissions = new List<string> { "READ" };
-        var token = _jwtService.GenerateToken(username, roles, permissions);
+        var token = this.jwtService.GenerateToken(username, roles, permissions);
 
         // Act
         var extractedUsername = JwtService.ExtractUsername(token);
@@ -98,7 +102,7 @@ public class JwtServiceTests
         var username = "testuser";
         var roles = new List<string> { "USER", "ADMIN" };
         var permissions = new List<string> { "READ" };
-        var token = _jwtService.GenerateToken(username, roles, permissions);
+        var token = this.jwtService.GenerateToken(username, roles, permissions);
 
         // Act
         var extractedRoles = JwtService.ExtractRoles(token);
@@ -116,7 +120,7 @@ public class JwtServiceTests
         var username = "testuser";
         var roles = new List<string> { "USER" };
         var permissions = new List<string> { "READ", "WRITE" };
-        var token = _jwtService.GenerateToken(username, roles, permissions);
+        var token = this.jwtService.GenerateToken(username, roles, permissions);
 
         // Act
         var extractedPermissions = JwtService.ExtractPermissions(token);
@@ -175,7 +179,7 @@ public class JwtServiceTests
         var permissions = new List<string> { "READ" };
 
         // Act
-        var token = _jwtService.GenerateToken(username, roles, permissions);
+        var token = this.jwtService.GenerateToken(username, roles, permissions);
 
         // Assert
         Assert.NotNull(token);
@@ -191,7 +195,7 @@ public class JwtServiceTests
         var permissions = new List<string>();
 
         // Act
-        var token = _jwtService.GenerateToken(username, roles, permissions);
+        var token = this.jwtService.GenerateToken(username, roles, permissions);
 
         // Assert
         Assert.NotNull(token);
@@ -207,7 +211,7 @@ public class JwtServiceTests
         var permissions = new List<string> { "READ" };
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => _jwtService.GenerateToken(username, roles, permissions));
+        Assert.Throws<ArgumentNullException>(() => this.jwtService.GenerateToken(username, roles, permissions));
     }
 
     [Fact]
@@ -219,7 +223,7 @@ public class JwtServiceTests
         List<string> permissions = null!;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => _jwtService.GenerateToken(username, roles, permissions));
+        Assert.Throws<ArgumentNullException>(() => this.jwtService.GenerateToken(username, roles, permissions));
     }
 
     [Fact]
@@ -249,7 +253,7 @@ public class JwtServiceTests
         var malformedToken = "not.a.valid.jwt.token";
 
         // Act
-        var isValid = _jwtService.ValidateToken(malformedToken);
+        var isValid = this.jwtService.ValidateToken(malformedToken);
 
         // Assert
         Assert.False(isValid);
@@ -262,7 +266,7 @@ public class JwtServiceTests
         var emptyToken = string.Empty;
 
         // Act
-        var isValid = _jwtService.ValidateToken(emptyToken);
+        var isValid = this.jwtService.ValidateToken(emptyToken);
 
         // Assert
         Assert.False(isValid);
@@ -275,7 +279,7 @@ public class JwtServiceTests
         string nullToken = null!;
 
         // Act
-        var isValid = _jwtService.ValidateToken(nullToken);
+        var isValid = this.jwtService.ValidateToken(nullToken);
 
         // Assert
         Assert.False(isValid);

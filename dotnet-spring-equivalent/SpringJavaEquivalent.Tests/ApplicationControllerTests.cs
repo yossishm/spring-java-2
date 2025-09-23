@@ -1,35 +1,39 @@
+// <copyright file="ApplicationControllerTests.cs" company="SpringJavaEquivalent">
+// Copyright (c) SpringJavaEquivalent. All rights reserved.
+// </copyright>
+
 namespace SpringJavaEquivalent.Tests;
 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SpringJavaEquivalent.Controllers;
-using System.Security.Claims;
 using Xunit;
 
 public class ApplicationControllerTests
 {
-    private readonly Mock<ILogger<ApplicationController>> _mockLogger;
-    private readonly ApplicationController _controller;
+    private readonly Mock<ILogger<ApplicationController>> mockLogger;
+    private readonly ApplicationController controller;
 
     public ApplicationControllerTests()
     {
-        this._mockLogger = new Mock<ILogger<ApplicationController>>();
-        this._controller = new ApplicationController(this._mockLogger.Object);
+        this.mockLogger = new Mock<ILogger<ApplicationController>>();
+        this.controller = new ApplicationController(this.mockLogger.Object);
         // Setup controller context
         var context = new ControllerContext
         {
-            HttpContext = new DefaultHttpContext()
+            HttpContext = new DefaultHttpContext(),
         };
-        this._controller.ControllerContext = context;
+        this.controller.ControllerContext = context;
     }
 
     [Fact]
     public void Home_ShouldReturnOkResult()
     {
         // Act
-        var result = this._controller.Home();
+        var result = this.controller.Home();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -45,7 +49,7 @@ public class ApplicationControllerTests
         this.SetupAuthenticatedUser();
 
         // Act
-        var result = this._controller.GetObject(id);
+        var result = this.controller.GetObject(id);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -61,7 +65,7 @@ public class ApplicationControllerTests
         this.SetupAuthenticatedUser();
 
         // Act
-        var result = this._controller.PutObject(id);
+        var result = this.controller.PutObject(id);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -77,7 +81,7 @@ public class ApplicationControllerTests
         this.SetupAuthenticatedUser();
 
         // Act
-        var result = this._controller.DeleteObject(id);
+        var result = this.controller.DeleteObject(id);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -94,6 +98,6 @@ public class ApplicationControllerTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this._controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 }

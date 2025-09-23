@@ -1,19 +1,24 @@
+// <copyright file="LocalRestClientTests.cs" company="SpringJavaEquivalent">
+// Copyright (c) SpringJavaEquivalent. All rights reserved.
+// </copyright>
+
 namespace SpringJavaEquivalent.Tests
 {
+    using System.Net;
+    using System.Net.Http;
     using Microsoft.Extensions.Logging;
     using Moq;
     using SpringJavaEquivalent.Services;
-    using System.Net;
-    using System.Net.Http;
     using Xunit;
 
     public class LocalRestClientTests : IDisposable
     {
-        private readonly LocalRestClient _localRestClient;
+        private readonly LocalRestClient localRestClient;
+        private bool disposed;
 
         public LocalRestClientTests()
         {
-            this._localRestClient = new LocalRestClient("test-auth");
+            this.localRestClient = new LocalRestClient("test-auth");
         }
 
         [Fact]
@@ -66,7 +71,7 @@ namespace SpringJavaEquivalent.Tests
             try
             {
                 // Act
-                var result = await this._localRestClient.GetAsync(endpoint);
+                await this.localRestClient.GetAsync(endpoint);
 
                 // Assert
                 // This will likely throw an exception due to no server running
@@ -86,7 +91,7 @@ namespace SpringJavaEquivalent.Tests
             Uri endpoint = null!;
 
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => this._localRestClient.GetAsync(endpoint));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => this.localRestClient.GetAsync(endpoint));
         }
 
         [Fact]
@@ -118,7 +123,21 @@ namespace SpringJavaEquivalent.Tests
 
         public void Dispose()
         {
-            this._localRestClient?.Dispose();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.localRestClient?.Dispose();
+                }
+
+                this.disposed = true;
+            }
         }
     }
 }
