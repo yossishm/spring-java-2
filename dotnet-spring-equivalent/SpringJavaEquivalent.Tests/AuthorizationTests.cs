@@ -50,7 +50,7 @@ public class PermissionHandlerTests
 
     public PermissionHandlerTests()
     {
-        _handler = new PermissionHandler();
+        this._handler = new PermissionHandler();
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await _handler.HandleAsync(context);
+        await this._handler.HandleAsync(context);
 
         // Assert
         Assert.True(context.HasSucceeded);
@@ -81,7 +81,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await _handler.HandleAsync(context);
+        await this._handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -98,7 +98,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await _handler.HandleAsync(context);
+        await this._handler.HandleAsync(context);
 
         // Assert
         Assert.True(context.HasSucceeded);
@@ -115,7 +115,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await _handler.HandleAsync(context);
+        await this._handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -132,7 +132,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await _handler.HandleAsync(context);
+        await this._handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -149,7 +149,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await _handler.HandleAsync(context);
+        await this._handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -166,7 +166,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await _handler.HandleAsync(context);
+        await this._handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);

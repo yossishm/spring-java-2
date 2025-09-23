@@ -10,7 +10,7 @@ public class MetricsControllerTests
 
     public MetricsControllerTests()
     {
-        _controller = new MetricsController();
+        this._controller = new MetricsController();
     }
 
     [Fact]

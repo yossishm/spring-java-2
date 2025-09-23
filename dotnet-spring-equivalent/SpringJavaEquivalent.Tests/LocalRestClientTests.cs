@@ -13,7 +13,7 @@ public class LocalRestClientTests : IDisposable
 
     public LocalRestClientTests()
     {
-        _localRestClient = new LocalRestClient("test-auth");
+        this._localRestClient = new LocalRestClient("test-auth");
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class LocalRestClientTests : IDisposable
         try
         {
             // Act
-            var result = await _localRestClient.GetAsync(endpoint);
+            var result = await this._localRestClient.GetAsync(endpoint);
 
             // Assert
             // This will likely throw an exception due to no server running
@@ -86,7 +86,7 @@ public class LocalRestClientTests : IDisposable
         Uri endpoint = null!;
 
         // Act & Assert
-        await Assert.ThrowsAsync<ArgumentNullException>(() => _localRestClient.GetAsync(endpoint));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => this._localRestClient.GetAsync(endpoint));
     }
 
     [Fact]
@@ -118,6 +118,6 @@ public class LocalRestClientTests : IDisposable
 
     public void Dispose()
     {
-        _localRestClient?.Dispose();
+        this._localRestClient?.Dispose();
     }
 }

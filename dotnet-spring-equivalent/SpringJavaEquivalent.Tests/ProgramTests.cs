@@ -26,7 +26,7 @@ public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
     /// <param name="factory">The web application factory.</param>
     public ProgramTests(WebApplicationFactory<Program> factory)
     {
-        _factory = factory.WithWebHostBuilder(builder =>
+        this._factory = factory.WithWebHostBuilder(builder =>
         {
             builder.UseSetting("Environment", "Testing");
         });
@@ -39,7 +39,7 @@ public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
     public void Application_StartsSuccessfully()
     {
         // Arrange & Act
-        var client = _factory.CreateClient();
+        var client = this._factory.CreateClient();
 
         // Assert
         Assert.NotNull(client);
@@ -53,7 +53,7 @@ public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task PublicEndpoint_ReturnsOk()
     {
         // Arrange
-        var client = _factory.CreateClient();
+        var client = this._factory.CreateClient();
 
         // Act
         var response = await client.GetAsync("/api/v1/enhanced-test/public");
@@ -72,7 +72,7 @@ public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
     public void Services_AreRegistered(Type serviceType)
     {
         // Arrange
-        var services = _factory.Services;
+        var services = this._factory.Services;
 
         // Act
         var service = services.GetService(serviceType);
@@ -96,7 +96,7 @@ public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task AuthorizationPolicies_AreRegistered(string policyName)
     {
         // Arrange
-        var services = _factory.Services;
+        var services = this._factory.Services;
         var policyProvider = services.GetRequiredService<IAuthorizationPolicyProvider>();
 
         // Act

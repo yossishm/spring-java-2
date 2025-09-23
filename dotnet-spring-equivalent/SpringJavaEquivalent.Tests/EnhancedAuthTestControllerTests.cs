@@ -12,7 +12,7 @@ public class EnhancedAuthTestControllerTests
 
     public EnhancedAuthTestControllerTests()
     {
-        _controller = new EnhancedAuthTestController();
+        this._controller = new EnhancedAuthTestController();
         
         // Setup controller context
         var context = new ControllerContext

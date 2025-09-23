@@ -15,22 +15,22 @@ public class ApplicationControllerTests
 
     public ApplicationControllerTests()
     {
-        _mockLogger = new Mock<ILogger<ApplicationController>>();
-        _controller = new ApplicationController(_mockLogger.Object);
+        this._mockLogger = new Mock<ILogger<ApplicationController>>();
+        this._controller = new ApplicationController(this._mockLogger.Object);
         
         // Setup controller context
         var context = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
-        _controller.ControllerContext = context;
+        this._controller.ControllerContext = context;
     }
 
     [Fact]
     public void Home_ShouldReturnOkResult()
     {
         // Act
-        var result = _controller.Home();
+        var result = this._controller.Home();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -46,7 +46,7 @@ public class ApplicationControllerTests
         this.SetupAuthenticatedUser();
 
         // Act
-        var result = _controller.GetObject(id);
+        var result = this._controller.GetObject(id);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -62,7 +62,7 @@ public class ApplicationControllerTests
         this.SetupAuthenticatedUser();
 
         // Act
-        var result = _controller.PutObject(id);
+        var result = this._controller.PutObject(id);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -78,7 +78,7 @@ public class ApplicationControllerTests
         this.SetupAuthenticatedUser();
 
         // Act
-        var result = _controller.DeleteObject(id);
+        var result = this._controller.DeleteObject(id);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -97,6 +97,6 @@ public class ApplicationControllerTests
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
         
-        _controller.ControllerContext.HttpContext.User = principal;
+        this._controller.ControllerContext.HttpContext.User = principal;
     }
 }

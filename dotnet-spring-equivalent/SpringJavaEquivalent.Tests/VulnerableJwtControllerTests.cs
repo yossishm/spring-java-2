@@ -10,7 +10,7 @@ public class VulnerableJwtControllerTests
 
     public VulnerableJwtControllerTests()
     {
-        _controller = new VulnerableJwtController();
+        this._controller = new VulnerableJwtController();
     }
 
     [Fact]

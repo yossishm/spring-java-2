@@ -20,18 +20,18 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
 
     public AuthorizationIntegrationTests(WebApplicationFactory<Program> factory)
     {
-        _factory = factory.WithWebHostBuilder(builder =>
+        this._factory = factory.WithWebHostBuilder(builder =>
         {
             builder.UseSetting("Environment", "Testing");
         });
-        _client = _factory.CreateClient();
+        this._client = this._factory.CreateClient();
     }
 
     [Fact]
     public async Task PublicEndpoint_ShouldReturnOk_WithoutAuthentication()
     {
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/public");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/public");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -41,7 +41,7 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task AuthenticatedEndpoint_ShouldReturnUnauthorized_WithoutToken()
     {
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/authenticated");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/authenticated");
 
         // Assert
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -51,14 +51,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task AuthenticatedEndpoint_ShouldReturnOk_WithValidToken()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/authenticated");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/authenticated");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -68,14 +68,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task AdminEndpoint_ShouldReturnForbidden_WithUserRole()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/admin-role");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/admin-role");
 
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
@@ -85,14 +85,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task AdminEndpoint_ShouldReturnOk_WithAdminRole()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("admin", new[] { "ADMIN" }, new[] { "CACHE_READ", "CACHE_WRITE", "ADMIN_ACCESS" });
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/admin-role");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/admin-role");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -102,14 +102,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task CacheReadEndpoint_ShouldReturnOk_WithReadPermission()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/cache-read");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/cache-read");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -119,14 +119,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task CacheWriteEndpoint_ShouldReturnForbidden_WithoutWritePermission()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/cache-write");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/cache-write");
 
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
@@ -136,14 +136,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task CacheWriteEndpoint_ShouldReturnOk_WithWritePermission()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_WRITE" });
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/cache-write");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/cache-write");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -153,14 +153,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task AuthLevelEndpoint_ShouldReturnOk_WithAAL2()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" }, "AAL2");
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/auth-level");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/auth-level");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -170,14 +170,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task IdentityProviderEndpoint_ShouldReturnOk_WithEnterpriseProvider()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" }, "AAL1", "enterprise");
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/identity-provider");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/identity-provider");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -187,14 +187,14 @@ public class AuthorizationIntegrationTests : IClassFixture<WebApplicationFactory
     public async Task MaximumSecurityEndpoint_ShouldReturnOk_WithAllRequirements()
     {
         // Arrange
-        var jwtService = _factory.Services.GetRequiredService<JwtService>();
+        var jwtService = this._factory.Services.GetRequiredService<JwtService>();
         var token = jwtService.GenerateToken("admin", new[] { "ADMIN" }, new[] { "CACHE_READ", "CACHE_WRITE", "ADMIN_ACCESS" }, "AAL2", "enterprise");
 
-        _client.DefaultRequestHeaders.Authorization = 
+        this._client.DefaultRequestHeaders.Authorization = 
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         // Act
-        var response = await _client.GetAsync("/api/v1/enhanced-test/maximum-security");
+        var response = await this._client.GetAsync("/api/v1/enhanced-test/maximum-security");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
