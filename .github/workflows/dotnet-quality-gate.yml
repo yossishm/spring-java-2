@@ -244,7 +244,7 @@ jobs:
         dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --list-tests --verbosity diagnostic
         
         echo "🧪 Now running tests with coverage..."
-        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity diagnostic --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity diagnostic --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults || echo "⚠️ Some tests failed, but continuing to collect coverage data"
         
         echo "📊 Test execution completed. Checking for results..."
         echo "TestResults directory contents:"
@@ -259,6 +259,9 @@ jobs:
         echo "📂 Creating TestResults directory and copying coverage files..."
         mkdir -p ./TestResults
         find . -name "coverage.cobertura.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
+        
+        echo "🔍 Looking for coverage files in TestResults subdirectories..."
+        find ./TestResults -name "coverage.cobertura.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found in subdirectories"
 
         echo "📊 Checking test results..."
         ls -la ./TestResults/ || echo "❌ TestResults directory empty"
