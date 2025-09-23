@@ -316,31 +316,27 @@ jobs:
     - name: Convert coverage to Visual Studio XML format
       run: |
         echo "🔧 Converting coverage file to Visual Studio XML format for SonarCloud..."
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        echo "📊 Converting Cobertura to Visual Studio XML using reportgenerator..."
-        reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/VSXML -reporttypes:SonarQube
+        dotnet tool install -g dotnet-coverage
+        echo "📊 Converting Cobertura to Visual Studio XML using dotnet-coverage..."
+        dotnet coverage xml -i ./TestResults/coverage.cobertura.xml -o ./TestResults/VSXML/VisualStudio.xml
         echo "🔍 Checking what files were created by reportgenerator..."
         ls -la ./TestResults/VSXML/ || echo "VSXML directory not found"
         echo "🔍 Looking for any XML files in VSXML directory..."
         find ./TestResults/VSXML -name "*.xml" -type f || echo "No XML files found in VSXML directory"
         
-        # Check for different possible file names
-        if [ -f "./TestResults/VSXML/SonarQube.xml" ]; then
-          echo "✅ SonarQube.xml found"
-          cp ./TestResults/VSXML/SonarQube.xml ./TestResults/SonarQube.xml
-        elif [ -f "./TestResults/VSXML/coverage.xml" ]; then
-          echo "✅ coverage.xml found"
-          cp ./TestResults/VSXML/coverage.xml ./TestResults/SonarQube.xml
+        # Check for Visual Studio XML file
+        if [ -f "./TestResults/VSXML/VisualStudio.xml" ]; then
+          echo "✅ VisualStudio.xml found"
+          echo "Visual Studio XML file size: $(wc -c < ./TestResults/VSXML/VisualStudio.xml) bytes"
+          echo "First few lines of VisualStudio.xml:"
+          head -10 ./TestResults/VSXML/VisualStudio.xml
         else
-          echo "❌ No expected coverage file found - conversion failed"
+          echo "❌ VisualStudio.xml not found - conversion failed"
           echo "Files in VSXML directory:"
           ls -la ./TestResults/VSXML/ || echo "VSXML directory not found"
           exit 1
         fi
         
-        echo "Visual Studio XML file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
-        echo "First few lines of coverage file:"
-        head -10 ./TestResults/SonarQube.xml
         echo "✅ Coverage converted to Visual Studio XML format for SonarCloud"
       working-directory: dotnet-spring-equivalent
 
@@ -349,20 +345,20 @@ jobs:
         echo "🔍 Checking for coverage files in TestResults directory..."
         ls -la ./TestResults/ || echo "TestResults directory not found"
 
-        if [ -f "./TestResults/SonarQube.xml" ]; then
-          echo "✅ Found SonarQube.xml"
-          echo "Coverage file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
-          echo "First few lines of SonarQube.xml:"
-          head -10 ./TestResults/SonarQube.xml
+        if [ -f "./TestResults/VSXML/VisualStudio.xml" ]; then
+          echo "✅ Found VisualStudio.xml"
+          echo "Coverage file size: $(wc -c < ./TestResults/VSXML/VisualStudio.xml) bytes"
+          echo "First few lines of VisualStudio.xml:"
+          head -10 ./TestResults/VSXML/VisualStudio.xml
           echo "✅ Coverage file ready for SonarCloud analysis"
           
           echo "📋 Copying coverage file to test project directory for SpringJavaEquivalent.Tests module..."
           mkdir -p ./SpringJavaEquivalent.Tests/TestResults/VSXML/
-          cp ./TestResults/SonarQube.xml ./SpringJavaEquivalent.Tests/TestResults/VSXML/SonarQube.xml
+          cp ./TestResults/VSXML/VisualStudio.xml ./SpringJavaEquivalent.Tests/TestResults/VSXML/VisualStudio.xml
           echo "✅ Coverage file copied to test project directory"
-          echo "Test project coverage file size: $(wc -c < ./SpringJavaEquivalent.Tests/TestResults/VSXML/SonarQube.xml) bytes"
+          echo "Test project coverage file size: $(wc -c < ./SpringJavaEquivalent.Tests/TestResults/VSXML/VisualStudio.xml) bytes"
         else
-          echo "❌ No SonarQube.xml file found - failing workflow"
+          echo "❌ No VisualStudio.xml file found - failing workflow"
           ls -la ./TestResults/ || echo "TestResults directory not found"
           exit 1
         fi
@@ -374,16 +370,16 @@ jobs:
         echo "🔍 Current working directory:"
         pwd
         ls -la ./TestResults/ || echo "TestResults directory not found"
-        echo "🔍 Looking for  file..."
-        find . -name "" -type f || echo "SonarQube.xml not found"
+        echo "🔍 Looking for VisualStudio.xml file..."
+        find . -name "VisualStudio.xml" -type f || echo "VisualStudio.xml not found"
         echo "🔍 Directory structure:"
         ls -la
-        echo "🔍 Checking if SonarQube.xml exists at expected path:"
-        if [ -f "./TestResults/VSXML/SonarQube.xml" ]; then
-          echo "✅ SonarQube.xml found at ./TestResults/VSXML/SonarQube.xml"
-          echo "File size: $(wc -c < ./TestResults/VSXML/SonarQube.xml) bytes"
+        echo "🔍 Checking if VisualStudio.xml exists at expected path:"
+        if [ -f "./TestResults/VSXML/VisualStudio.xml" ]; then
+          echo "✅ VisualStudio.xml found at ./TestResults/VSXML/VisualStudio.xml"
+          echo "File size: $(wc -c < ./TestResults/VSXML/VisualStudio.xml) bytes"
         else
-          echo "❌ SonarQube.xml NOT found at ./TestResults/VSXML/SonarQube.xml"
+          echo "❌ VisualStudio.xml NOT found at ./TestResults/VSXML/VisualStudio.xml"
         fi
         dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       working-directory: dotnet-spring-equivalent
