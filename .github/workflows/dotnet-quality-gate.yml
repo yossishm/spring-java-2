@@ -230,7 +230,7 @@ jobs:
         projectBaseDir: dotnet-spring-equivalent
         args: >
           -Dsonar.projectKey=spring-java-2-dotnet-spring-equivalent
-          -Dsonar.organization=yshmulev
+          -Dsonar.organization=yossishm
           -Dsonar.coverageReportPaths=./TestResults/SonarQube.xml
           -Dsonar.exclusions=**/bin/**,**/obj/**,**/TestResults/**,**/*.g.cs
           -Dsonar.test.exclusions=**/bin/**,**/obj/**

@@ -4,8 +4,8 @@
 
 ### 1. Create SonarCloud Account
 1. Go to [sonarcloud.io](https://sonarcloud.io)
-2. Sign in with GitHub account
-3. Create organization: `yshmulev`
+2. Sign in with GitHub account (user: `yossishm`)
+3. Import organization: `yossishm`
 
 ### 2. Import Repository
 1. Click "Import an organization" → "From GitHub"
@@ -31,7 +31,7 @@ git push origin main
 ```
 
 ### 6. Check Results
-- Go to [sonarcloud.io](https://sonarcloud.io) → Your org → `spring-java-2-dotnet-spring-equivalent`
+- Go to [sonarcloud.io](https://sonarcloud.io) → Your org (`yossishm`) → `spring-java-2-dotnet-spring-equivalent`
 - View coverage metrics (should show ~78% coverage!)
 - Quality gate status
 - Code smells, bugs, vulnerabilities
@@ -48,7 +48,7 @@ After setup, SonarCloud will show:
 ## 🔧 Configuration Details
 
 ### Project Key: `spring-java-2-dotnet-spring-equivalent`
-### Organization: `yshmulev`
+### Organization: `yossishm`
 
 ### Coverage Settings:
 - Format: SonarQube generic XML (converted from Cobertura)
