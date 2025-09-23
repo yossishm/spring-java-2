@@ -45,7 +45,7 @@ jobs:
         cache: true
     
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages --disable-lock-file-packages
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages
 
     - name: Build project
       run: dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-restore
