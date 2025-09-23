@@ -317,8 +317,8 @@ jobs:
       run: |
         echo "🔧 Converting coverage file to Visual Studio XML format for SonarCloud..."
         dotnet tool install -g dotnet-coverage
-        echo "📊 Converting Cobertura to Visual Studio XML using dotnet-coverage..."
-        dotnet coverage xml -i ./TestResults/coverage.cobertura.xml -o ./TestResults/VSXML/VisualStudio.xml
+        echo "📊 Converting Cobertura to Visual Studio XML using dotnet coverage merge..."
+        dotnet coverage merge ./TestResults/coverage.cobertura.xml --output ./TestResults/VSXML/VisualStudio.xml --output-format xml
         echo "🔍 Checking what files were created by reportgenerator..."
         ls -la ./TestResults/VSXML/ || echo "VSXML directory not found"
         echo "🔍 Looking for any XML files in VSXML directory..."
