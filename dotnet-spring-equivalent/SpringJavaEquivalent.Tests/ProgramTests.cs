@@ -26,7 +26,7 @@ namespace SpringJavaEquivalent.Tests
         /// <param name="factory">The web application factory.</param>
         public ProgramTests(WebApplicationFactory<Program> factory)
         {
-            this.this.factory = factory.WithWebHostBuilder(builder =>
+            this.factory = factory.WithWebHostBuilder(builder =>
             {
                 builder.UseSetting("Environment", "Testing");
             });
@@ -39,7 +39,7 @@ namespace SpringJavaEquivalent.Tests
         public void Application_StartsSuccessfully()
         {
             // Arrange & Act
-            var client = this.this.factory.CreateClient();
+            var client = this.factory.CreateClient();
 
             // Assert
             Assert.NotNull(client);
@@ -53,7 +53,7 @@ namespace SpringJavaEquivalent.Tests
         public async Task PublicEndpoint_ReturnsOk()
         {
             // Arrange
-            var client = this.this.factory.CreateClient();
+            var client = this.factory.CreateClient();
 
             // Act
             var response = await client.GetAsync("/api/v1/enhanced-test/public");
@@ -72,7 +72,7 @@ namespace SpringJavaEquivalent.Tests
         public void Services_AreRegistered(Type serviceType)
         {
             // Arrange
-            var services = this.this.factory.Services;
+            var services = this.factory.Services;
 
             // Act
             var service = services.GetService(serviceType);
@@ -96,7 +96,7 @@ namespace SpringJavaEquivalent.Tests
         public async Task AuthorizationPolicies_AreRegistered(string policyName)
         {
             // Arrange
-            var services = this.this.factory.Services;
+            var services = this.factory.Services;
             var policyProvider = services.GetRequiredService<IAuthorizationPolicyProvider>();
 
             // Act
