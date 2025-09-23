@@ -280,9 +280,9 @@ jobs:
     - name: Convert coverage to JaCoCo format
       run: |
         echo "🔧 Converting coverage file to JaCoCo format for SonarCloud..."
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        echo "📊 Running reportgenerator..."
-        reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./TestResults" -reporttypes:"JaCoCoXml" -sourcedirs:"."
+        dotnet tool install -g dotnet-coverage
+        echo "📊 Converting Cobertura to JaCoCo using dotnet-coverage..."
+        dotnet coverage convert ./TestResults/coverage.cobertura.xml --output-format jacoco --output ./TestResults/jacoco.xml
         echo "🔍 Checking if jacoco.xml was created..."
         if [ -f "./TestResults/jacoco.xml" ]; then
           echo "✅ jacoco.xml found"
