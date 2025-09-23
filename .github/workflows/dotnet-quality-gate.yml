@@ -249,29 +249,13 @@ jobs:
           fi
         fi
 
-        # Generate SonarQube-compatible coverage format
+        # Verify coverage file exists
         if [ -f "./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" ]; then
           echo "✅ Found coverage.cobertura.xml"
           echo "Coverage file size: $(wc -c < ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml) bytes"
           echo "First few lines of coverage.cobertura.xml:"
           head -10 ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml
-
-          echo "🔄 Converting coverage.cobertura.xml to SonarQube format..."
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          echo "Running reportgenerator..."
-          reportgenerator "-reports:./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" "-targetdir:./dotnet-spring-equivalent/TestResults" "-reporttypes:SonarQube" "-sourcedirs:./dotnet-spring-equivalent"
-
-          echo "✅ Checking if SonarQube.xml was created..."
-          if [ -f "./dotnet-spring-equivalent/TestResults/SonarQube.xml" ]; then
-            echo "✅ SonarQube.xml created successfully!"
-            echo "SonarQube.xml size: $(wc -c < ./dotnet-spring-equivalent/TestResults/SonarQube.xml) bytes"
-            echo "First few lines of SonarQube.xml:"
-            head -5 ./dotnet-spring-equivalent/TestResults/SonarQube.xml
-          else
-            echo "❌ SonarQube.xml not created - failing workflow"
-            ls -la ./dotnet-spring-equivalent/TestResults/
-            exit 1
-          fi
+          echo "✅ Coverage file ready for SonarCloud analysis"
         else
           echo "❌ No coverage.cobertura.xml file found - failing workflow"
           ls -la ./dotnet-spring-equivalent/TestResults/ || echo "TestResults directory not found"
@@ -308,7 +292,7 @@ jobs:
           -Dsonar.projectKey=spring-java-2-dotnet
           -Dsonar.organization=yossishm
           -Dsonar.branch.name=main
-          -Dsonar.coverageReportPaths=TestResults/SonarQube.xml
+          -Dsonar.cs.opencover.reportsPaths=TestResults/coverage.cobertura.xml
           -Dsonar.exclusions=**/bin/**,**/obj/**,**/TestResults/**,**/*.g.cs
           -Dsonar.test.exclusions=**/bin/**,**/obj/**
 
