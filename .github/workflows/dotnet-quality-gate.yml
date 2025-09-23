@@ -245,7 +245,7 @@ jobs:
         dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --list-tests --verbosity diagnostic
         
         echo "🧪 Now running tests with coverage..."
-        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity diagnostic --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults || echo "⚠️ Some tests failed, but continuing to collect coverage data"
+        dotnet test SpringJavaEquivalent.sln --configuration Release --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity diagnostic --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults || echo "⚠️ Some tests failed, but continuing to collect coverage data"
         
         echo "📊 Test execution completed. Checking for results..."
         echo "TestResults directory contents:"
@@ -255,22 +255,46 @@ jobs:
         find . -name "*.trx" -o -name "coverage*" -o -name "TestResults" -type d
 
         echo "📊 Checking for test results in default location..."
-        find . -name "*.trx" -o -name "jacoco.xml" | head -10 || echo "No test result files found"
+        find . -name "*.trx" -o -name "coverage.cobertura.xml" | head -10 || echo "No test result files found"
 
         echo "📂 Creating TestResults directory and copying coverage files..."
         mkdir -p ./TestResults
-        find . -name "jacoco.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
+        find . -name "coverage.cobertura.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
         
         echo "🔍 Looking for coverage files in TestResults subdirectories..."
-        find ./TestResults -name "jacoco.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found in subdirectories"
+        find ./TestResults -name "coverage.cobertura.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found in subdirectories"
 
         echo "📊 Checking test results..."
         ls -la ./TestResults/ || echo "❌ TestResults directory empty"
         
         echo "🔍 Looking for coverage files in subdirectories..."
-        find . -name "jacoco.xml" -type f || echo "No coverage files found anywhere"
+        find . -name "coverage.cobertura.xml" -type f || echo "No coverage files found anywhere"
+        
+        echo "🔍 Looking for ANY coverage files..."
+        find . -name "*coverage*" -type f || echo "No coverage files found anywhere"
+        
+        echo "🔍 Checking subdirectories for coverage files..."
+        find ./TestResults -type f -name "*.xml" || echo "No XML files in TestResults"
       working-directory: dotnet-spring-equivalent
 
+    - name: Convert coverage to JaCoCo format
+      run: |
+        echo "🔧 Converting coverage file to JaCoCo format for SonarCloud..."
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        echo "📊 Running reportgenerator..."
+        reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./TestResults" -reporttypes:"JaCoCo" -sourcedirs:"."
+        echo "🔍 Checking if jacoco.xml was created..."
+        if [ -f "./TestResults/jacoco.xml" ]; then
+          echo "✅ jacoco.xml found"
+          echo "JaCoCo file size: $(wc -c < ./TestResults/jacoco.xml) bytes"
+          echo "First few lines of jacoco.xml:"
+          head -10 ./TestResults/jacoco.xml
+          echo "✅ Coverage converted to JaCoCo format for SonarCloud"
+        else
+          echo "❌ jacoco.xml not found - conversion failed"
+          ls -la ./TestResults/
+        fi
+      working-directory: dotnet-spring-equivalent
 
     - name: Verify coverage file
       run: |
