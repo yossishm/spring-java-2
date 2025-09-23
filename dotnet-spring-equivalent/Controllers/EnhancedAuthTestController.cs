@@ -31,14 +31,10 @@ public class EnhancedAuthTestController : ControllerBase
     private static readonly string[] HighAuthPermissions = { "HIGH_AUTH_ACCESS" };
     private static readonly string[] NoneRoles = { "NONE" };
 
-    public EnhancedAuthTestController()
-    {
-    }
-
     /// <summary>
     /// Helper method to get user information from claims
     /// </summary>
-    private (string user, string[] roles, string[] permissions) GetUserInfo()
+    private (string User, string[] Roles, string[] Permissions) GetUserInfo()
     {
         var user = this.User.Identity?.Name ?? UnknownValue;
         var roles = this.User.Claims
@@ -55,7 +51,7 @@ public class EnhancedAuthTestController : ControllerBase
     /// <summary>
     /// Helper method to get user information with identity provider
     /// </summary>
-    private (string user, string[] roles, string[] permissions, string identityProvider) GetUserInfoWithIdp()
+    private (string User, string[] Roles, string[] Permissions, string IdentityProvider) GetUserInfoWithIdp()
     {
         var (user, roles, permissions) = GetUserInfo();
         var identityProvider = this.User.Claims
@@ -66,7 +62,7 @@ public class EnhancedAuthTestController : ControllerBase
     /// <summary>
     /// Helper method to get user information with auth level
     /// </summary>
-    private (string user, string[] roles, string[] permissions, string authLevel) GetUserInfoWithAuthLevel()
+    private (string User, string[] Roles, string[] Permissions, string AuthLevel) GetUserInfoWithAuthLevel()
     {
         var (user, roles, permissions) = GetUserInfo();
         var authLevel = this.User.Claims
@@ -77,12 +73,19 @@ public class EnhancedAuthTestController : ControllerBase
     /// <summary>
     /// Helper method to get complete user information
     /// </summary>
-    private (string user, string[] roles, string[] permissions, string identityProvider, string authLevel) GetCompleteUserInfo()
+    private (string User, string[] Roles, string[] Permissions, string IdentityProvider, string AuthLevel) GetCompleteUserInfo()
     {
         var (user, roles, permissions, identityProvider) = GetUserInfoWithIdp();
         var authLevel = this.User.Claims
             .FirstOrDefault(c => c.Type == AuthLevelClaimType)?.Value ?? UnknownValue;
         return (user, roles, permissions, identityProvider, authLevel);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EnhancedAuthTestController"/> class.
+    /// </summary>
+    public EnhancedAuthTestController()
+    {
     }
 
     /// <summary>
@@ -259,7 +262,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult IdentityProviderEndpoint()
     {
-        var (user, roles, permissions, identityProvider) = GetUserInfoWithIdp();
+        var (user, roles, _, identityProvider) = GetUserInfoWithIdp();
 
         return Ok(new
         {
@@ -281,7 +284,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult AuthLevelEndpoint()
     {
-        var (user, roles, permissions, authLevel) = GetUserInfoWithAuthLevel();
+        var (user, roles, _, authLevel) = GetUserInfoWithAuthLevel();
 
         return Ok(new
         {

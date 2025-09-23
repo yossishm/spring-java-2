@@ -15,11 +15,8 @@ public class PermissionRequirement : IAuthorizationRequirement
 
     public PermissionRequirement(string permission)
     {
-        this.Permission = permission ?? throw new ArgumentNullException(nameof(permission));
-        if (string.IsNullOrWhiteSpace(permission))
-        {
-            throw new ArgumentException("Permission cannot be empty or whitespace", nameof(permission));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(permission);
+        this.Permission = permission;
     }
 }
 
@@ -32,7 +29,8 @@ public class AnyPermissionRequirement : IAuthorizationRequirement
 
     public AnyPermissionRequirement(params string[] permissions)
     {
-        this.Permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+        ArgumentNullException.ThrowIfNull(permissions);
+        this.Permissions = permissions;
     }
 }
 
@@ -45,7 +43,8 @@ public class AllPermissionsRequirement : IAuthorizationRequirement
 
     public AllPermissionsRequirement(params string[] permissions)
     {
-        this.Permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+        ArgumentNullException.ThrowIfNull(permissions);
+        this.Permissions = permissions;
     }
 }
 
@@ -58,7 +57,8 @@ public class AuthLevelRequirement : IAuthorizationRequirement
 
     public AuthLevelRequirement(string requiredAuthLevel)
     {
-        this.RequiredAuthLevel = requiredAuthLevel ?? throw new ArgumentNullException(nameof(requiredAuthLevel));
+        ArgumentException.ThrowIfNullOrWhiteSpace(requiredAuthLevel);
+        this.RequiredAuthLevel = requiredAuthLevel;
     }
 }
 
@@ -71,7 +71,8 @@ public class IdentityProviderRequirement : IAuthorizationRequirement
 
     public IdentityProviderRequirement(string requiredIdentityProvider)
     {
-        this.RequiredIdentityProvider = requiredIdentityProvider ?? throw new ArgumentNullException(nameof(requiredIdentityProvider));
+        ArgumentException.ThrowIfNullOrWhiteSpace(requiredIdentityProvider);
+        this.RequiredIdentityProvider = requiredIdentityProvider;
     }
 }
 
@@ -84,6 +85,7 @@ public class RoleRequirement : IAuthorizationRequirement
 
     public RoleRequirement(string role)
     {
-        this.Role = role ?? throw new ArgumentNullException(nameof(role));
+        ArgumentException.ThrowIfNullOrWhiteSpace(role);
+        this.Role = role;
     }
 }
