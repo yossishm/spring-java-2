@@ -388,6 +388,6 @@ jobs:
         else
           echo "❌ SonarQube.xml NOT found at ./TestResults/JaCoCo/SonarQube.xml"
         fi
-        dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        dotnet sonarscanner end /d:sonar.coverage.jacoco.xmlReportPaths="./TestResults/JaCoCo/SonarQube.xml" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       working-directory: dotnet-spring-equivalent
 
