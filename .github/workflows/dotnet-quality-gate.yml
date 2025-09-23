@@ -231,7 +231,7 @@ jobs:
           /d:sonar.verbose=true \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.coverage.jacoco.xmlReportPaths="./TestResults/JaCoCo/SonarQube.xml" \
+          /d:sonar.coverage.jacoco.xmlReportPaths="**/TestResults/JaCoCo/SonarQube.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
