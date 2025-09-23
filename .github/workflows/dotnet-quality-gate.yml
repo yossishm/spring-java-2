@@ -279,6 +279,15 @@ jobs:
         fi
       working-directory: .
 
+    - name: Debug SonarCloud Connection
+      run: |
+        echo "🔍 Testing SonarCloud connection..."
+        echo "Project Key: spring-java-2-dotnet"
+        echo "Organization: yossishm"
+        echo "Token exists: ${{ secrets.SONAR_TOKEN != '' }}"
+        echo "GitHub Token exists: ${{ secrets.GITHUB_TOKEN != '' }}"
+      working-directory: .
+
     - name: SonarCloud Analysis
       uses: sonarsource/sonarcloud-github-action@v2
       env:
