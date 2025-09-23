@@ -270,12 +270,12 @@ jobs:
         echo "🔍 Looking for coverage files in subdirectories..."
         find . -name "coverage.cobertura.xml" -type f || echo "No coverage files found anywhere"
         
-        echo "🔧 Normalizing coverage file paths for SonarCloud..."
+        echo "🔧 Converting coverage file to OpenCover format for SonarCloud..."
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./TestResults" -reporttypes:"Cobertura" -sourcedirs:"."
-        if [ -f "./TestResults/Cobertura.xml" ]; then
-          mv ./TestResults/Cobertura.xml ./TestResults/coverage.cobertura.xml
-          echo "✅ Coverage paths normalized for SonarCloud"
+        reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./TestResults" -reporttypes:"OpenCover" -sourcedirs:"."
+        if [ -f "./TestResults/OpenCover.xml" ]; then
+          mv ./TestResults/OpenCover.xml ./TestResults/coverage.cobertura.xml
+          echo "✅ Coverage converted to OpenCover format for SonarCloud"
         fi
       working-directory: dotnet-spring-equivalent
 
