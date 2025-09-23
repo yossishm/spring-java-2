@@ -205,16 +205,13 @@ jobs:
         cache: false
 
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.sln
       working-directory: .
 
     - name: Build and test with coverage
       run: |
-        echo "🔨 Building project..."
-        dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-restore
-
-        echo "🔨 Building test project..."
-        dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.Tests/SpringJavaEquivalent.Tests.csproj --configuration Release --no-restore
+        echo "🔨 Building solution..."
+        dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.sln --configuration Release --no-restore
 
         echo "🧪 Running tests with coverage..."
         dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./dotnet-spring-equivalent/coverlet.runsettings --verbosity normal --logger "trx;LogFileName=test-results.trx"
