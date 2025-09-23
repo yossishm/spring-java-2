@@ -219,7 +219,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.coverage.jacoco.xmlReportPaths="./TestResults/SonarQube.xml" \
+          /d:sonar.coverage.jacoco.xmlReportPaths="./TestResults/JaCoCo/SonarQube.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
@@ -283,19 +283,32 @@ jobs:
         dotnet tool install -g dotnet-reportgenerator-globaltool
         echo "📊 Converting Cobertura to JaCoCo using reportgenerator..."
         reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/JaCoCo -reporttypes:SonarQube
-        echo "🔍 Checking if SonarQube.xml was created..."
+        echo "🔍 Checking what files were created by reportgenerator..."
+        ls -la ./TestResults/JaCoCo/ || echo "JaCoCo directory not found"
+        echo "🔍 Looking for any XML files in JaCoCo directory..."
+        find ./TestResults/JaCoCo -name "*.xml" -type f || echo "No XML files found in JaCoCo directory"
+        
+        # Check for different possible file names
         if [ -f "./TestResults/JaCoCo/SonarQube.xml" ]; then
           echo "✅ SonarQube.xml found"
           cp ./TestResults/JaCoCo/SonarQube.xml ./TestResults/SonarQube.xml
-          echo "JaCoCo file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
-          echo "First few lines of SonarQube.xml:"
-          head -10 ./TestResults/SonarQube.xml
-          echo "✅ Coverage converted to JaCoCo format for SonarCloud"
+        elif [ -f "./TestResults/JaCoCo/jacoco.xml" ]; then
+          echo "✅ jacoco.xml found"
+          cp ./TestResults/JaCoCo/jacoco.xml ./TestResults/SonarQube.xml
+        elif [ -f "./TestResults/JaCoCo/coverage.xml" ]; then
+          echo "✅ coverage.xml found"
+          cp ./TestResults/JaCoCo/coverage.xml ./TestResults/SonarQube.xml
         else
-          echo "❌ SonarQube.xml not found - conversion failed"
-          ls -la ./TestResults/
+          echo "❌ No expected coverage file found - conversion failed"
+          echo "Files in JaCoCo directory:"
           ls -la ./TestResults/JaCoCo/ || echo "JaCoCo directory not found"
+          exit 1
         fi
+        
+        echo "JaCoCo file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
+        echo "First few lines of coverage file:"
+        head -10 ./TestResults/SonarQube.xml
+        echo "✅ Coverage converted to JaCoCo format for SonarCloud"
       working-directory: dotnet-spring-equivalent
 
     - name: Verify coverage file
