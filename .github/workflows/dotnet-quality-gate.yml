@@ -215,7 +215,7 @@ jobs:
       run: |
         dotnet sonarscanner begin \
           /k:"spring-java-2-dotnet" \
-          /d:sonar.organization="yossishm" \
+          /o:"yossishm" \
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.cobertura.xml" \
