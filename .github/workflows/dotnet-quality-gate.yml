@@ -45,8 +45,8 @@ jobs:
         cache: true
     
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
-    
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages --disable-lock-file-packages
+
     - name: Build project
       run: dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-restore
     
@@ -152,7 +152,7 @@ jobs:
         cache: true
     
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages
     
     - name: Security Scan with Trivy
       run: |
@@ -205,7 +205,7 @@ jobs:
         cache: true
 
     - name: Restore dependencies
-      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
+      run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj --disable-lock-file-packages
 
     - name: Build and test with coverage
       run: |
