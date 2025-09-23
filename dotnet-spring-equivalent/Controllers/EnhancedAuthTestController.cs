@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 public class EnhancedAuthTestController : ControllerBase
 {
     private const string UnknownValue = "Unknown";
+    private const string PermissionClaimType = "permission";
+    private const string IdentityProviderClaimType = "identity_provider";
+    private const string AuthLevelClaimType = "auth_level";
 
     private static readonly string[] NonePermissions = { "NONE" };
     private static readonly string[] BasicPermissions = { "BASIC_ACCESS" };
@@ -27,10 +30,59 @@ public class EnhancedAuthTestController : ControllerBase
     private static readonly string[] IdentityProviderPermissions = { "IDENTITY_PROVIDER_ACCESS" };
     private static readonly string[] HighAuthPermissions = { "HIGH_AUTH_ACCESS" };
     private static readonly string[] NoneRoles = { "NONE" };
-    private const string PermissionClaimType = "permission";
 
     public EnhancedAuthTestController()
     {
+    }
+
+    /// <summary>
+    /// Helper method to get user information from claims
+    /// </summary>
+    private (string user, string[] roles, string[] permissions) GetUserInfo()
+    {
+        var user = this.User.Identity?.Name ?? UnknownValue;
+        var roles = this.User.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToArray();
+        var permissions = this.User.Claims
+            .Where(c => c.Type == PermissionClaimType)
+            .Select(c => c.Value)
+            .ToArray();
+        return (user, roles, permissions);
+    }
+
+    /// <summary>
+    /// Helper method to get user information with identity provider
+    /// </summary>
+    private (string user, string[] roles, string[] permissions, string identityProvider) GetUserInfoWithIdp()
+    {
+        var (user, roles, permissions) = GetUserInfo();
+        var identityProvider = this.User.Claims
+            .FirstOrDefault(c => c.Type == IdentityProviderClaimType)?.Value ?? UnknownValue;
+        return (user, roles, permissions, identityProvider);
+    }
+
+    /// <summary>
+    /// Helper method to get user information with auth level
+    /// </summary>
+    private (string user, string[] roles, string[] permissions, string authLevel) GetUserInfoWithAuthLevel()
+    {
+        var (user, roles, permissions) = GetUserInfo();
+        var authLevel = this.User.Claims
+            .FirstOrDefault(c => c.Type == AuthLevelClaimType)?.Value ?? UnknownValue;
+        return (user, roles, permissions, authLevel);
+    }
+
+    /// <summary>
+    /// Helper method to get complete user information
+    /// </summary>
+    private (string user, string[] roles, string[] permissions, string identityProvider, string authLevel) GetCompleteUserInfo()
+    {
+        var (user, roles, permissions, identityProvider) = GetUserInfoWithIdp();
+        var authLevel = this.User.Claims
+            .FirstOrDefault(c => c.Type == AuthLevelClaimType)?.Value ?? UnknownValue;
+        return (user, roles, permissions, identityProvider, authLevel);
     }
 
     /// <summary>
@@ -60,11 +112,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult AuthenticatedEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
+        var (user, roles, _) = GetUserInfo();
 
         return Ok(new
         {
@@ -85,11 +133,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult UserRoleEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
+        var (user, roles, _) = GetUserInfo();
 
         return Ok(new
         {
@@ -110,11 +154,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult AdminRoleEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
+        var (user, roles, _) = GetUserInfo();
 
         return Ok(new
         {
@@ -135,15 +175,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult CacheReadEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
-        var permissions = this.User.Claims
-            .Where(c => c.Type == PermissionClaimType)
-            .Select(c => c.Value)
-            .ToArray();
+        var (user, roles, permissions) = GetUserInfo();
 
         return Ok(new
         {
@@ -164,15 +196,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult CacheWriteEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
-        var permissions = this.User.Claims
-            .Where(c => c.Type == PermissionClaimType)
-            .Select(c => c.Value)
-            .ToArray();
+        var (user, roles, permissions) = GetUserInfo();
 
         return Ok(new
         {
@@ -193,11 +217,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult AdminOrManagerEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
+        var (user, roles, _) = GetUserInfo();
 
         return Ok(new
         {
@@ -218,15 +238,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult AdminCacheWriteEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
-        var permissions = this.User.Claims
-            .Where(c => c.Type == PermissionClaimType)
-            .Select(c => c.Value)
-            .ToArray();
+        var (user, roles, permissions) = GetUserInfo();
 
         return Ok(new
         {
@@ -247,13 +259,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult IdentityProviderEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
-        var identityProvider = this.User.Claims
-            .FirstOrDefault(c => c.Type == "identity_provider")?.Value ?? UnknownValue;
+        var (user, roles, permissions, identityProvider) = GetUserInfoWithIdp();
 
         return Ok(new
         {
@@ -275,13 +281,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult AuthLevelEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
-        var authLevel = this.User.Claims
-            .FirstOrDefault(c => c.Type == "auth_level")?.Value ?? UnknownValue;
+        var (user, roles, permissions, authLevel) = GetUserInfoWithAuthLevel();
 
         return Ok(new
         {
@@ -306,19 +306,7 @@ public class EnhancedAuthTestController : ControllerBase
     [ProducesResponseType(typeof(object), 200)]
     public IActionResult MaximumSecurityEndpoint()
     {
-        var user = this.User.Identity?.Name ?? UnknownValue;
-        var roles = this.User.Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .Select(c => c.Value)
-            .ToArray();
-        var permissions = this.User.Claims
-            .Where(c => c.Type == PermissionClaimType)
-            .Select(c => c.Value)
-            .ToArray();
-        var identityProvider = this.User.Claims
-            .FirstOrDefault(c => c.Type == "identity_provider")?.Value ?? UnknownValue;
-        var authLevel = this.User.Claims
-            .FirstOrDefault(c => c.Type == "auth_level")?.Value ?? UnknownValue;
+        var (user, roles, permissions, identityProvider, authLevel) = GetCompleteUserInfo();
 
         return Ok(new
         {

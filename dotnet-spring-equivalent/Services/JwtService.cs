@@ -34,10 +34,16 @@ public class JwtService
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
-            return jsonToken.Claims.FirstOrDefault(x => x.Type == "username")?.Value ?? null;
+            return jsonToken.Claims.FirstOrDefault(x => x.Type == "username")?.Value;
         }
-        catch
+        catch (ArgumentException)
         {
+            // Invalid token format
+            return null;
+        }
+        catch (SecurityTokenException)
+        {
+            // Invalid or expired token
             return null;
         }
     }
@@ -56,8 +62,14 @@ public class JwtService
                 .Select(x => x.Value)
                 .ToList();
         }
-        catch
+        catch (ArgumentException)
         {
+            // Invalid token format
+            return new List<string>();
+        }
+        catch (SecurityTokenException)
+        {
+            // Invalid or expired token
             return new List<string>();
         }
     }
@@ -76,8 +88,14 @@ public class JwtService
                 .Select(x => x.Value)
                 .ToList();
         }
-        catch
+        catch (ArgumentException)
         {
+            // Invalid token format
+            return new List<string>();
+        }
+        catch (SecurityTokenException)
+        {
+            // Invalid or expired token
             return new List<string>();
         }
     }
@@ -93,8 +111,14 @@ public class JwtService
             var jsonToken = tokenHandler.ReadJwtToken(token);
             return jsonToken.Claims.FirstOrDefault(x => x.Type == "auth_level")?.Value ?? string.Empty;
         }
-        catch
+        catch (ArgumentException)
         {
+            // Invalid token format
+            return string.Empty;
+        }
+        catch (SecurityTokenException)
+        {
+            // Invalid or expired token
             return string.Empty;
         }
     }
@@ -110,8 +134,14 @@ public class JwtService
             var jsonToken = tokenHandler.ReadJwtToken(token);
             return jsonToken.Claims.FirstOrDefault(x => x.Type == "identity_provider")?.Value ?? string.Empty;
         }
-        catch
+        catch (ArgumentException)
         {
+            // Invalid token format
+            return string.Empty;
+        }
+        catch (SecurityTokenException)
+        {
+            // Invalid or expired token
             return string.Empty;
         }
     }
@@ -127,8 +157,14 @@ public class JwtService
             var jsonToken = tokenHandler.ReadJwtToken(token);
             return jsonToken.Claims.ToDictionary(x => x.Type, x => x.Value);
         }
-        catch
+        catch (ArgumentException)
         {
+            // Invalid token format
+            return new Dictionary<string, string>();
+        }
+        catch (SecurityTokenException)
+        {
+            // Invalid or expired token
             return new Dictionary<string, string>();
         }
     }
@@ -198,8 +234,14 @@ public class JwtService
 
             return true;
         }
-        catch
+        catch (ArgumentException)
         {
+            // Invalid token format
+            return false;
+        }
+        catch (SecurityTokenException)
+        {
+            // Invalid or expired token
             return false;
         }
     }

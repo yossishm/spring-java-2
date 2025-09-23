@@ -35,7 +35,7 @@ public class ApplicationController : ControllerBase
         {
             foreach (var header in this.Request.Headers)
             {
-                this.logger?.LogInformation("Header '{Key}' = {Value}", header.Key, header.Value);
+                this.logger?.LogInformation("Header '{Key}' = {Value}", header.Key, string.Join(", ", header.Value));
             }
         }
 
