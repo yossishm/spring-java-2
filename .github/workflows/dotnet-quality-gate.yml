@@ -233,11 +233,25 @@ jobs:
         echo "Files in current directory:"
         ls -la
         
-        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity normal --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+        echo "🔍 Checking if solution file exists:"
+        ls -la SpringJavaEquivalent.sln || echo "Solution file not found"
+        
+        echo "🔍 Checking if runsettings file exists:"
+        ls -la ./coverlet.runsettings || echo "Runsettings file not found"
+        
+        echo "🧪 Running tests..."
+        echo "🔍 First, let's try to discover tests:"
+        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --list-tests --verbosity diagnostic
+        
+        echo "🧪 Now running tests with coverage..."
+        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity diagnostic --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
         
         echo "📊 Test execution completed. Checking for results..."
         echo "TestResults directory contents:"
         ls -la ./TestResults/ || echo "TestResults directory not found"
+        
+        echo "🔍 Looking for any test result files in the entire directory:"
+        find . -name "*.trx" -o -name "coverage*" -o -name "TestResults" -type d
 
         echo "📊 Checking for test results in default location..."
         find . -name "*.trx" -o -name "coverage.cobertura.xml" | head -10 || echo "No test result files found"
