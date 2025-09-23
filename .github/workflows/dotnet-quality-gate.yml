@@ -210,8 +210,11 @@ jobs:
 
     - name: Build and test with coverage
       run: |
+        echo "🔨 Building project..."
         dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-restore
-        dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./dotnet-spring-equivalent/TestResults --settings ./dotnet-spring-equivalent/coverlet.runsettings
+
+        echo "🧪 Running tests with coverage..."
+        dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./dotnet-spring-equivalent/TestResults --settings ./dotnet-spring-equivalent/coverlet.runsettings --verbosity normal
       working-directory: .
 
     - name: Generate SonarQube coverage report
@@ -239,10 +242,25 @@ jobs:
         # Generate SonarQube-compatible coverage format
         if [ -f "./dotnet-spring-equivalent/TestResults/coverage.xml" ]; then
           echo "🔄 Converting coverage.xml to SonarQube format..."
+          echo "Coverage file size: $(wc -c < ./dotnet-spring-equivalent/TestResults/coverage.xml) bytes"
+          echo "First few lines of coverage.xml:"
+          head -10 ./dotnet-spring-equivalent/TestResults/coverage.xml
+
           dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator -reports:"./dotnet-spring-equivalent/TestResults/coverage.xml" -targetdir:"./dotnet-spring-equivalent/TestResults" -reporttypes:"SonarQube" -sourcedirs:"./dotnet-spring-equivalent"
+          echo "Running reportgenerator..."
+          reportgenerator "-reports:./dotnet-spring-equivalent/TestResults/coverage.xml" "-targetdir:./dotnet-spring-equivalent/TestResults" "-reporttypes:SonarQube" "-sourcedirs:./dotnet-spring-equivalent" || echo "Reportgenerator failed with exit code $?"
+
           echo "✅ Checking if SonarQube.xml was created..."
-          ls -la ./dotnet-spring-equivalent/TestResults/SonarQube.xml || echo "❌ SonarQube.xml not created"
+          if [ -f "./dotnet-spring-equivalent/TestResults/SonarQube.xml" ]; then
+            echo "✅ SonarQube.xml created successfully!"
+            echo "SonarQube.xml size: $(wc -c < ./dotnet-spring-equivalent/TestResults/SonarQube.xml) bytes"
+            echo "First few lines of SonarQube.xml:"
+            head -5 ./dotnet-spring-equivalent/TestResults/SonarQube.xml
+          else
+            echo "❌ SonarQube.xml not created"
+            echo "Checking reportgenerator output..."
+            ls -la ./dotnet-spring-equivalent/TestResults/
+          fi
         else
           echo "❌ No coverage.xml file available for SonarQube report generation"
         fi
