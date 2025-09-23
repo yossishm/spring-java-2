@@ -1,3 +1,5 @@
+namespace SpringJavaEquivalent.Tests;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -5,8 +7,6 @@ using Moq;
 using SpringJavaEquivalent.Controllers;
 using System.Security.Claims;
 using Xunit;
-
-namespace SpringJavaEquivalent.Tests;
 
 public class ApplicationControllerTests
 {
@@ -91,7 +91,7 @@ public class ApplicationControllerTests
         var claims = new List<Claim>
         {
             new Claim("permission", "CACHE_READ"),
-            new Claim("permission", "CACHE_WRITE")
+            new Claim("permission", "CACHE_WRITE"),
         };
         
         var identity = new ClaimsIdentity(claims, "TestAuthType");

@@ -1,9 +1,9 @@
+namespace SpringJavaEquivalent.Tests;
+
 using Microsoft.Extensions.Configuration;
 using Moq;
 using SpringJavaEquivalent.Services;
 using Xunit;
-
-namespace SpringJavaEquivalent.Tests;
 
 public class JwtServiceTests
 {
@@ -259,7 +259,7 @@ public class JwtServiceTests
     public void ValidateToken_WithEmptyToken_ShouldReturnFalse()
     {
         // Arrange
-        var emptyToken = "";
+        var emptyToken = string.Empty;
 
         // Act
         var isValid = _jwtService.ValidateToken(emptyToken);

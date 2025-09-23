@@ -1,3 +1,5 @@
+namespace SpringJavaEquivalent.Tests;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -5,8 +7,6 @@ using Moq;
 using SpringJavaEquivalent.Authorization;
 using System.Security.Claims;
 using Xunit;
-
-namespace SpringJavaEquivalent.Tests;
 
 public class PermissionRequirementTests
 {
@@ -37,7 +37,7 @@ public class PermissionRequirementTests
     public void Constructor_WithEmptyPermission_ShouldThrowArgumentNullException()
     {
         // Arrange
-        var permission = "";
+        var permission = string.Empty;
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() => new PermissionRequirement(permission));
@@ -145,7 +145,7 @@ public class PermissionHandlerTests
         var requirement = new PermissionRequirement("READ");
         var context = new AuthorizationHandlerContext(
             new[] { requirement },
-            CreateUserWithPermission(""),
+            CreateUserWithPermission(string.Empty),
             null!);
 
         // Act
@@ -192,7 +192,7 @@ public class PermissionHandlerTests
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, "testuser")
+            new(ClaimTypes.Name, "testuser"),
         };
         
         foreach (var permission in permissions)
@@ -208,7 +208,7 @@ public class PermissionHandlerTests
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, "testuser")
+            new(ClaimTypes.Name, "testuser"),
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         return new ClaimsPrincipal(identity);

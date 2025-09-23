@@ -1,8 +1,8 @@
+namespace SpringJavaEquivalent.Tests;
+
 using Microsoft.AspNetCore.Mvc;
 using SpringJavaEquivalent.Controllers;
 using Xunit;
-
-namespace SpringJavaEquivalent.Tests;
 
 public class VulnerableJwtControllerTests
 {

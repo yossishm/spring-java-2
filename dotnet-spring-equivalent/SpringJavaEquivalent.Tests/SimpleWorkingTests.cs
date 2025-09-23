@@ -1,8 +1,8 @@
+namespace SpringJavaEquivalent.Tests;
+
 using Microsoft.AspNetCore.Mvc;
 using SpringJavaEquivalent.Controllers;
 using Xunit;
-
-namespace SpringJavaEquivalent.Tests;
 
 public class SimpleWorkingTests
 {
@@ -70,7 +70,7 @@ public class SimpleWorkingTests
         var payload = new Dictionary<string, object>
         {
             { "username", "testuser" },
-            { "role", "admin" }
+            { "role", "admin" },
         };
 
         // Act
