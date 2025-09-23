@@ -289,6 +289,12 @@ jobs:
         
         echo "🧪 Testing SonarCloud API access..."
         curl -s -u "${{ secrets.SONAR_TOKEN }}:" "https://sonarcloud.io/api/projects/search?organization=yossishm" | head -200 || echo "API test failed"
+        
+        echo "🔍 Testing specific project access..."
+        curl -s -u "${{ secrets.SONAR_TOKEN }}:" "https://sonarcloud.io/api/projects/show?key=spring-java-2-dotnet" || echo "Project access test failed"
+        
+        echo "🔍 Testing GitHub integration..."
+        curl -s -u "${{ secrets.SONAR_TOKEN }}:" "https://sonarcloud.io/api/alm_integrations/list" || echo "GitHub integration test failed"
       working-directory: .
 
     - name: SonarCloud Analysis
