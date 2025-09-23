@@ -6,7 +6,7 @@
         <Configuration>
           <Format>cobertura</Format>
           <SkipAutoProps>true</SkipAutoProps>
-          <UseSourceLink>true</UseSourceLink>
+          <UseSourceLink>false</UseSourceLink>
           <IncludeTestAssembly>false</IncludeTestAssembly>
           <SingleHit>false</SingleHit>
           <Threshold>0</Threshold>
