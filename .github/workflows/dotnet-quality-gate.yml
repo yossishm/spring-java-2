@@ -219,7 +219,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml,TestResults/SonarQube.xml" \
+          /d:sonar.coverage.jacoco.xmlReportPaths="TestResults/SonarQube.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
