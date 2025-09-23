@@ -1,3 +1,7 @@
+// <copyright file="VulnerableJwtControllerTests.cs" company="SpringJavaEquivalent">
+// Copyright (c) SpringJavaEquivalent. All rights reserved.
+// </copyright>
+
 namespace SpringJavaEquivalent.Tests;
 
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +24,7 @@ public class VulnerableJwtControllerTests
         var payload = new Dictionary<string, object>
         {
             { "username", "testuser" },
-            { "role", "admin" }
+            { "role", "admin" },
         };
 
         // Act
@@ -39,7 +43,7 @@ public class VulnerableJwtControllerTests
         // Arrange
         var request = new Dictionary<string, string>
         {
-            { "token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" }
+            { "token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" },
         };
 
         // Act
@@ -73,7 +77,7 @@ public class VulnerableJwtControllerTests
         var request = new Dictionary<string, string>
         {
             { "token", "test-token" },
-            { "algorithm", "HS256" }
+            { "algorithm", "HS256" },
         };
 
         // Act
@@ -126,7 +130,7 @@ public class VulnerableJwtControllerTests
             { "username", "testuser" },
             { "role", "admin" },
             { "permissions", new[] { "read", "write", "delete" } },
-            { "metadata", new Dictionary<string, object> { { "department", "IT" } } }
+            { "metadata", new Dictionary<string, object> { { "department", "IT" } } },
         };
 
         // Act
@@ -203,7 +207,7 @@ public class VulnerableJwtControllerTests
     public void DecodeToken_WithEmptyToken_ShouldReturnOkResult()
     {
         // Arrange
-        var emptyToken = "";
+        var emptyToken = string.Empty;
 
         // Act
         var result = this.controller.DecodeToken(emptyToken);

@@ -21,6 +21,7 @@ public class ApplicationControllerTests
     {
         this.mockLogger = new Mock<ILogger<ApplicationController>>();
         this.controller = new ApplicationController(this.mockLogger.Object);
+
         // Setup controller context
         var context = new ControllerContext
         {

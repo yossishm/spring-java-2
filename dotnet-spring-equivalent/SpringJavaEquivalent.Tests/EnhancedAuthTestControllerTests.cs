@@ -1,3 +1,7 @@
+// <copyright file="EnhancedAuthTestControllerTests.cs" company="SpringJavaEquivalent">
+// Copyright (c) SpringJavaEquivalent. All rights reserved.
+// </copyright>
+
 namespace SpringJavaEquivalent.Tests
 {
     using System.Security.Claims;

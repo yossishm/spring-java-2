@@ -1,3 +1,7 @@
+// <copyright file="TokenControllerTests.cs" company="SpringJavaEquivalent">
+// Copyright (c) SpringJavaEquivalent. All rights reserved.
+// </copyright>
+
 namespace SpringJavaEquivalent.Tests
 {
     using System.Collections.Generic;
