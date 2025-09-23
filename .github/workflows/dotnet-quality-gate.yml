@@ -206,9 +206,12 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         cache: true
+        cache-dependency-path: |
+          dotnet-spring-equivalent/*.csproj
+          dotnet-spring-equivalent/**/*.csproj
 
     - name: Restore dependencies
-      run: dotnet restore SpringJavaEquivalent.csproj
+      run: dotnet restore SpringJavaEquivalent.csproj --disable-lock-file-packages
 
     - name: Build and test with coverage
       run: |
