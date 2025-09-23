@@ -219,7 +219,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml,TestResults/jacoco.xml" \
+          /d:sonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml,TestResults/SonarQube.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
@@ -283,16 +283,16 @@ jobs:
         dotnet tool install -g dotnet-reportgenerator-globaltool
         echo "📊 Converting Cobertura to JaCoCo using reportgenerator..."
         reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/JaCoCo -reporttypes:SonarQube
-        echo "🔍 Checking if jacoco.xml was created..."
-        if [ -f "./TestResults/JaCoCo/jacoco.xml" ]; then
-          echo "✅ jacoco.xml found"
-          cp ./TestResults/JaCoCo/jacoco.xml ./TestResults/jacoco.xml
-          echo "JaCoCo file size: $(wc -c < ./TestResults/jacoco.xml) bytes"
-          echo "First few lines of jacoco.xml:"
-          head -10 ./TestResults/jacoco.xml
+        echo "🔍 Checking if SonarQube.xml was created..."
+        if [ -f "./TestResults/JaCoCo/SonarQube.xml" ]; then
+          echo "✅ SonarQube.xml found"
+          cp ./TestResults/JaCoCo/SonarQube.xml ./TestResults/SonarQube.xml
+          echo "JaCoCo file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
+          echo "First few lines of SonarQube.xml:"
+          head -10 ./TestResults/SonarQube.xml
           echo "✅ Coverage converted to JaCoCo format for SonarCloud"
         else
-          echo "❌ jacoco.xml not found - conversion failed"
+          echo "❌ SonarQube.xml not found - conversion failed"
           ls -la ./TestResults/
           ls -la ./TestResults/JaCoCo/ || echo "JaCoCo directory not found"
         fi
@@ -303,14 +303,14 @@ jobs:
         echo "🔍 Checking for coverage files in TestResults directory..."
         ls -la ./TestResults/ || echo "TestResults directory not found"
 
-        if [ -f "./TestResults/jacoco.xml" ]; then
-          echo "✅ Found jacoco.xml"
-          echo "Coverage file size: $(wc -c < ./TestResults/jacoco.xml) bytes"
-          echo "First few lines of jacoco.xml:"
-          head -10 ./TestResults/jacoco.xml
+        if [ -f "./TestResults/SonarQube.xml" ]; then
+          echo "✅ Found SonarQube.xml"
+          echo "Coverage file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
+          echo "First few lines of SonarQube.xml:"
+          head -10 ./TestResults/SonarQube.xml
           echo "✅ Coverage file ready for SonarCloud analysis"
         else
-          echo "❌ No jacoco.xml file found - failing workflow"
+          echo "❌ No SonarQube.xml file found - failing workflow"
           ls -la ./TestResults/ || echo "TestResults directory not found"
           exit 1
         fi
