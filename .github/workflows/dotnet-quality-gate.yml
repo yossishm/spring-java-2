@@ -229,7 +229,15 @@ jobs:
         dotnet build SpringJavaEquivalent.sln --configuration Release --no-restore
 
         echo "🧪 Running tests with coverage..."
-        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
+        
+        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity normal --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+        
+        echo "📊 Test execution completed. Checking for results..."
+        echo "TestResults directory contents:"
+        ls -la ./TestResults/ || echo "TestResults directory not found"
 
         echo "📊 Checking for test results in default location..."
         find . -name "*.trx" -o -name "coverage.cobertura.xml" | head -10 || echo "No test result files found"
@@ -240,6 +248,9 @@ jobs:
 
         echo "📊 Checking test results..."
         ls -la ./TestResults/ || echo "❌ TestResults directory empty"
+        
+        echo "🔍 Looking for coverage files in subdirectories..."
+        find . -name "coverage.cobertura.xml" -type f || echo "No coverage files found anywhere"
       working-directory: dotnet-spring-equivalent
 
     - name: Verify coverage file
