@@ -216,20 +216,35 @@ jobs:
 
     - name: Generate SonarQube coverage report
       run: |
+        echo "🔍 Checking for coverage files in TestResults directory..."
+        ls -la ./dotnet-spring-equivalent/TestResults/ || echo "TestResults directory not found"
+
         # Find the main coverage file (prioritize the one in the root TestResults directory)
         if [ -f "./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" ]; then
+          echo "✅ Found coverage.cobertura.xml in root TestResults directory"
           cp ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml ./dotnet-spring-equivalent/TestResults/coverage.xml
         else
+          echo "⚠️ coverage.cobertura.xml not found in root, searching subdirectories..."
           # Fallback: find any coverage file and use the first one found
-          find ./dotnet-spring-equivalent/TestResults -name "coverage.cobertura.xml" -type f | head -1 | xargs -I {} cp {} ./dotnet-spring-equivalent/TestResults/coverage.xml || echo "No coverage file found"
+          COVERAGE_FILE=$(find ./dotnet-spring-equivalent/TestResults -name "coverage.cobertura.xml" -type f | head -1)
+          if [ -n "$COVERAGE_FILE" ]; then
+            echo "✅ Found coverage file: $COVERAGE_FILE"
+            cp "$COVERAGE_FILE" ./dotnet-spring-equivalent/TestResults/coverage.xml
+          else
+            echo "❌ No coverage.cobertura.xml files found anywhere"
+            find ./dotnet-spring-equivalent/TestResults -name "*.xml" -type f || echo "No XML files found at all"
+          fi
         fi
 
         # Generate SonarQube-compatible coverage format
         if [ -f "./dotnet-spring-equivalent/TestResults/coverage.xml" ]; then
+          echo "🔄 Converting coverage.xml to SonarQube format..."
           dotnet tool install -g dotnet-reportgenerator-globaltool
           reportgenerator -reports:"./dotnet-spring-equivalent/TestResults/coverage.xml" -targetdir:"./dotnet-spring-equivalent/TestResults" -reporttypes:"SonarQube" -sourcedirs:"./dotnet-spring-equivalent"
+          echo "✅ Checking if SonarQube.xml was created..."
+          ls -la ./dotnet-spring-equivalent/TestResults/SonarQube.xml || echo "❌ SonarQube.xml not created"
         else
-          echo "Warning: No coverage file available for SonarQube report generation"
+          echo "❌ No coverage.xml file available for SonarQube report generation"
         fi
       working-directory: .
 
