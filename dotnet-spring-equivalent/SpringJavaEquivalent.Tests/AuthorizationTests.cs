@@ -1,11 +1,11 @@
 namespace SpringJavaEquivalent.Tests;
 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SpringJavaEquivalent.Authorization;
-using System.Security.Claims;
 using Xunit;
 
 public class PermissionRequirementTests
@@ -46,11 +46,11 @@ public class PermissionRequirementTests
 
 public class PermissionHandlerTests
 {
-    private readonly PermissionHandler _handler;
+    private readonly PermissionHandler handler;
 
     public PermissionHandlerTests()
     {
-        this._handler = new PermissionHandler();
+        this.this.handler = new PermissionHandler();
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await this._handler.HandleAsync(context);
+        await this.this.handler.HandleAsync(context);
 
         // Assert
         Assert.True(context.HasSucceeded);
@@ -81,7 +81,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await this._handler.HandleAsync(context);
+        await this.this.handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -98,7 +98,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await this._handler.HandleAsync(context);
+        await this.this.handler.HandleAsync(context);
 
         // Assert
         Assert.True(context.HasSucceeded);
@@ -115,7 +115,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await this._handler.HandleAsync(context);
+        await this.this.handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -132,7 +132,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await this._handler.HandleAsync(context);
+        await this.this.handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -149,7 +149,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await this._handler.HandleAsync(context);
+        await this.this.handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
@@ -166,7 +166,7 @@ public class PermissionHandlerTests
             null!);
 
         // Act
-        await this._handler.HandleAsync(context);
+        await this.this.handler.HandleAsync(context);
 
         // Assert
         Assert.False(context.HasSucceeded);
