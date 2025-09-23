@@ -1,71 +1,71 @@
-namespace SpringJavaEquivalent.Tests;
-
-using Microsoft.AspNetCore.Mvc;
-using SpringJavaEquivalent.Controllers;
-using Xunit;
-
-public class SimpleWorkingTests
+namespace SpringJavaEquivalent.Tests
 {
-    [Fact]
-    public void ApplicationController_Home_ShouldReturnOkResult()
+    using Microsoft.AspNetCore.Mvc;
+    using SpringJavaEquivalent.Controllers;
+    using Xunit;
+
+    public class SimpleWorkingTests
     {
-        // Arrange
-        var logger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<ApplicationController>();
-        var controller = new ApplicationController(logger);
+        [Fact]
+        public void ApplicationController_Home_ShouldReturnOkResult()
+        {
+            // Arrange
+                var logger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<ApplicationController>();
+                var controller = new ApplicationController(logger);
 
-        // Act
-        var result = controller.Home();
+                // Act
+                var result = controller.Home();
 
-        // Assert
-        Assert.IsType<OkObjectResult>(result);
+                // Assert
+                Assert.IsType<OkObjectResult>(result);
     }
 
-    [Fact]
+        [Fact]
     public void ApplicationController_GetObject_ShouldReturnOkResult()
-    {
-        // Arrange
-        var logger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<ApplicationController>();
-        var controller = new ApplicationController(logger);
+        {
+            // Arrange
+            var logger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<ApplicationController>();
+            var controller = new ApplicationController(logger);
 
-        // Act
-        var result = controller.GetObject("test-id");
+            // Act
+            var result = controller.GetObject("test-id");
 
-        // Assert
-        Assert.IsType<OkObjectResult>(result);
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
     }
 
-    [Fact]
+        [Fact]
     public async Task MetricsController_TestMetrics_ShouldReturnString()
-    {
-        // Arrange
+        {
+            // Arrange
         var controller = new MetricsController();
 
-        // Act
+            // Act
         var result = await controller.TestMetrics();
 
-        // Assert
+            // Assert
         Assert.IsType<string>(result);
         Assert.Equal("Metrics test completed", result);
     }
 
-    [Fact]
+        [Fact]
     public void MetricsController_IncrementCounter_ShouldReturnString()
-    {
-        // Arrange
+        {
+            // Arrange
         var controller = new MetricsController();
 
-        // Act
-        var result = controller.IncrementCounter(5);
+            // Act
+            var result = controller.IncrementCounter(5);
 
-        // Assert
+            // Assert
         Assert.IsType<string>(result);
         Assert.Equal("Counter incremented by 5", result);
     }
 
-    [Fact]
+        [Fact]
     public void VulnerableJwtController_CreateToken_ShouldReturnOkResult()
-    {
-        // Arrange
+        {
+            // Arrange
         var controller = new VulnerableJwtController();
         var payload = new Dictionary<string, object>
         {
@@ -73,23 +73,24 @@ public class SimpleWorkingTests
             { "role", "admin" },
         };
 
-        // Act
-        var result = controller.CreateToken(payload);
+            // Act
+            var result = controller.CreateToken(payload);
 
-        // Assert
-        Assert.IsType<OkObjectResult>(result);
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
     }
 
-    [Fact]
+        [Fact]
     public void EnhancedAuthTestController_PublicEndpoint_ShouldReturnOkResult()
-    {
-        // Arrange
+        {
+            // Arrange
         var controller = new EnhancedAuthTestController();
 
-        // Act
-        var result = controller.PublicEndpoint();
+            // Act
+            var result = controller.PublicEndpoint();
 
-        // Assert
-        Assert.IsType<OkObjectResult>(result);
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
     }
 }
