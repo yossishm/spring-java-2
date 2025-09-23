@@ -287,6 +287,30 @@ jobs:
         
         echo "🔍 Checking subdirectories for coverage files..."
         find ./TestResults -type f -name "*.xml" || echo "No XML files in TestResults"
+        
+        echo "🔗 Merging Cobertura coverage files from all modules..."
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        echo "📊 Finding all Cobertura files..."
+        find ./TestResults -name "coverage.cobertura.xml" -type f || echo "No Cobertura files found"
+        
+        echo "🔗 Merging all Cobertura files into a single report..."
+        reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./TestResults/Merged" -reporttypes:"Cobertura"
+        
+        echo "🔍 Checking merged coverage file..."
+        if [ -f "./TestResults/Merged/Cobertura.xml" ]; then
+          echo "✅ Merged Cobertura file created"
+          echo "Merged file size: $(wc -c < ./TestResults/Merged/Cobertura.xml) bytes"
+          echo "First few lines of merged Cobertura:"
+          head -10 ./TestResults/Merged/Cobertura.xml
+          
+          # Copy the merged file to the main TestResults directory
+          cp ./TestResults/Merged/Cobertura.xml ./TestResults/coverage.cobertura.xml
+          echo "✅ Merged coverage file copied to main TestResults directory"
+        else
+          echo "❌ Failed to create merged Cobertura file"
+          echo "Files in Merged directory:"
+          ls -la ./TestResults/Merged/ || echo "Merged directory not found"
+        fi
       working-directory: dotnet-spring-equivalent
 
     - name: Convert coverage to JaCoCo format
