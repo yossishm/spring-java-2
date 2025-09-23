@@ -286,6 +286,9 @@ jobs:
         echo "Organization: yossishm"
         echo "Token exists: ${{ secrets.SONAR_TOKEN != '' }}"
         echo "GitHub Token exists: ${{ secrets.GITHUB_TOKEN != '' }}"
+        
+        echo "🧪 Testing SonarCloud API access..."
+        curl -s -u "${{ secrets.SONAR_TOKEN }}:" "https://sonarcloud.io/api/projects/search?organization=yossishm" | head -200 || echo "API test failed"
       working-directory: .
 
     - name: SonarCloud Analysis
