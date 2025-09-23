@@ -216,12 +216,21 @@ jobs:
 
     - name: Generate SonarQube coverage report
       run: |
-        # Find and copy coverage file
-        find ./dotnet-spring-equivalent/TestResults -name "coverage.cobertura.xml" -exec cp {} ./dotnet-spring-equivalent/TestResults/coverage.xml \; 2>/dev/null || true
+        # Find the main coverage file (prioritize the one in the root TestResults directory)
+        if [ -f "./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" ]; then
+          cp ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml ./dotnet-spring-equivalent/TestResults/coverage.xml
+        else
+          # Fallback: find any coverage file and use the first one found
+          find ./dotnet-spring-equivalent/TestResults -name "coverage.cobertura.xml" -type f | head -1 | xargs -I {} cp {} ./dotnet-spring-equivalent/TestResults/coverage.xml || echo "No coverage file found"
+        fi
 
         # Generate SonarQube-compatible coverage format
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"./dotnet-spring-equivalent/TestResults/coverage.xml" -targetdir:"./dotnet-spring-equivalent/TestResults" -reporttypes:"SonarQube" -sourcedirs:"./dotnet-spring-equivalent"
+        if [ -f "./dotnet-spring-equivalent/TestResults/coverage.xml" ]; then
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          reportgenerator -reports:"./dotnet-spring-equivalent/TestResults/coverage.xml" -targetdir:"./dotnet-spring-equivalent/TestResults" -reporttypes:"SonarQube" -sourcedirs:"./dotnet-spring-equivalent"
+        else
+          echo "Warning: No coverage file available for SonarQube report generation"
+        fi
       working-directory: .
 
     - name: SonarCloud Analysis
@@ -234,7 +243,7 @@ jobs:
         args: >
           -Dsonar.projectKey=spring-java-2-dotnet-spring-equivalent
           -Dsonar.organization=yossishm
-          -Dsonar.coverageReportPaths=./TestResults/SonarQube.xml
+          -Dsonar.coverageReportPaths=TestResults/SonarQube.xml
           -Dsonar.exclusions=**/bin/**,**/obj/**,**/TestResults/**,**/*.g.cs
           -Dsonar.test.exclusions=**/bin/**,**/obj/**
 
