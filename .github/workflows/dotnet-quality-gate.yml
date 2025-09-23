@@ -307,6 +307,7 @@ jobs:
         args: >
           -Dsonar.projectKey=spring-java-2-dotnet
           -Dsonar.organization=yossishm
+          -Dsonar.branch.name=main
           -Dsonar.coverageReportPaths=TestResults/SonarQube.xml
           -Dsonar.exclusions=**/bin/**,**/obj/**,**/TestResults/**,**/*.g.cs
           -Dsonar.test.exclusions=**/bin/**,**/obj/**
