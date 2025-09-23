@@ -287,16 +287,6 @@ jobs:
         
         echo "🔍 Checking subdirectories for coverage files..."
         find ./TestResults -type f -name "*.xml" || echo "No XML files in TestResults"
-        
-        echo "📋 Copying coverage file to test project directory for SpringJavaEquivalent.Tests module..."
-        if [ -f "./TestResults/JaCoCo/SonarQube.xml" ]; then
-          mkdir -p ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/
-          cp ./TestResults/JaCoCo/SonarQube.xml ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/SonarQube.xml
-          echo "✅ Coverage file copied to test project directory"
-          echo "Test project coverage file size: $(wc -c < ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/SonarQube.xml) bytes"
-        else
-          echo "❌ No coverage file found to copy"
-        fi
       working-directory: dotnet-spring-equivalent
 
     - name: Convert coverage to JaCoCo format
@@ -344,6 +334,12 @@ jobs:
           echo "First few lines of SonarQube.xml:"
           head -10 ./TestResults/SonarQube.xml
           echo "✅ Coverage file ready for SonarCloud analysis"
+          
+          echo "📋 Copying coverage file to test project directory for SpringJavaEquivalent.Tests module..."
+          mkdir -p ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/
+          cp ./TestResults/SonarQube.xml ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/SonarQube.xml
+          echo "✅ Coverage file copied to test project directory"
+          echo "Test project coverage file size: $(wc -c < ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/SonarQube.xml) bytes"
         else
           echo "❌ No SonarQube.xml file found - failing workflow"
           ls -la ./TestResults/ || echo "TestResults directory not found"
