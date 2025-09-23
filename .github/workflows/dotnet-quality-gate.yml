@@ -226,57 +226,39 @@ jobs:
     - name: Build and test with coverage
       run: |
         echo "🔨 Building solution..."
-        dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.sln --configuration Release --no-restore
+        dotnet build SpringJavaEquivalent.sln --configuration Release --no-restore
 
         echo "🧪 Running tests with coverage..."
-        dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./dotnet-spring-equivalent/coverlet.runsettings --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        dotnet test SpringJavaEquivalent.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --settings ./coverlet.runsettings --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
         echo "📊 Checking for test results in default location..."
         find . -name "*.trx" -o -name "coverage.cobertura.xml" | head -10 || echo "No test result files found"
 
         echo "📂 Creating TestResults directory and copying coverage files..."
-        mkdir -p ./dotnet-spring-equivalent/TestResults
-        find . -name "coverage.cobertura.xml" -exec cp {} ./dotnet-spring-equivalent/TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
+        mkdir -p ./TestResults
+        find . -name "coverage.cobertura.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
 
         echo "📊 Checking test results..."
-        ls -la ./dotnet-spring-equivalent/TestResults/ || echo "❌ TestResults directory empty"
-      working-directory: .
+        ls -la ./TestResults/ || echo "❌ TestResults directory empty"
+      working-directory: dotnet-spring-equivalent
 
-    - name: Generate SonarQube coverage report
+    - name: Verify coverage file
       run: |
         echo "🔍 Checking for coverage files in TestResults directory..."
-        ls -la ./dotnet-spring-equivalent/TestResults/ || echo "TestResults directory not found"
+        ls -la ./TestResults/ || echo "TestResults directory not found"
 
-        # Find the main coverage file (prioritize the one in the root TestResults directory)
-        if [ -f "./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" ]; then
-          echo "✅ Found coverage.cobertura.xml in root TestResults directory"
-          cp ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml ./dotnet-spring-equivalent/TestResults/coverage.xml
-        else
-          echo "⚠️ coverage.cobertura.xml not found in root, searching subdirectories..."
-          # Fallback: find any coverage file and use the first one found
-          COVERAGE_FILE=$(find ./dotnet-spring-equivalent/TestResults -name "coverage.cobertura.xml" -type f | head -1)
-          if [ -n "$COVERAGE_FILE" ]; then
-            echo "✅ Found coverage file: $COVERAGE_FILE"
-            cp "$COVERAGE_FILE" ./dotnet-spring-equivalent/TestResults/coverage.xml
-          else
-            echo "❌ No coverage.cobertura.xml files found anywhere"
-            find ./dotnet-spring-equivalent/TestResults -name "*.xml" -type f || echo "No XML files found at all"
-          fi
-        fi
-
-        # Verify coverage file exists
-        if [ -f "./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml" ]; then
+        if [ -f "./TestResults/coverage.cobertura.xml" ]; then
           echo "✅ Found coverage.cobertura.xml"
-          echo "Coverage file size: $(wc -c < ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml) bytes"
+          echo "Coverage file size: $(wc -c < ./TestResults/coverage.cobertura.xml) bytes"
           echo "First few lines of coverage.cobertura.xml:"
-          head -10 ./dotnet-spring-equivalent/TestResults/coverage.cobertura.xml
+          head -10 ./TestResults/coverage.cobertura.xml
           echo "✅ Coverage file ready for SonarCloud analysis"
         else
           echo "❌ No coverage.cobertura.xml file found - failing workflow"
-          ls -la ./dotnet-spring-equivalent/TestResults/ || echo "TestResults directory not found"
+          ls -la ./TestResults/ || echo "TestResults directory not found"
           exit 1
         fi
-      working-directory: .
+      working-directory: dotnet-spring-equivalent
 
     - name: SonarScanner End
       run: |
