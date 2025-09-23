@@ -31,7 +31,7 @@ git push origin main
 ```
 
 ### 6. Check Results
-- Go to [sonarcloud.io](https://sonarcloud.io) → Your org (`yossishm`) → `spring-java-2-dotnet-spring-equivalent`
+- Go to [sonarcloud.io](https://sonarcloud.io) → Your org (`yossishm`) → `spring-java-2-dotnet`
 - View coverage metrics (should show ~78% coverage!)
 - Quality gate status
 - Code smells, bugs, vulnerabilities
@@ -47,7 +47,7 @@ After setup, SonarCloud will show:
 
 ## 🔧 Configuration Details
 
-### Project Key: `spring-java-2-dotnet-spring-equivalent`
+### Project Key: `spring-java-2-dotnet`
 ### Organization: `yossishm`
 
 ### Coverage Settings:
