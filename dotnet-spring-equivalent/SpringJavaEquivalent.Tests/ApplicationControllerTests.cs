@@ -17,7 +17,6 @@ public class ApplicationControllerTests
     {
         this._mockLogger = new Mock<ILogger<ApplicationController>>();
         this._controller = new ApplicationController(this._mockLogger.Object);
-        
         // Setup controller context
         var context = new ControllerContext
         {
@@ -93,10 +92,8 @@ public class ApplicationControllerTests
             new Claim("permission", "CACHE_READ"),
             new Claim("permission", "CACHE_WRITE"),
         };
-        
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        
         this._controller.ControllerContext.HttpContext.User = principal;
     }
 }

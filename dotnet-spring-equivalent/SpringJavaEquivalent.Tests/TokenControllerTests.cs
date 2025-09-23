@@ -19,7 +19,7 @@ namespace SpringJavaEquivalent.Tests
             var mockConfig = new Mock<IConfiguration>();
             mockConfig.Setup(x => x["Jwt:Secret"]).Returns("test-secret-key-that-is-long-enough-for-hmac-sha256");
             mockConfig.Setup(x => x["Jwt:ExpirationHours"]).Returns("24");
-            
+
             this.mockJwtService = new Mock<JwtService>(mockConfig.Object);
             this.controller = new TokenController(this.mockJwtService.Object);
         }

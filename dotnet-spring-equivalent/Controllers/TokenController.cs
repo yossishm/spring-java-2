@@ -79,7 +79,7 @@ public class TokenController : ControllerBase
     public IActionResult GeneratePredefinedToken([FromRoute] string type)
     {
         ArgumentNullException.ThrowIfNull(type);
-        
+
         var upperType = type.ToUpperInvariant();
         return upperType switch
         {
@@ -191,7 +191,7 @@ public class TokenController : ControllerBase
         {
             return BadRequest("Request is required");
         }
-        
+
         if (!request.TryGetValue("token", out var token) || string.IsNullOrWhiteSpace(token))
         {
             return BadRequest("Token is required");

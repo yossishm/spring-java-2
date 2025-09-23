@@ -31,7 +31,7 @@ public class LocalRestClient : IDisposable
     public async Task<string> GetAsync(Uri uri)
     {
         ArgumentNullException.ThrowIfNull(uri);
-        
+
         try
         {
             var response = await this.httpClient.GetAsync(new Uri(this.server + uri.ToString())).ConfigureAwait(false);
@@ -51,7 +51,7 @@ public class LocalRestClient : IDisposable
     {
         ArgumentNullException.ThrowIfNull(uri);
         ArgumentNullException.ThrowIfNull(json);
-        
+
         try
         {
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -72,7 +72,7 @@ public class LocalRestClient : IDisposable
     {
         ArgumentNullException.ThrowIfNull(uri);
         ArgumentNullException.ThrowIfNull(json);
-        
+
         try
         {
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -92,7 +92,7 @@ public class LocalRestClient : IDisposable
     public async Task<string> DeleteAsync(Uri uri)
     {
         ArgumentNullException.ThrowIfNull(uri);
-        
+
         try
         {
             var response = await this.httpClient.DeleteAsync(new Uri(this.server + uri.ToString())).ConfigureAwait(false);

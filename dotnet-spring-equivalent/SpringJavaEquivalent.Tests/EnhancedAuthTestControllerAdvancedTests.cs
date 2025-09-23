@@ -20,7 +20,7 @@ public class EnhancedAuthTestControllerAdvancedTests
     public EnhancedAuthTestControllerAdvancedTests()
     {
         this._controller = new EnhancedAuthTestController();
-        
+
         // Setup controller context
         var context = new ControllerContext
         {

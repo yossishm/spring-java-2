@@ -178,7 +178,7 @@ public class JwtService
         ArgumentNullException.ThrowIfNull(username);
         ArgumentNullException.ThrowIfNull(roles);
         ArgumentNullException.ThrowIfNull(permissions);
-        
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(this.secretKey);
 

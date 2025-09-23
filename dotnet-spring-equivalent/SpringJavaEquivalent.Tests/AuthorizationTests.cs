@@ -178,12 +178,12 @@ public class PermissionHandlerTests
         {
             new(ClaimTypes.Name, "testuser"),
         };
-        
+
         if (permission != null)
         {
             claims.Add(new("permission", permission));
         }
-        
+
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         return new ClaimsPrincipal(identity);
     }
@@ -194,12 +194,12 @@ public class PermissionHandlerTests
         {
             new(ClaimTypes.Name, "testuser"),
         };
-        
+
         foreach (var permission in permissions)
         {
             claims.Add(new Claim("permission", permission));
         }
-        
+
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         return new ClaimsPrincipal(identity);
     }

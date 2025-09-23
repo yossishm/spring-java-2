@@ -54,7 +54,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -71,7 +71,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -88,7 +88,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("admin", new[] { "ADMIN" }, new[] { "CACHE_READ", "CACHE_WRITE", "ADMIN_ACCESS" });
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -105,7 +105,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -122,7 +122,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" });
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -139,7 +139,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_WRITE" });
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -156,7 +156,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" }, "AAL2");
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -173,7 +173,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("testuser", new[] { "USER" }, new[] { "CACHE_READ" }, "AAL1", "enterprise");
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act
@@ -190,7 +190,7 @@ namespace SpringJavaEquivalent.Tests
             var jwtService = this._factory.Services.GetRequiredService<JwtService>();
             var token = jwtService.GenerateToken("admin", new[] { "ADMIN" }, new[] { "CACHE_READ", "CACHE_WRITE", "ADMIN_ACCESS" }, "AAL2", "enterprise");
 
-            this._client.DefaultRequestHeaders.Authorization = 
+            this._client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Act

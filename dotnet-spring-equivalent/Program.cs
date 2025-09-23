@@ -37,9 +37,9 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = """
             ## Enhanced JWT Authorization API Documentation
-            
+
             This API demonstrates comprehensive JWT-based authorization with **8 security levels** that now match Spring capabilities:
-            
+
             ### Authorization Levels (.NET vs Spring):
             0. **Public Access** - No authentication required (.NET ✅, Spring ✅)
             1. **Basic Authentication** - Valid JWT token needed (.NET ✅, Spring ✅)
@@ -49,25 +49,25 @@ builder.Services.AddSwaggerGen(c =>
             5. **Authentication Level Access** - AAL2+ required (.NET ✅, Spring ✅)
             6. **Identity Provider Access** - Enterprise IDP required (.NET ✅, Spring ✅)
             7. **Multi-Factor Authorization** - Complex combinations (.NET ✅, Spring ✅)
-            
+
             ### Available Permissions:
             - `CACHE_READ` - Read cache operations
-            - `CACHE_WRITE` - Write cache operations  
+            - `CACHE_WRITE` - Write cache operations
             - `CACHE_DELETE` - Delete cache operations
             - `ADMIN_ACCESS` - Administrative operations
-            
+
             ### Available Roles:
             - `USER` - Basic user access
             - `ADMIN` - Administrative access
             - `MANAGER` - Management access
             - `READONLY` - Read-only access
             - `WRITER` - Write access
-            
+
             ### Authentication Levels:
             - `AAL1` - Basic authentication
             - `AAL2` - Multi-factor authentication
             - `AAL3` - Hardware-based authentication
-            
+
             ### Identity Providers:
             - `local` - Local authentication
             - `enterprise` - Enterprise SSO
@@ -202,9 +202,9 @@ app.Run();
 public partial class Program
 {
     private const string ConstructorMessage = "Program constructor called";
-    
-    protected Program() 
-    { 
+
+    protected Program()
+    {
         #pragma warning disable CA1303 // Do not pass literals as localized parameters
         Console.WriteLine(ConstructorMessage);
         #pragma warning restore CA1303 // Do not pass literals as localized parameters

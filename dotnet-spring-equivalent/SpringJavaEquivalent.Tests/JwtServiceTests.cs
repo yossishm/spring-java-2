@@ -15,7 +15,7 @@ public class JwtServiceTests
         _mockConfiguration = new Mock<IConfiguration>();
         _mockConfiguration.Setup(x => x["Jwt:Secret"]).Returns("test-secret-key-that-is-long-enough-for-hmac-sha256");
         _mockConfiguration.Setup(x => x["Jwt:ExpirationHours"]).Returns("24");
-        
+
         _jwtService = new JwtService(_mockConfiguration.Object);
     }
 
@@ -229,9 +229,9 @@ public class JwtServiceTests
         var mockConfig = new Mock<IConfiguration>();
         mockConfig.Setup(x => x["Jwt:Secret"]).Returns("test-secret-key-that-is-long-enough-for-hmac-sha256");
         mockConfig.Setup(x => x["Jwt:ExpirationHours"]).Returns("24"); // Normal expiration
-        
+
         var jwtService = new JwtService(mockConfig.Object);
-        
+
         // Create an expired token manually by using a past expiration date
         var expiredToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwicm9sZSI6IlVTRVIiLCJwZXJtaXNzaW9uIjoiUkVBRCIsImV4cCI6MTYwOTQ1NzYwMCwiaWF0IjoxNjA5NDU3NjAwfQ.invalid";
 

@@ -13,7 +13,7 @@ namespace SpringJavaEquivalent.Tests
         public EnhancedAuthTestControllerTests()
         {
             this._controller = new EnhancedAuthTestController();
-            
+
             // Setup controller context
             var context = new ControllerContext
             {
@@ -115,10 +115,10 @@ namespace SpringJavaEquivalent.Tests
             {
                 new Claim(ClaimTypes.Name, "testuser")
             };
-            
+
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
-            
+
             this._controller.ControllerContext.HttpContext.User = principal;
         }
 
@@ -129,10 +129,10 @@ namespace SpringJavaEquivalent.Tests
                 new Claim(ClaimTypes.Name, "testuser"),
                 new Claim(ClaimTypes.Role, "USER")
             };
-            
+
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
-            
+
             this._controller.ControllerContext.HttpContext.User = principal;
         }
 
@@ -143,10 +143,10 @@ namespace SpringJavaEquivalent.Tests
                 new Claim(ClaimTypes.Name, "admin"),
                 new Claim(ClaimTypes.Role, "ADMIN")
             };
-            
+
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
-            
+
             this._controller.ControllerContext.HttpContext.User = principal;
         }
 
@@ -157,10 +157,10 @@ namespace SpringJavaEquivalent.Tests
                 new Claim(ClaimTypes.Name, "testuser"),
                 new Claim("permission", "CACHE_READ")
             };
-            
+
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
-            
+
             this._controller.ControllerContext.HttpContext.User = principal;
         }
 
@@ -171,10 +171,10 @@ namespace SpringJavaEquivalent.Tests
                 new Claim(ClaimTypes.Name, "testuser"),
                 new Claim("permission", "CACHE_WRITE")
             };
-            
+
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
-            
+
             this._controller.ControllerContext.HttpContext.User = principal;
         }
     }

@@ -96,7 +96,7 @@ public class VulnerableJwtController : ControllerBase
     public IActionResult DecodeToken([FromQuery] string token)
     {
         ArgumentNullException.ThrowIfNull(token);
-        
+
         try
         {
             // Vulnerable: Decoding without verification - same as Spring version
