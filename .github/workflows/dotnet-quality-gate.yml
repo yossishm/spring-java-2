@@ -219,10 +219,10 @@ jobs:
         ls -la
         echo "🔍 TestResults directory:"
         ls -la TestResults/ || echo "TestResults directory not found"
-        echo "🔍 JaCoCo directory:"
-        ls -la TestResults/JaCoCo/ || echo "JaCoCo directory not found"
-        echo "🔍 Looking for SonarQube.xml:"
-        find . -name "SonarQube.xml" -type f || echo "SonarQube.xml not found"
+        echo "🔍 OpenCover directory:"
+        ls -la TestResults/OpenCover/ || echo "OpenCover directory not found"
+        echo "🔍 Looking for OpenCover.xml:"
+        find . -name "OpenCover.xml" -type f || echo "OpenCover.xml not found"
         echo "🔍 Starting SonarScanner..."
         dotnet sonarscanner begin \
           /k:"spring-java-2-dotnet" \
@@ -231,7 +231,7 @@ jobs:
           /d:sonar.verbose=true \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.cs.opencover.reportsPaths="**/TestResults/JaCoCo/SonarQube.xml" \
+          /d:sonar.cs.opencover.reportsPaths="**/TestResults/OpenCover/OpenCover.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
@@ -313,38 +313,35 @@ jobs:
         fi
       working-directory: dotnet-spring-equivalent
 
-    - name: Convert coverage to JaCoCo format
+    - name: Convert coverage to OpenCover format
       run: |
-        echo "🔧 Converting coverage file to JaCoCo format for SonarCloud..."
+        echo "🔧 Converting coverage file to OpenCover format for SonarCloud..."
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        echo "📊 Converting Cobertura to JaCoCo using reportgenerator..."
-        reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/JaCoCo -reporttypes:SonarQube
+        echo "📊 Converting Cobertura to OpenCover using reportgenerator..."
+        reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/OpenCover -reporttypes:OpenCover
         echo "🔍 Checking what files were created by reportgenerator..."
-        ls -la ./TestResults/JaCoCo/ || echo "JaCoCo directory not found"
-        echo "🔍 Looking for any XML files in JaCoCo directory..."
-        find ./TestResults/JaCoCo -name "*.xml" -type f || echo "No XML files found in JaCoCo directory"
+        ls -la ./TestResults/OpenCover/ || echo "OpenCover directory not found"
+        echo "🔍 Looking for any XML files in OpenCover directory..."
+        find ./TestResults/OpenCover -name "*.xml" -type f || echo "No XML files found in OpenCover directory"
         
         # Check for different possible file names
-        if [ -f "./TestResults/JaCoCo/SonarQube.xml" ]; then
-          echo "✅ SonarQube.xml found"
-          cp ./TestResults/JaCoCo/SonarQube.xml ./TestResults/SonarQube.xml
-        elif [ -f "./TestResults/JaCoCo/jacoco.xml" ]; then
-          echo "✅ jacoco.xml found"
-          cp ./TestResults/JaCoCo/jacoco.xml ./TestResults/SonarQube.xml
-        elif [ -f "./TestResults/JaCoCo/coverage.xml" ]; then
+        if [ -f "./TestResults/OpenCover/OpenCover.xml" ]; then
+          echo "✅ OpenCover.xml found"
+          cp ./TestResults/OpenCover/OpenCover.xml ./TestResults/OpenCover.xml
+        elif [ -f "./TestResults/OpenCover/coverage.xml" ]; then
           echo "✅ coverage.xml found"
-          cp ./TestResults/JaCoCo/coverage.xml ./TestResults/SonarQube.xml
+          cp ./TestResults/OpenCover/coverage.xml ./TestResults/OpenCover.xml
         else
           echo "❌ No expected coverage file found - conversion failed"
-          echo "Files in JaCoCo directory:"
-          ls -la ./TestResults/JaCoCo/ || echo "JaCoCo directory not found"
+          echo "Files in OpenCover directory:"
+          ls -la ./TestResults/OpenCover/ || echo "OpenCover directory not found"
           exit 1
         fi
         
-        echo "JaCoCo file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
+        echo "OpenCover file size: $(wc -c < ./TestResults/OpenCover.xml) bytes"
         echo "First few lines of coverage file:"
-        head -10 ./TestResults/SonarQube.xml
-        echo "✅ Coverage converted to JaCoCo format for SonarCloud"
+        head -10 ./TestResults/OpenCover.xml
+        echo "✅ Coverage converted to OpenCover format for SonarCloud"
       working-directory: dotnet-spring-equivalent
 
     - name: Verify coverage file
@@ -352,20 +349,20 @@ jobs:
         echo "🔍 Checking for coverage files in TestResults directory..."
         ls -la ./TestResults/ || echo "TestResults directory not found"
 
-        if [ -f "./TestResults/SonarQube.xml" ]; then
-          echo "✅ Found SonarQube.xml"
-          echo "Coverage file size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
-          echo "First few lines of SonarQube.xml:"
-          head -10 ./TestResults/SonarQube.xml
+        if [ -f "./TestResults/OpenCover.xml" ]; then
+          echo "✅ Found OpenCover.xml"
+          echo "Coverage file size: $(wc -c < ./TestResults/OpenCover.xml) bytes"
+          echo "First few lines of OpenCover.xml:"
+          head -10 ./TestResults/OpenCover.xml
           echo "✅ Coverage file ready for SonarCloud analysis"
           
           echo "📋 Copying coverage file to test project directory for SpringJavaEquivalent.Tests module..."
-          mkdir -p ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/
-          cp ./TestResults/SonarQube.xml ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/SonarQube.xml
+          mkdir -p ./SpringJavaEquivalent.Tests/TestResults/OpenCover/
+          cp ./TestResults/OpenCover.xml ./SpringJavaEquivalent.Tests/TestResults/OpenCover/OpenCover.xml
           echo "✅ Coverage file copied to test project directory"
-          echo "Test project coverage file size: $(wc -c < ./SpringJavaEquivalent.Tests/TestResults/JaCoCo/SonarQube.xml) bytes"
+          echo "Test project coverage file size: $(wc -c < ./SpringJavaEquivalent.Tests/TestResults/OpenCover/OpenCover.xml) bytes"
         else
-          echo "❌ No SonarQube.xml file found - failing workflow"
+          echo "❌ No OpenCover.xml file found - failing workflow"
           ls -la ./TestResults/ || echo "TestResults directory not found"
           exit 1
         fi
@@ -377,16 +374,16 @@ jobs:
         echo "🔍 Current working directory:"
         pwd
         ls -la ./TestResults/ || echo "TestResults directory not found"
-        echo "🔍 Looking for SonarQube.xml file..."
-        find . -name "SonarQube.xml" -type f || echo "SonarQube.xml not found"
+        echo "🔍 Looking for OpenCover.xml file..."
+        find . -name "OpenCover.xml" -type f || echo "OpenCover.xml not found"
         echo "🔍 Directory structure:"
         ls -la
-        echo "🔍 Checking if SonarQube.xml exists at expected path:"
-        if [ -f "./TestResults/JaCoCo/SonarQube.xml" ]; then
-          echo "✅ SonarQube.xml found at ./TestResults/JaCoCo/SonarQube.xml"
-          echo "File size: $(wc -c < ./TestResults/JaCoCo/SonarQube.xml) bytes"
+        echo "🔍 Checking if OpenCover.xml exists at expected path:"
+        if [ -f "./TestResults/OpenCover/OpenCover.xml" ]; then
+          echo "✅ OpenCover.xml found at ./TestResults/OpenCover/OpenCover.xml"
+          echo "File size: $(wc -c < ./TestResults/OpenCover/OpenCover.xml) bytes"
         else
-          echo "❌ SonarQube.xml NOT found at ./TestResults/JaCoCo/SonarQube.xml"
+          echo "❌ OpenCover.xml NOT found at ./TestResults/OpenCover/OpenCover.xml"
         fi
         dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       working-directory: dotnet-spring-equivalent
