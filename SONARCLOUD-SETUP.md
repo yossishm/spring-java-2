@@ -65,7 +65,7 @@ After setup, SonarCloud will show:
 ### Coverage Not Showing?
 1. Check GitHub Actions logs for "Generate SonarQube coverage report" step
 2. Verify `SONAR_TOKEN` secret is set correctly
-3. Check if `SonarQube.xml` file is generated in `./TestResults/`
+3. Check if `VisualStudio.xml` file is generated in `./TestResults/`
 
 ### Quality Gate Failing?
 1. Check test failures in GitHub Actions

@@ -37,7 +37,7 @@
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/altcover-opencover.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/bf9a93ca-3574-45d3-a8bb-77de14bb66c9/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/coverage.cobertura.xml
-/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/SonarQube.xml
+/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/VisualStudio.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-23_09_06_19.trx
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-23_09_06_19/In/yshmulev-mac/coverage.cobertura.xml
 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/TestResults/_yshmulev-mac_2025-09-23_09_41_12.trx
