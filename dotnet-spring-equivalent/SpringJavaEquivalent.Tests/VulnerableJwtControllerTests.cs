@@ -10,7 +10,7 @@ public class VulnerableJwtControllerTests
 
     public VulnerableJwtControllerTests()
     {
-        this.this.controller = new VulnerableJwtController();
+        this.controller = new VulnerableJwtController();
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class VulnerableJwtControllerTests
         };
 
         // Act
-        var result = this.this.controller.CreateToken(payload);
+        var result = this.controller.CreateToken(payload);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -43,7 +43,7 @@ public class VulnerableJwtControllerTests
         };
 
         // Act
-        var result = this.this.controller.VerifyToken(request);
+        var result = this.controller.VerifyToken(request);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -58,7 +58,7 @@ public class VulnerableJwtControllerTests
         var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
         // Act
-        var result = this.this.controller.DecodeToken(token);
+        var result = this.controller.DecodeToken(token);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -77,7 +77,7 @@ public class VulnerableJwtControllerTests
         };
 
         // Act
-        var result = this.this.controller.VerifyAnyAlgorithm(request);
+        var result = this.controller.VerifyAnyAlgorithm(request);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -92,7 +92,7 @@ public class VulnerableJwtControllerTests
         var payload = new Dictionary<string, object>();
 
         // Act
-        var result = this.this.controller.CreateToken(payload);
+        var result = this.controller.CreateToken(payload);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -108,7 +108,7 @@ public class VulnerableJwtControllerTests
         Dictionary<string, object> payload = null!;
 
         // Act
-        var result = this.this.controller.CreateToken(payload);
+        var result = this.controller.CreateToken(payload);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -130,7 +130,7 @@ public class VulnerableJwtControllerTests
         };
 
         // Act
-        var result = this.this.controller.CreateToken(payload);
+        var result = this.controller.CreateToken(payload);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -146,7 +146,7 @@ public class VulnerableJwtControllerTests
         var request = new Dictionary<string, string> { { "token", "invalid.token.signature" } };
 
         // Act
-        var result = this.this.controller.VerifyToken(request);
+        var result = this.controller.VerifyToken(request);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -161,7 +161,7 @@ public class VulnerableJwtControllerTests
         var request = new Dictionary<string, string> { { "token", "" } };
 
         // Act
-        var result = this.this.controller.VerifyToken(request);
+        var result = this.controller.VerifyToken(request);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -176,7 +176,7 @@ public class VulnerableJwtControllerTests
         Dictionary<string, string> request = null!;
 
         // Act
-        var result = this.this.controller.VerifyToken(request);
+        var result = this.controller.VerifyToken(request);
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(result);
@@ -191,7 +191,7 @@ public class VulnerableJwtControllerTests
         var invalidToken = "invalid.token.signature";
 
         // Act
-        var result = this.this.controller.DecodeToken(invalidToken);
+        var result = this.controller.DecodeToken(invalidToken);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -206,7 +206,7 @@ public class VulnerableJwtControllerTests
         var emptyToken = "";
 
         // Act
-        var result = this.this.controller.DecodeToken(emptyToken);
+        var result = this.controller.DecodeToken(emptyToken);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -221,7 +221,7 @@ public class VulnerableJwtControllerTests
         var request = new Dictionary<string, string> { { "token", "invalid.token.signature" } };
 
         // Act
-        var result = this.this.controller.VerifyAnyAlgorithm(request);
+        var result = this.controller.VerifyAnyAlgorithm(request);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -236,7 +236,7 @@ public class VulnerableJwtControllerTests
         var request = new Dictionary<string, string> { { "token", "" } };
 
         // Act
-        var result = this.this.controller.VerifyAnyAlgorithm(request);
+        var result = this.controller.VerifyAnyAlgorithm(request);
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -251,7 +251,7 @@ public class VulnerableJwtControllerTests
         Dictionary<string, string> request = null!;
 
         // Act
-        var result = this.this.controller.VerifyAnyAlgorithm(request);
+        var result = this.controller.VerifyAnyAlgorithm(request);
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(result);

@@ -12,21 +12,21 @@ namespace SpringJavaEquivalent.Tests
 
         public EnhancedAuthTestControllerTests()
         {
-            this.this.controller = new EnhancedAuthTestController();
+            this.controller = new EnhancedAuthTestController();
 
             // Setup controller context
             var context = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
-            this.this.controller.ControllerContext = context;
+            this.controller.ControllerContext = context;
         }
 
         [Fact]
         public void PublicEndpoint_ShouldReturnOkResult()
         {
             // Act
-            var result = this.this.controller.PublicEndpoint();
+            var result = this.controller.PublicEndpoint();
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -41,7 +41,7 @@ namespace SpringJavaEquivalent.Tests
             this.SetupAuthenticatedUser();
 
             // Act
-            var result = this.this.controller.AuthenticatedEndpoint();
+            var result = this.controller.AuthenticatedEndpoint();
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -56,7 +56,7 @@ namespace SpringJavaEquivalent.Tests
             this.SetupUserRole();
 
             // Act
-            var result = this.this.controller.UserRoleEndpoint();
+            var result = this.controller.UserRoleEndpoint();
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -71,7 +71,7 @@ namespace SpringJavaEquivalent.Tests
             this.SetupAdminRole();
 
             // Act
-            var result = this.this.controller.AdminRoleEndpoint();
+            var result = this.controller.AdminRoleEndpoint();
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -86,7 +86,7 @@ namespace SpringJavaEquivalent.Tests
             this.SetupReadPermission();
 
             // Act
-            var result = this.this.controller.CacheReadEndpoint();
+            var result = this.controller.CacheReadEndpoint();
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -101,7 +101,7 @@ namespace SpringJavaEquivalent.Tests
             this.SetupWritePermission();
 
             // Act
-            var result = this.this.controller.CacheWriteEndpoint();
+            var result = this.controller.CacheWriteEndpoint();
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -119,7 +119,7 @@ namespace SpringJavaEquivalent.Tests
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
 
-            this.this.controller.ControllerContext.HttpContext.User = principal;
+            this.controller.ControllerContext.HttpContext.User = principal;
         }
 
         private void SetupUserRole()
@@ -133,7 +133,7 @@ namespace SpringJavaEquivalent.Tests
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
 
-            this.this.controller.ControllerContext.HttpContext.User = principal;
+            this.controller.ControllerContext.HttpContext.User = principal;
         }
 
         private void SetupAdminRole()
@@ -147,7 +147,7 @@ namespace SpringJavaEquivalent.Tests
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
 
-            this.this.controller.ControllerContext.HttpContext.User = principal;
+            this.controller.ControllerContext.HttpContext.User = principal;
         }
 
         private void SetupReadPermission()
@@ -161,7 +161,7 @@ namespace SpringJavaEquivalent.Tests
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
 
-            this.this.controller.ControllerContext.HttpContext.User = principal;
+            this.controller.ControllerContext.HttpContext.User = principal;
         }
 
         private void SetupWritePermission()
@@ -175,7 +175,7 @@ namespace SpringJavaEquivalent.Tests
             var identity = new ClaimsIdentity(claims, "TestAuthType");
             var principal = new ClaimsPrincipal(identity);
 
-            this.this.controller.ControllerContext.HttpContext.User = principal;
+            this.controller.ControllerContext.HttpContext.User = principal;
         }
     }
 }

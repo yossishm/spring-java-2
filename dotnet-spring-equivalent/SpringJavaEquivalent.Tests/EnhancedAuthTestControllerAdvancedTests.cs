@@ -19,14 +19,14 @@ public class EnhancedAuthTestControllerAdvancedTests
 
     public EnhancedAuthTestControllerAdvancedTests()
     {
-        this.this.controller = new EnhancedAuthTestController();
+        this.controller = new EnhancedAuthTestController();
 
         // Setup controller context
         var context = new ControllerContext
         {
             HttpContext = new DefaultHttpContext(),
         };
-        this.this.controller.ControllerContext = context;
+        this.controller.ControllerContext = context;
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupAdminRole();
 
         // Act
-        var result = this.this.controller.AdminOrManagerEndpoint();
+        var result = this.controller.AdminOrManagerEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -51,7 +51,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupManagerRole();
 
         // Act
-        var result = this.this.controller.AdminOrManagerEndpoint();
+        var result = this.controller.AdminOrManagerEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -66,7 +66,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupAdminRole();
 
         // Act
-        var result = this.this.controller.AdminCacheWriteEndpoint();
+        var result = this.controller.AdminCacheWriteEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -81,7 +81,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupGoogleIdentityProvider();
 
         // Act
-        var result = this.this.controller.IdentityProviderEndpoint();
+        var result = this.controller.IdentityProviderEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -96,7 +96,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupAzureIdentityProvider();
 
         // Act
-        var result = this.this.controller.IdentityProviderEndpoint();
+        var result = this.controller.IdentityProviderEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -111,7 +111,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupAuthLevel1();
 
         // Act
-        var result = this.this.controller.AuthLevelEndpoint();
+        var result = this.controller.AuthLevelEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -126,7 +126,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupAuthLevel2();
 
         // Act
-        var result = this.this.controller.AuthLevelEndpoint();
+        var result = this.controller.AuthLevelEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -141,7 +141,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         this.SetupMaximumSecurityUser();
 
         // Act
-        var result = this.this.controller.MaximumSecurityEndpoint();
+        var result = this.controller.MaximumSecurityEndpoint();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
@@ -158,7 +158,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this.this.controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupManagerRole()
@@ -170,7 +170,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this.this.controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupGoogleIdentityProvider()
@@ -182,7 +182,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this.this.controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupAzureIdentityProvider()
@@ -194,7 +194,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this.this.controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupAuthLevel1()
@@ -206,7 +206,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this.this.controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupAuthLevel2()
@@ -218,7 +218,7 @@ public class EnhancedAuthTestControllerAdvancedTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this.this.controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 
     private void SetupMaximumSecurityUser()
@@ -233,6 +233,6 @@ public class EnhancedAuthTestControllerAdvancedTests
         };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var principal = new ClaimsPrincipal(identity);
-        this.this.controller.ControllerContext.HttpContext.User = principal;
+        this.controller.ControllerContext.HttpContext.User = principal;
     }
 }

@@ -10,14 +10,14 @@ namespace SpringJavaEquivalent.Tests
 
         public MetricsControllerTests()
         {
-            this.this.controller = new MetricsController();
+            this.controller = new MetricsController();
         }
 
         [Fact]
         public async Task TestMetrics_ShouldReturnString()
         {
             // Act
-            var result = await this.this.controller.TestMetrics();
+            var result = await this.controller.TestMetrics();
 
             // Assert
             Assert.IsType<string>(result);
@@ -28,7 +28,7 @@ namespace SpringJavaEquivalent.Tests
         public void IncrementCounter_ShouldReturnString()
         {
             // Act
-            var result = this.this.controller.IncrementCounter(5);
+            var result = this.controller.IncrementCounter(5);
 
             // Assert
             Assert.IsType<string>(result);
@@ -39,7 +39,7 @@ namespace SpringJavaEquivalent.Tests
         public async Task SlowEndpoint_ShouldReturnString()
         {
             // Act
-            var result = await this.this.controller.SlowEndpoint();
+            var result = await this.controller.SlowEndpoint();
 
             // Assert
             Assert.IsType<string>(result);
