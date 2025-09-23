@@ -1,48 +1,49 @@
-using Microsoft.AspNetCore.Mvc;
-using SpringJavaEquivalent.Controllers;
-using Xunit;
-
-namespace SpringJavaEquivalent.Tests;
-
-public class MetricsControllerTests
+namespace SpringJavaEquivalent.Tests
 {
-    private readonly MetricsController _controller;
+    using Microsoft.AspNetCore.Mvc;
+    using SpringJavaEquivalent.Controllers;
+    using Xunit;
 
-    public MetricsControllerTests()
+    public class MetricsControllerTests
     {
-        this._controller = new MetricsController();
-    }
+        private readonly MetricsController _controller;
 
-    [Fact]
-    public async Task TestMetrics_ShouldReturnString()
-    {
-        // Act
-        var result = await this._controller.TestMetrics();
+        public MetricsControllerTests()
+        {
+            this._controller = new MetricsController();
+        }
 
-        // Assert
-        Assert.IsType<string>(result);
-        Assert.Equal("Metrics test completed", result);
-    }
+        [Fact]
+        public async Task TestMetrics_ShouldReturnString()
+        {
+            // Act
+            var result = await this._controller.TestMetrics();
 
-    [Fact]
-    public void IncrementCounter_ShouldReturnString()
-    {
-        // Act
-        var result = this._controller.IncrementCounter(5);
+            // Assert
+            Assert.IsType<string>(result);
+            Assert.Equal("Metrics test completed", result);
+        }
 
-        // Assert
-        Assert.IsType<string>(result);
-        Assert.Equal("Counter incremented by 5", result);
-    }
+        [Fact]
+        public void IncrementCounter_ShouldReturnString()
+        {
+            // Act
+            var result = this._controller.IncrementCounter(5);
 
-    [Fact]
-    public async Task SlowEndpoint_ShouldReturnString()
-    {
-        // Act
-        var result = await this._controller.SlowEndpoint();
+            // Assert
+            Assert.IsType<string>(result);
+            Assert.Equal("Counter incremented by 5", result);
+        }
 
-        // Assert
-        Assert.IsType<string>(result);
-        Assert.Equal("Slow operation completed", result);
+        [Fact]
+        public async Task SlowEndpoint_ShouldReturnString()
+        {
+            // Act
+            var result = await this._controller.SlowEndpoint();
+
+            // Assert
+            Assert.IsType<string>(result);
+            Assert.Equal("Slow operation completed", result);
+        }
     }
 }

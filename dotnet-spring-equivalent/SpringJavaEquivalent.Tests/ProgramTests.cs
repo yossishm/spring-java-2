@@ -2,107 +2,108 @@
 // Copyright (c) SpringJavaEquivalent. All rights reserved.
 // </copyright>
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
-using SpringJavaEquivalent.Services;
-using System;
-using System.Net;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace SpringJavaEquivalent.Tests;
-
-/// <summary>
-/// Integration tests for the Program class.
-/// </summary>
-public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
+namespace SpringJavaEquivalent.Tests
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Extensions.DependencyInjection;
+    using SpringJavaEquivalent.Services;
+    using System;
+    using System.Net;
+    using System.Threading.Tasks;
+    using Xunit;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProgramTests"/> class.
+    /// Integration tests for the Program class.
     /// </summary>
-    /// <param name="factory">The web application factory.</param>
-    public ProgramTests(WebApplicationFactory<Program> factory)
+    public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
     {
-        this._factory = factory.WithWebHostBuilder(builder =>
+        private readonly WebApplicationFactory<Program> _factory;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProgramTests"/> class.
+        /// </summary>
+        /// <param name="factory">The web application factory.</param>
+        public ProgramTests(WebApplicationFactory<Program> factory)
         {
-            builder.UseSetting("Environment", "Testing");
-        });
-    }
+            this._factory = factory.WithWebHostBuilder(builder =>
+            {
+                builder.UseSetting("Environment", "Testing");
+            });
+        }
 
-    /// <summary>
-    /// Verifies that the application can be created by the factory without errors.
-    /// </summary>
-    [Fact]
-    public void Application_StartsSuccessfully()
-    {
-        // Arrange & Act
-        var client = this._factory.CreateClient();
+        /// <summary>
+        /// Verifies that the application can be created by the factory without errors.
+        /// </summary>
+        [Fact]
+        public void Application_StartsSuccessfully()
+        {
+            // Arrange & Act
+            var client = this._factory.CreateClient();
 
-        // Assert
-        Assert.NotNull(client);
-    }
+            // Assert
+            Assert.NotNull(client);
+        }
 
-    /// <summary>
-    /// Verifies that a request to a public endpoint succeeds, testing the request pipeline.
-    /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-    [Fact]
-    public async Task PublicEndpoint_ReturnsOk()
-    {
-        // Arrange
-        var client = this._factory.CreateClient();
+        /// <summary>
+        /// Verifies that a request to a public endpoint succeeds, testing the request pipeline.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+        [Fact]
+        public async Task PublicEndpoint_ReturnsOk()
+        {
+            // Arrange
+            var client = this._factory.CreateClient();
 
-        // Act
-        var response = await client.GetAsync("/api/v1/enhanced-test/public");
+            // Act
+            var response = await client.GetAsync("/api/v1/enhanced-test/public");
 
-        // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
 
-    /// <summary>
-    /// Verifies that essential services are registered in the DI container.
-    /// </summary>
-    /// <param name="serviceType">The service type to check.</param>
-    [Theory]
-    [InlineData(typeof(JwtService))]
-    [InlineData(typeof(IAuthorizationHandler))]
-    public void Services_AreRegistered(Type serviceType)
-    {
-        // Arrange
-        var services = this._factory.Services;
+        /// <summary>
+        /// Verifies that essential services are registered in the DI container.
+        /// </summary>
+        /// <param name="serviceType">The service type to check.</param>
+        [Theory]
+        [InlineData(typeof(JwtService))]
+        [InlineData(typeof(IAuthorizationHandler))]
+        public void Services_AreRegistered(Type serviceType)
+        {
+            // Arrange
+            var services = this._factory.Services;
 
-        // Act
-        var service = services.GetService(serviceType);
+            // Act
+            var service = services.GetService(serviceType);
 
-        // Assert
-        Assert.NotNull(service);
-    }
+            // Assert
+            Assert.NotNull(service);
+        }
 
-    /// <summary>
-    /// Verifies that all custom authorization policies are registered.
-    /// </summary>
-    /// <param name="policyName">The policy to check.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-    [Theory]
-    [InlineData("CacheReadPolicy")]
-    [InlineData("CacheWritePolicy")]
-    [InlineData("AdminOrPowerUserPolicy")]
-    [InlineData("AdminAndCacheWritePolicy")]
-    [InlineData("IdentityProviderPolicy")]
-    [InlineData("AuthLevelPolicy")]
-    public async Task AuthorizationPolicies_AreRegistered(string policyName)
-    {
-        // Arrange
-        var services = this._factory.Services;
-        var policyProvider = services.GetRequiredService<IAuthorizationPolicyProvider>();
+        /// <summary>
+        /// Verifies that all custom authorization policies are registered.
+        /// </summary>
+        /// <param name="policyName">The policy to check.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+        [Theory]
+        [InlineData("CacheReadPolicy")]
+        [InlineData("CacheWritePolicy")]
+        [InlineData("AdminOrPowerUserPolicy")]
+        [InlineData("AdminAndCacheWritePolicy")]
+        [InlineData("IdentityProviderPolicy")]
+        [InlineData("AuthLevelPolicy")]
+        public async Task AuthorizationPolicies_AreRegistered(string policyName)
+        {
+            // Arrange
+            var services = this._factory.Services;
+            var policyProvider = services.GetRequiredService<IAuthorizationPolicyProvider>();
 
-        // Act
-        var policy = await policyProvider.GetPolicyAsync(policyName);
+            // Act
+            var policy = await policyProvider.GetPolicyAsync(policyName);
 
-        // Assert
-        Assert.NotNull(policy);
+            // Assert
+            Assert.NotNull(policy);
+        }
     }
 }
