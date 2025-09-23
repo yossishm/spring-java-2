@@ -219,7 +219,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.cobertura.xml" \
+          /d:sonar.cs.coverage.reportPaths="TestResults/coverage.cobertura.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
@@ -271,22 +271,6 @@ jobs:
         find . -name "coverage.cobertura.xml" -type f || echo "No coverage files found anywhere"
       working-directory: dotnet-spring-equivalent
 
-    - name: Convert coverage to OpenCover format
-      run: |
-        echo "🔧 Converting coverage file to OpenCover format for SonarCloud..."
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        echo "📊 Running reportgenerator..."
-        reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"./TestResults" -reporttypes:"OpenCover" -sourcedirs:"."
-        echo "🔍 Checking if OpenCover.xml was created..."
-        if [ -f "./TestResults/OpenCover.xml" ]; then
-          echo "✅ OpenCover.xml found, moving to coverage.cobertura.xml"
-          mv ./TestResults/OpenCover.xml ./TestResults/coverage.cobertura.xml
-          echo "✅ Coverage converted to OpenCover format for SonarCloud"
-        else
-          echo "❌ OpenCover.xml not found - conversion failed"
-          ls -la ./TestResults/
-        fi
-      working-directory: dotnet-spring-equivalent
 
     - name: Verify coverage file
       run: |
