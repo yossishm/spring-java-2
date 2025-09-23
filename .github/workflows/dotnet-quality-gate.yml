@@ -219,8 +219,8 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.cobertura.xml" \
-          /d:sonar.exclusions="**/bin/**,**/obj/**,**/TestResults/**,**/*.g.cs" \
-          /d:sonar.test.exclusions="**/bin/**,**/obj/**"
+          /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
+          /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
 
     - name: Build and test with coverage
