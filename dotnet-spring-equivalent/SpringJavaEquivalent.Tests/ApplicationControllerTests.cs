@@ -43,7 +43,7 @@ public class ApplicationControllerTests
     {
         // Arrange
         var id = "test-id";
-        SetupAuthenticatedUser();
+        this.SetupAuthenticatedUser();
 
         // Act
         var result = _controller.GetObject(id);
@@ -59,7 +59,7 @@ public class ApplicationControllerTests
     {
         // Arrange
         var id = "test-id";
-        SetupAuthenticatedUser();
+        this.SetupAuthenticatedUser();
 
         // Act
         var result = _controller.PutObject(id);
@@ -75,7 +75,7 @@ public class ApplicationControllerTests
     {
         // Arrange
         var id = "test-id";
-        SetupAuthenticatedUser();
+        this.SetupAuthenticatedUser();
 
         // Act
         var result = _controller.DeleteObject(id);
