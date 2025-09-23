@@ -158,7 +158,7 @@ public class VulnerableJwtControllerTests
     public void VerifyToken_WithEmptyToken_ShouldReturnOkResult()
     {
         // Arrange
-        var request = new Dictionary<string, string> { { "token", "" } };
+        var request = new Dictionary<string, string> { { "token", string.Empty } };
 
         // Act
         var result = this.controller.VerifyToken(request);
@@ -233,7 +233,7 @@ public class VulnerableJwtControllerTests
     public void VerifyAnyAlgorithm_WithEmptyToken_ShouldReturnOkResult()
     {
         // Arrange
-        var request = new Dictionary<string, string> { { "token", "" } };
+        var request = new Dictionary<string, string> { { "token", string.Empty } };
 
         // Act
         var result = this.controller.VerifyAnyAlgorithm(request);

@@ -4,11 +4,11 @@
 
 namespace SpringJavaEquivalent.Tests
 {
-    using Microsoft.AspNetCore.Authorization;
-    using SpringJavaEquivalent.Authorization;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
+    using SpringJavaEquivalent.Authorization;
     using Xunit;
 
     /// <summary>

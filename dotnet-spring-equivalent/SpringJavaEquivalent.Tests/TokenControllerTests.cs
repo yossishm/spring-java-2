@@ -1,13 +1,13 @@
 namespace SpringJavaEquivalent.Tests
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Moq;
     using SpringJavaEquivalent.Controllers;
     using SpringJavaEquivalent.Services;
     using Xunit;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class TokenControllerTests
     {

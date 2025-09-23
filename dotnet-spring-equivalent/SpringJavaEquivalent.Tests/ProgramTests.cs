@@ -4,13 +4,13 @@
 
 namespace SpringJavaEquivalent.Tests
 {
+    using System;
+    using System.Net;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Extensions.DependencyInjection;
     using SpringJavaEquivalent.Services;
-    using System;
-    using System.Net;
-    using System.Threading.Tasks;
     using Xunit;
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace SpringJavaEquivalent.Tests
     /// </summary>
     public class ProgramTests : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly WebApplicationFactory<Program> factory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProgramTests"/> class.
@@ -26,7 +26,7 @@ namespace SpringJavaEquivalent.Tests
         /// <param name="factory">The web application factory.</param>
         public ProgramTests(WebApplicationFactory<Program> factory)
         {
-            this._factory = factory.WithWebHostBuilder(builder =>
+            this.this.factory = factory.WithWebHostBuilder(builder =>
             {
                 builder.UseSetting("Environment", "Testing");
             });
@@ -39,7 +39,7 @@ namespace SpringJavaEquivalent.Tests
         public void Application_StartsSuccessfully()
         {
             // Arrange & Act
-            var client = this._factory.CreateClient();
+            var client = this.this.factory.CreateClient();
 
             // Assert
             Assert.NotNull(client);
@@ -53,7 +53,7 @@ namespace SpringJavaEquivalent.Tests
         public async Task PublicEndpoint_ReturnsOk()
         {
             // Arrange
-            var client = this._factory.CreateClient();
+            var client = this.this.factory.CreateClient();
 
             // Act
             var response = await client.GetAsync("/api/v1/enhanced-test/public");
@@ -72,7 +72,7 @@ namespace SpringJavaEquivalent.Tests
         public void Services_AreRegistered(Type serviceType)
         {
             // Arrange
-            var services = this._factory.Services;
+            var services = this.this.factory.Services;
 
             // Act
             var service = services.GetService(serviceType);
@@ -96,7 +96,7 @@ namespace SpringJavaEquivalent.Tests
         public async Task AuthorizationPolicies_AreRegistered(string policyName)
         {
             // Arrange
-            var services = this._factory.Services;
+            var services = this.this.factory.Services;
             var policyProvider = services.GetRequiredService<IAuthorizationPolicyProvider>();
 
             // Act

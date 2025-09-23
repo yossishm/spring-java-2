@@ -17,7 +17,7 @@ namespace SpringJavaEquivalent.Tests
             // Setup controller context
             var context = new ControllerContext
             {
-                HttpContext = new DefaultHttpContext()
+                HttpContext = new DefaultHttpContext(),
             };
             this.controller.ControllerContext = context;
         }
@@ -113,7 +113,7 @@ namespace SpringJavaEquivalent.Tests
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, "testuser")
+                new Claim(ClaimTypes.Name, "testuser"),
             };
 
             var identity = new ClaimsIdentity(claims, "TestAuthType");
@@ -127,7 +127,7 @@ namespace SpringJavaEquivalent.Tests
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "testuser"),
-                new Claim(ClaimTypes.Role, "USER")
+                new Claim(ClaimTypes.Role, "USER"),
             };
 
             var identity = new ClaimsIdentity(claims, "TestAuthType");
@@ -141,7 +141,7 @@ namespace SpringJavaEquivalent.Tests
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "admin"),
-                new Claim(ClaimTypes.Role, "ADMIN")
+                new Claim(ClaimTypes.Role, "ADMIN"),
             };
 
             var identity = new ClaimsIdentity(claims, "TestAuthType");
@@ -155,7 +155,7 @@ namespace SpringJavaEquivalent.Tests
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "testuser"),
-                new Claim("permission", "CACHE_READ")
+                new Claim("permission", "CACHE_READ"),
             };
 
             var identity = new ClaimsIdentity(claims, "TestAuthType");
@@ -169,7 +169,7 @@ namespace SpringJavaEquivalent.Tests
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "testuser"),
-                new Claim("permission", "CACHE_WRITE")
+                new Claim("permission", "CACHE_WRITE"),
             };
 
             var identity = new ClaimsIdentity(claims, "TestAuthType");
