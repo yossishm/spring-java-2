@@ -187,39 +187,53 @@ jobs:
         path: |
           dotnet-trivy-results.sarif
 
-  sonarqube-analysis:
-    name: .NET SonarQube Analysis
+  sonarcloud-analysis:
+    name: .NET SonarCloud Analysis
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         cache: true
-    
+
     - name: Restore dependencies
       run: dotnet restore dotnet-spring-equivalent/SpringJavaEquivalent.csproj
-    
-    - name: Build and test
+
+    - name: Build and test with coverage
       run: |
         dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-restore
         dotnet test dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
-    
-    - name: SonarQube Analysis
+
+    - name: Generate SonarQube coverage report
       run: |
-        echo "🔍 Running SonarQube Analysis for .NET..."
-        dotnet tool install -g dotnet-sonarscanner
-        dotnet sonarscanner begin /k:"dotnet-spring-equivalent" /d:sonar.host.url=${{ secrets.SONAR_HOST_URL }} /d:sonar.login=${{ secrets.SONAR_TOKEN }} /d:sonar.cs.opencover.reportsPaths="./TestResults/**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/bin/**,**/obj/**"
-        dotnet build dotnet-spring-equivalent/SpringJavaEquivalent.csproj --configuration Release
-        dotnet sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
-        echo "✅ SonarQube Analysis completed"
+        # Find and copy coverage file
+        find ./TestResults -name "coverage.cobertura.xml" -exec cp {} ./TestResults/coverage.xml \; 2>/dev/null || true
+
+        # Generate SonarQube-compatible coverage format
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        reportgenerator -reports:"./TestResults/coverage.xml" -targetdir:"./TestResults" -reporttypes:"SonarQube" -sourcedirs:"dotnet-spring-equivalent"
+
+    - name: SonarCloud Analysis
+      uses: sonarsource/sonarcloud-github-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        projectBaseDir: dotnet-spring-equivalent
+        args: >
+          -Dsonar.projectKey=spring-java-2-dotnet-spring-equivalent
+          -Dsonar.organization=yshmulev
+          -Dsonar.coverageReportPaths=./TestResults/SonarQube.xml
+          -Dsonar.exclusions=**/bin/**,**/obj/**,**/TestResults/**,**/*.g.cs
+          -Dsonar.test.exclusions=**/bin/**,**/obj/**
 
   notify-failure:
     name: Notify on .NET Failure
@@ -299,7 +313,7 @@ jobs:
   notify-success:
     name: Notify on .NET Success
     runs-on: ubuntu-latest
-    needs: [quality-gate, security-check, sonarqube-analysis]
+    needs: [quality-gate, security-check, sonarcloud-analysis]
     if: success() && github.event_name == 'push'
     
     steps:

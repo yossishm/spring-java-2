@@ -1,0 +1,86 @@
+# SonarCloud Setup Guide for .NET Project
+
+## 🚀 Quick Setup (3 minutes)
+
+### 1. Create SonarCloud Account
+1. Go to [sonarcloud.io](https://sonarcloud.io)
+2. Sign in with GitHub account
+3. Create organization: `yshmulev`
+
+### 2. Import Repository
+1. Click "Import an organization" → "From GitHub"
+2. Select your repository: `spring-java-2`
+3. Choose "Public" visibility (free)
+
+### 3. Generate Token
+1. Go to [sonarcloud.io/account/security](https://sonarcloud.io/account/security)
+2. Generate token with name: `dotnet-spring-equivalent`
+3. Copy the token (save it!)
+
+### 4. Add to GitHub Secrets
+1. Go to your GitHub repo → Settings → Secrets and variables → Actions
+2. Add new repository secret:
+   - Name: `SONAR_TOKEN`
+   - Value: `squ_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` (your token)
+
+### 5. Push Changes
+```bash
+git add .
+git commit -m "Add SonarCloud integration for .NET project"
+git push origin main
+```
+
+### 6. Check Results
+- Go to [sonarcloud.io](https://sonarcloud.io) → Your org → `spring-java-2-dotnet-spring-equivalent`
+- View coverage metrics (should show ~78% coverage!)
+- Quality gate status
+- Code smells, bugs, vulnerabilities
+
+## 📊 Expected Results
+
+After setup, SonarCloud will show:
+- ✅ **Coverage**: ~78.8% (716/909 lines)
+- ✅ **Quality Gate**: Passed
+- ✅ **Bugs**: Minimal
+- ✅ **Code Smells**: Analyzed
+- ✅ **Security**: Scanned
+
+## 🔧 Configuration Details
+
+### Project Key: `spring-java-2-dotnet-spring-equivalent`
+### Organization: `yshmulev`
+
+### Coverage Settings:
+- Format: SonarQube generic XML (converted from Cobertura)
+- Path: `./TestResults/SonarQube.xml`
+- Exclusions: `**/bin/**,**/obj/**,**/TestResults/**`
+
+### Quality Profiles:
+- C#: Sonar way (default)
+- Security: Enabled
+- Coverage threshold: 80%
+
+## 🆘 Troubleshooting
+
+### Coverage Not Showing?
+1. Check GitHub Actions logs for "Generate SonarQube coverage report" step
+2. Verify `SONAR_TOKEN` secret is set correctly
+3. Check if `SonarQube.xml` file is generated in `./TestResults/`
+
+### Quality Gate Failing?
+1. Check test failures in GitHub Actions
+2. Verify coverage meets 80% threshold
+3. Review code analysis warnings
+
+### Permission Issues?
+1. Ensure repository is public OR you have SonarCloud paid plan
+2. Check GitHub integration permissions
+3. Verify token has "Execute Analysis" permission
+
+## 💰 Pricing
+
+- **Free**: Public repos, unlimited analysis
+- **Paid**: $10/month for private repos (100 hours included)
+- **Enterprise**: Advanced features, custom rules
+
+Your setup will work perfectly with the free tier for public repositories!

@@ -1,4 +1,5 @@
-{"dotnetenterprise.s4net.params.sonar_test_inclusions.source":"CLI"}
-{"dotnetenterprise.s4net.params.sonar_cs_opencover_reportspaths.source":"CLI"}
+{"dotnetenterprise.s4net.params.sonar_projectbasedir.source":"CLI"}
+{"dotnetenterprise.s4net.params.sonar_projectbasedir.value":"rooted"}
+{"dotnetenterprise.s4net.params.sonar_project_properties.source":"CLI"}
 {"dotnetenterprise.s4net.serverInfo.product":"SQ_Server"}
 {"dotnetenterprise.s4net.serverInfo.serverUrl":"localhost"}
