@@ -219,7 +219,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.coverage.jacoco.xmlReportPaths="TestResults/SonarQube.xml" \
+          /d:sonar.coverage.jacoco.xmlReportPaths="./TestResults/SonarQube.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
@@ -318,6 +318,21 @@ jobs:
 
     - name: SonarScanner End
       run: |
+        echo "🔍 Final check before SonarCloud analysis..."
+        ls -la ./TestResults/ || echo "TestResults directory not found"
+        echo "🔍 Looking for SonarQube.xml file..."
+        find . -name "SonarQube.xml" -type f || echo "SonarQube.xml not found"
+        echo "🔍 Current working directory:"
+        pwd
+        echo "🔍 Directory structure:"
+        ls -la
+        echo "🔍 Checking if SonarQube.xml exists at expected path:"
+        if [ -f "./TestResults/SonarQube.xml" ]; then
+          echo "✅ SonarQube.xml found at ./TestResults/SonarQube.xml"
+          echo "File size: $(wc -c < ./TestResults/SonarQube.xml) bytes"
+        else
+          echo "❌ SonarQube.xml NOT found at ./TestResults/SonarQube.xml"
+        fi
         dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       working-directory: dotnet-spring-equivalent
 
