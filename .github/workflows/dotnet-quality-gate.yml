@@ -318,7 +318,7 @@ jobs:
         echo "🔧 Converting coverage file to Visual Studio XML format for SonarCloud..."
         dotnet tool install -g dotnet-reportgenerator-globaltool
         echo "📊 Converting Cobertura to Visual Studio XML using reportgenerator..."
-        reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/VSXML -reporttypes:VisualStudioXml
+        reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/VSXML -reporttypes:SonarQube
         echo "🔍 Checking what files were created by reportgenerator..."
         ls -la ./TestResults/VSXML/ || echo "VSXML directory not found"
         echo "🔍 Looking for any XML files in VSXML directory..."
