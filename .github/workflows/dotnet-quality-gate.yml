@@ -219,7 +219,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.branch.name="main" \
           /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
-          /d:sonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml,TestResults/coverage-report/jacoco.xml" \
+          /d:sonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml,TestResults/jacoco.xml" \
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.g.cs" \
           /d:sonar.test.exclusions="**/bin/**,**/obj/**,**/TestResults/**"
       working-directory: dotnet-spring-equivalent
@@ -255,20 +255,20 @@ jobs:
         find . -name "*.trx" -o -name "coverage*" -o -name "TestResults" -type d
 
         echo "📊 Checking for test results in default location..."
-        find . -name "*.trx" -o -name "coverage.cobertura.xml" | head -10 || echo "No test result files found"
+        find . -name "*.trx" -o -name "jacoco.xml" | head -10 || echo "No test result files found"
 
         echo "📂 Creating TestResults directory and copying coverage files..."
         mkdir -p ./TestResults
-        find . -name "coverage.cobertura.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
+        find . -name "jacoco.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found to copy"
         
         echo "🔍 Looking for coverage files in TestResults subdirectories..."
-        find ./TestResults -name "coverage.cobertura.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found in subdirectories"
+        find ./TestResults -name "jacoco.xml" -exec cp {} ./TestResults/ \; 2>/dev/null || echo "No coverage files found in subdirectories"
 
         echo "📊 Checking test results..."
         ls -la ./TestResults/ || echo "❌ TestResults directory empty"
         
         echo "🔍 Looking for coverage files in subdirectories..."
-        find . -name "coverage.cobertura.xml" -type f || echo "No coverage files found anywhere"
+        find . -name "jacoco.xml" -type f || echo "No coverage files found anywhere"
       working-directory: dotnet-spring-equivalent
 
 
@@ -277,14 +277,14 @@ jobs:
         echo "🔍 Checking for coverage files in TestResults directory..."
         ls -la ./TestResults/ || echo "TestResults directory not found"
 
-        if [ -f "./TestResults/coverage.cobertura.xml" ]; then
-          echo "✅ Found coverage.cobertura.xml"
-          echo "Coverage file size: $(wc -c < ./TestResults/coverage.cobertura.xml) bytes"
-          echo "First few lines of coverage.cobertura.xml:"
-          head -10 ./TestResults/coverage.cobertura.xml
+        if [ -f "./TestResults/jacoco.xml" ]; then
+          echo "✅ Found jacoco.xml"
+          echo "Coverage file size: $(wc -c < ./TestResults/jacoco.xml) bytes"
+          echo "First few lines of jacoco.xml:"
+          head -10 ./TestResults/jacoco.xml
           echo "✅ Coverage file ready for SonarCloud analysis"
         else
-          echo "❌ No coverage.cobertura.xml file found - failing workflow"
+          echo "❌ No jacoco.xml file found - failing workflow"
           ls -la ./TestResults/ || echo "TestResults directory not found"
           exit 1
         fi
