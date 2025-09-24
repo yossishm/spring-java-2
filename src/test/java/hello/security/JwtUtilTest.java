@@ -1,0 +1,33 @@
+package hello.security;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class JwtUtilTest {
+
+    @Test
+    @DisplayName("JwtUtil generates and validates token; extracts claims")
+    void generateAndValidateToken_extractClaims() {
+        JwtUtil jwtUtil = new JwtUtil();
+        ReflectionTestUtils.setField(jwtUtil, "secret", "mySecretKeymySecretKeymySecretKey123");
+        ReflectionTestUtils.setField(jwtUtil, "expiration", 3600_000L);
+
+        String token = jwtUtil.generateToken("alice", List.of("ADMIN"), List.of("CACHE_READ", "CACHE_WRITE"));
+
+        assertThat(jwtUtil.validateToken(token)).isTrue();
+        assertThat(jwtUtil.extractUsername(token)).isEqualTo("alice");
+        assertThat(jwtUtil.extractRoles(token)).contains("ADMIN");
+        assertThat(jwtUtil.extractPermissions(token)).contains("CACHE_READ", "CACHE_WRITE");
+        assertThat(jwtUtil.hasRole(token, "ADMIN")).isTrue();
+        assertThat(jwtUtil.hasAnyRole(token, "USER", "ADMIN")).isTrue();
+        assertThat(jwtUtil.hasPermission(token, "CACHE_READ")).isTrue();
+        assertThat(jwtUtil.hasAnyPermission(token, "X", "CACHE_WRITE")).isTrue();
+    }
+}
+
+
