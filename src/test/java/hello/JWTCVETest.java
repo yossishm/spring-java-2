@@ -28,7 +28,7 @@ public class JWTCVETest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void testVulnerableJWTTokenCreation() {
+    void testVulnerableJWTTokenCreation() {
         // Test creating a JWT token with vulnerable configuration
         Map<String, Object> payload = new HashMap<>();
         payload.put("user", "admin");
@@ -51,7 +51,7 @@ public class JWTCVETest {
     }
 
     @Test
-    public void testVulnerableJWTTokenVerification() {
+    void testVulnerableJWTTokenVerification() {
         // Test JWT token verification with vulnerable configuration
         Map<String, String> request = new HashMap<>();
         request.put("token", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4ifQ.invalid_signature");
@@ -71,7 +71,7 @@ public class JWTCVETest {
     }
 
     @Test
-    public void testVulnerableJWTDecode() {
+    void testVulnerableJWTDecode() {
         // Test JWT token decoding (vulnerable to information disclosure)
         ResponseEntity<Map> response = restTemplate.getForEntity(
             "http://localhost:" + port + "/api/jwt/decode?token=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4ifQ.invalid_signature", 
@@ -83,7 +83,7 @@ public class JWTCVETest {
     }
 
     @Test
-    public void testVulnerableAlgorithmInjection() {
+    void testVulnerableAlgorithmInjection() {
         // Test algorithm injection vulnerability
         Map<String, String> request = new HashMap<>();
         request.put("token", "eyJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ.");

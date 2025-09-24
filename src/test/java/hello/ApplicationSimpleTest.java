@@ -6,7 +6,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,7 +26,7 @@ class ApplicationSimpleTest {
             var mainMethod = Application.class.getMethod("main", String[].class);
             assertThat(mainMethod).isNotNull();
         } catch (NoSuchMethodException e) {
-            assertThat(false).isTrue(); // Fail the test if main method doesn't exist
+            throw new AssertionError("Main method should exist");
         }
     }
 
@@ -45,7 +44,7 @@ class ApplicationSimpleTest {
             assertThat(deleteObjectMethod).isNotNull();
             assertThat(homeMethod).isNotNull();
         } catch (NoSuchMethodException e) {
-            assertThat(false).isTrue(); // Fail the test if methods don't exist
+            throw new AssertionError("Cache methods should exist");
         }
     }
 
@@ -63,7 +62,7 @@ class ApplicationSimpleTest {
             assertThat(readPrivateKeyMethod).isNotNull();
             assertThat(readPublicKeyMethod).isNotNull();
         } catch (NoSuchMethodException e) {
-            assertThat(false).isTrue(); // Fail the test if methods don't exist
+            throw new AssertionError("Key methods should exist");
         }
     }
 

@@ -25,11 +25,14 @@ import java.util.stream.Collectors;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
+
+    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, 
@@ -82,12 +85,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private List<SimpleGrantedAuthority> createAuthorities(List<String> roles, List<String> permissions) {
         List<SimpleGrantedAuthority> authorities = roles.stream()
             .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase(Locale.ROOT)))
-            .collect(Collectors.toList());
+            .toList();
         
         // Add permissions as authorities
         authorities.addAll(permissions.stream()
             .map(permission -> new SimpleGrantedAuthority(permission.toUpperCase(Locale.ROOT)))
-            .collect(Collectors.toList()));
+            .toList());
         
         return authorities;
     }

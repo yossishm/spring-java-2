@@ -24,8 +24,22 @@ import java.util.Map;
 @Tag(name = "Authentication", description = "JWT token generation and validation endpoints")
 public class TokenController {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+    
+    // Constants for duplicated literals
+    private static final String CACHE_READ = "CACHE_READ";
+    private static final String USERNAME_KEY = "username";
+    private static final String ROLES_KEY = "roles";
+    private static final String PERMISSIONS_KEY = "permissions";
+    private static final String TIMESTAMP_KEY = "timestamp";
+    private static final String CACHE_DELETE = "CACHE_DELETE";
+    private static final String CACHE_ADMIN = "CACHE_ADMIN";
+    private static final String CACHE_WRITE = "CACHE_WRITE";
+    private static final String LOCAL = "local";
+
+    public TokenController(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     /**
      * Generate a JWT token with specified roles and permissions
@@ -41,18 +55,18 @@ public class TokenController {
             roles = List.of("USER");
         }
         if (permissions == null || permissions.isEmpty()) {
-            permissions = List.of("CACHE_READ");
+            permissions = List.of(CACHE_READ);
         }
 
         String token = jwtUtil.generateToken(username, roles, permissions);
 
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
-        response.put("username", username);
-        response.put("roles", roles);
-        response.put("permissions", permissions);
+        response.put(USERNAME_KEY, username);
+        response.put(ROLES_KEY, roles);
+        response.put(PERMISSIONS_KEY, permissions);
         response.put("expiresIn", "24 hours");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
 
         return ResponseEntity.ok(response);
     }
@@ -102,56 +116,56 @@ public class TokenController {
             case "admin":
                 username = "admin";
                 roles = List.of("ADMIN", "USER");
-                permissions = List.of("CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN");
+                permissions = List.of(CACHE_READ, CACHE_WRITE, CACHE_DELETE, CACHE_ADMIN);
                 authLevel = "AAL3"; // High security for admin
                 idp = "enterprise-ldap";
                 break;
             case "user":
                 username = "user";
                 roles = List.of("USER");
-                permissions = List.of("CACHE_READ");
+                permissions = List.of(CACHE_READ);
                 authLevel = "AAL1"; // Basic auth for regular user
-                idp = "local";
+                idp = LOCAL;
                 break;
             case "cache-admin":
                 username = "cache-admin";
                 roles = List.of("USER");
-                permissions = List.of("CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN");
+                permissions = List.of(CACHE_READ, CACHE_WRITE, CACHE_DELETE, CACHE_ADMIN);
                 authLevel = "AAL2"; // MFA for cache admin
                 idp = "azure-ad";
                 break;
             case "cache-writer":
                 username = "cache-writer";
                 roles = List.of("USER");
-                permissions = List.of("CACHE_READ", "CACHE_WRITE");
+                permissions = List.of(CACHE_READ, CACHE_WRITE);
                 authLevel = "AAL2"; // MFA for write operations
                 idp = "okta";
                 break;
             case "cache-reader":
                 username = "cache-reader";
                 roles = List.of("USER");
-                permissions = List.of("CACHE_READ");
+                permissions = List.of(CACHE_READ);
                 authLevel = "AAL1"; // Basic auth for read-only
-                idp = "local";
+                idp = LOCAL;
                 break;
             case "aal1-user":
                 username = "aal1-user";
                 roles = List.of("USER");
-                permissions = List.of("CACHE_READ");
+                permissions = List.of(CACHE_READ);
                 authLevel = "AAL1";
-                idp = "local";
+                idp = LOCAL;
                 break;
             case "aal2-user":
                 username = "aal2-user";
                 roles = List.of("USER");
-                permissions = List.of("CACHE_READ", "CACHE_WRITE");
+                permissions = List.of(CACHE_READ, CACHE_WRITE);
                 authLevel = "AAL2";
                 idp = "azure-ad";
                 break;
             case "aal3-user":
                 username = "aal3-user";
                 roles = List.of("ADMIN");
-                permissions = List.of("CACHE_READ", "CACHE_WRITE", "CACHE_DELETE", "CACHE_ADMIN");
+                permissions = List.of(CACHE_READ, CACHE_WRITE, CACHE_DELETE, CACHE_ADMIN);
                 authLevel = "AAL3";
                 idp = "enterprise-ldap";
                 break;

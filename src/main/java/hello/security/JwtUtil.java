@@ -93,8 +93,8 @@ public class JwtUtil {
     public String extractAuthLevel(String token) {
         Claims claims = extractAllClaims(token);
         Object authLevel = claims.get("auth_level");
-        if (authLevel instanceof String) {
-            return (String) authLevel;
+        if (authLevel instanceof String string) {
+            return string;
         }
         return "AAL1"; // Default to lowest level
     }
@@ -105,8 +105,8 @@ public class JwtUtil {
     public String extractIdentityProvider(String token) {
         Claims claims = extractAllClaims(token);
         Object idp = claims.get("idp");
-        if (idp instanceof String) {
-            return (String) idp;
+        if (idp instanceof String string) {
+            return string;
         }
         return "local"; // Default to local provider
     }
@@ -115,8 +115,7 @@ public class JwtUtil {
      * Extract custom claims from JWT token
      */
     public Map<String, Object> extractCustomClaims(String token) {
-        Claims claims = extractAllClaims(token);
-        return claims;
+        return extractAllClaims(token);
     }
 
     /**

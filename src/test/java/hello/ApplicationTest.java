@@ -22,25 +22,25 @@ public class ApplicationTest {
 	private TestRestTemplate restTemplate;
 
 	@Test
-	public void greetingShouldReturnDefaultMessage() throws Exception {
+	void greetingShouldReturnDefaultMessage() {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",
 				String.class)).contains("Hello Docker Yossi World");
 	}
 
 	@Test
-	public void greetingCacheAdd() throws Exception {
+	void greetingCacheAdd() {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/cacheServices/putObject?id=1",
 				String.class)).contains("put");
 	}
 
 	@Test
-	public void greetingCacheGet() throws Exception {
+	void greetingCacheGet() {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/cacheServices/getObject?id=1",
 				String.class)).contains("get");
 	}
 
 	@Test
-	public void greetingCacheDelete() throws Exception {
+	void greetingCacheDelete() {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/cacheServices/deleteObject?id=1",
 				String.class)).contains("delete");
 	}

@@ -58,7 +58,7 @@ public class AuthTestController {
     })
     public ResponseEntity<Map<String, Object>> protectedEndpoint() {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "This is a protected endpoint");
+        response.put(MESSAGE_KEY, "This is a protected endpoint");
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }

@@ -42,7 +42,7 @@ public class VulnerableJWTController {
             // Vulnerable: No proper validation
             Map<String, Object> response = new HashMap<>();
             response.put(VALID_KEY, true);
-            response.put("token", token);
+            response.put(TOKEN_KEY, token);
             response.put("message", "Token accepted without proper validation");
             
             return ResponseEntity.ok(response);
@@ -86,7 +86,7 @@ public class VulnerableJWTController {
             Map<String, Object> response = new HashMap<>();
             response.put(VALID_KEY, true);
             response.put("algorithm", algorithm);
-            response.put("token", token);
+            response.put(TOKEN_KEY, token);
             response.put("message", "Algorithm accepted without validation: " + algorithm);
             
             return ResponseEntity.ok(response);

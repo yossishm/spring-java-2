@@ -20,6 +20,14 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Constants for duplicated literals
+    private static final String TIMESTAMP_KEY = "timestamp";
+    private static final String STATUS_KEY = "status";
+    private static final String ERROR_KEY = "error";
+    private static final String MESSAGE_KEY = "message";
+    private static final String PATH_KEY = "path";
+    private static final String UNAUTHORIZED = "Unauthorized";
+
     /**
      * Handle access denied exceptions (403 Forbidden)
      */
@@ -28,11 +36,11 @@ public class GlobalExceptionHandler {
             AccessDeniedException ex, WebRequest request) {
         
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.FORBIDDEN.value());
-        body.put("error", "Forbidden");
-        body.put("message", ex.getMessage());
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, HttpStatus.FORBIDDEN.value());
+        body.put(ERROR_KEY, "Forbidden");
+        body.put(MESSAGE_KEY, ex.getMessage());
+        body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
@@ -45,11 +53,11 @@ public class GlobalExceptionHandler {
             AuthenticationException ex, WebRequest request) {
         
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-        body.put("error", "Unauthorized");
-        body.put("message", ex.getMessage());
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, HttpStatus.UNAUTHORIZED.value());
+        body.put(ERROR_KEY, UNAUTHORIZED);
+        body.put(MESSAGE_KEY, ex.getMessage());
+        body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
@@ -62,11 +70,11 @@ public class GlobalExceptionHandler {
             BadCredentialsException ex, WebRequest request) {
         
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-        body.put("error", "Unauthorized");
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, HttpStatus.UNAUTHORIZED.value());
+        body.put(ERROR_KEY, UNAUTHORIZED);
         body.put("message", "Invalid credentials");
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
@@ -79,11 +87,11 @@ public class GlobalExceptionHandler {
             io.jsonwebtoken.JwtException ex, WebRequest request) {
         
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-        body.put("error", "Unauthorized");
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, HttpStatus.UNAUTHORIZED.value());
+        body.put(ERROR_KEY, UNAUTHORIZED);
         body.put("message", "Invalid JWT token: " + ex.getMessage());
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
@@ -96,11 +104,11 @@ public class GlobalExceptionHandler {
             IllegalArgumentException ex, WebRequest request) {
         
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("error", "Bad Request");
-        body.put("message", ex.getMessage());
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        body.put(MESSAGE_KEY, ex.getMessage());
+        body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -113,11 +121,11 @@ public class GlobalExceptionHandler {
             Exception ex, WebRequest request) {
         
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("error", "Internal Server Error");
         body.put("message", "An unexpected error occurred");
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }

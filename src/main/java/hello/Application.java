@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.Map;
-import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -38,6 +37,24 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+/**
+ * Exception thrown when there's an error processing a private key.
+ */
+class PrivateKeyProcessingException extends RuntimeException {
+    public PrivateKeyProcessingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+
+/**
+ * Exception thrown when there's an error processing a public key.
+ */
+class PublicKeyProcessingException extends RuntimeException {
+    public PublicKeyProcessingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
 
 // OpenTelemetry imports removed - using Spring Boot native OTLP
 
@@ -200,7 +217,7 @@ public class Application {
               final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
               return keyFactory.generatePrivate(keySpec);
           } catch (InvalidKeySpecException e) {
-              throw new RuntimeException("Invalid private key spec", e);
+              throw new PrivateKeyProcessingException("Invalid private key spec", e);
           }
       });
   }
@@ -220,7 +237,7 @@ public class Application {
               final X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
               return keyFactory.generatePublic(spec);
           } catch (InvalidKeySpecException e) {
-              throw new RuntimeException("Invalid public key spec", e);
+              throw new PublicKeyProcessingException("Invalid public key spec", e);
           }
       });
   }
