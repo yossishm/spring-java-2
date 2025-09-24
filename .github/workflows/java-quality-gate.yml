@@ -305,7 +305,7 @@ jobs:
           -Dsonar.java.target=21 \
           -Dsonar.exclusions="**/target/**,**/build/**,**/*.class,**/node_modules/**,**/logs/**,**/bin/**,**/obj/**,**/TestResults/**" \
           -Dsonar.test.exclusions="**/target/**,**/build/**,**/bin/**,**/obj/**,**/TestResults/**" \
-          -Dsonar.qualitygate.wait=false \
+          -Dsonar.qualitygate.wait=true \
           -Dsonar.verbose=true
         
         echo "✅ SonarCloud analysis completed for Java project"

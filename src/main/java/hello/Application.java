@@ -3,7 +3,11 @@ package hello;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import hello.security.RequirePermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,7 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
 import java.security.Key;
@@ -26,15 +31,14 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.function.Function;
 
-
 import java.io.BufferedReader;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import java.nio.file.*;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // OpenTelemetry imports removed - using Spring Boot native OTLP
 
@@ -42,6 +46,8 @@ import java.nio.file.*;
 @RestController
 @Tag(name = "Cache Services", description = "Cache management operations with JWT authorization")
 public class Application {
+
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
   // OpenTelemetry bean removed - using Spring Boot native OTLP
 
@@ -60,10 +66,10 @@ public class Application {
        @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions (requires CACHE_READ or CACHE_ADMIN)")
    })
    public String getObject(
-       @RequestHeader Map<String, String> headers,
+       @RequestHeader final Map<String, String> headers,
        @Parameter(description = "Cache object ID", required = true, example = "123")
-       @RequestParam(name = "id") String id) {  
-    System.out.println ("Get: " + id + " Called");
+       @RequestParam(name = "id") final String objectId) {  
+    logger.info("Get: {} Called", objectId);
     return "get";
    }
 
@@ -83,10 +89,10 @@ public class Application {
       @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions (requires CACHE_WRITE or CACHE_ADMIN)")
   })
   public String putObject(
-      @RequestHeader Map<String, String> headers,
+      @RequestHeader final Map<String, String> headers,
       @Parameter(description = "Cache object ID", required = true, example = "123")
-      @RequestParam(name = "id") String id) {
-    System.out.println ("Put: " + id + " Called");
+      @RequestParam(name = "id") final String objectId) {
+    logger.info("Put: {} Called", objectId);
     return "put";
   }
 
@@ -105,18 +111,18 @@ public class Application {
       @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions (requires CACHE_DELETE or CACHE_ADMIN)")
   })
   public String deleteObject(
-      @RequestHeader Map<String, String> headers,
+      @RequestHeader final Map<String, String> headers,
       @Parameter(description = "Cache object ID", required = true, example = "123")
-      @RequestParam(name = "id") String id) {
-    System.out.println ("Delete: " + id + " Called");
+      @RequestParam(name = "id") final String objectId) {
+    logger.info("Delete: {} Called", objectId);
     return "delete";
   }
 
   /// Server Side
   @RequestMapping("/")
-  public String home( @RequestHeader Map<String, String> headers) {
-    String jwsHeader = java.util.Base64.getEncoder().encodeToString("Authorization: Bearer".getBytes(StandardCharsets.UTF_8));
-    System.out.println ("jws header base64 is : " + jwsHeader);
+  public String home(@RequestHeader final Map<String, String> headers) {
+    final String jwsHeader = java.util.Base64.getEncoder().encodeToString("Authorization: Bearer".getBytes(StandardCharsets.UTF_8));
+    logger.info("jws header base64 is : {}", jwsHeader);
 
     // try {
     //   Key publicKey = loadPublicKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/public-istio-demo-pkcs.der");//new FileInputStream(
@@ -154,7 +160,7 @@ public class Application {
   }
 
 
-  public static void main(String[] args) throws Exception {
+  public static void main(final String[] args) throws Exception {
     SpringApplication.run(Application.class, args);
 
 
