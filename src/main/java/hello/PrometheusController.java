@@ -13,14 +13,12 @@ import java.util.Random;
 @RestController
 public class PrometheusController {
 
-    private final MeterRegistry meterRegistry;
     private final Counter prometheusRequests;
     private final Timer prometheusResponseTime;
     private final Random random = new Random();
 
     @Autowired
     public PrometheusController(MeterRegistry meterRegistry) {
-        this.meterRegistry = meterRegistry;
         this.prometheusRequests = Counter.builder("prometheus_requests_total")
                 .description("Total number of Prometheus requests")
                 .register(meterRegistry);

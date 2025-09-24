@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
         body.put(TIMESTAMP_KEY, LocalDateTime.now());
         body.put(STATUS_KEY, HttpStatus.UNAUTHORIZED.value());
         body.put(ERROR_KEY, UNAUTHORIZED);
-        body.put("message", "Invalid JWT token: " + ex.getMessage());
+        body.put(MESSAGE_KEY, "Invalid JWT token: " + ex.getMessage());
         body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
@@ -122,9 +122,9 @@ public class GlobalExceptionHandler {
         
         Map<String, Object> body = new HashMap<>();
         body.put(TIMESTAMP_KEY, LocalDateTime.now());
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", "Internal Server Error");
-        body.put("message", "An unexpected error occurred");
+        body.put(STATUS_KEY, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put(ERROR_KEY, "Internal Server Error");
+        body.put(MESSAGE_KEY, "An unexpected error occurred");
         body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);

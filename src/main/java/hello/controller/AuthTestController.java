@@ -94,7 +94,7 @@ public class AuthTestController {
     @RequirePermission(value = {"CACHE_READ"})
     public ResponseEntity<Map<String, Object>> cacheReadEndpoint() {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Cache read operation successful");
+        response.put(MESSAGE_KEY, "Cache read operation successful");
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }

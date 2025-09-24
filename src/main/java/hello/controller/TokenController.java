@@ -198,14 +198,14 @@ public class TokenController {
         response.put("valid", isValid);
         
         if (isValid) {
-            response.put("username", jwtUtil.extractUsername(token));
-            response.put("roles", jwtUtil.extractRoles(token));
-            response.put("permissions", jwtUtil.extractPermissions(token));
+            response.put(USERNAME_KEY, jwtUtil.extractUsername(token));
+            response.put(ROLES_KEY, jwtUtil.extractRoles(token));
+            response.put(PERMISSIONS_KEY, jwtUtil.extractPermissions(token));
             response.put("auth_level", jwtUtil.extractAuthLevel(token));
             response.put("idp", jwtUtil.extractIdentityProvider(token));
         }
         
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         
         return ResponseEntity.ok(response);
     }
