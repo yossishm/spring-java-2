@@ -55,4 +55,12 @@ class TokenControllerTest {
             .andExpect(jsonPath("$.valid").value(true))
             .andExpect(jsonPath("$.username").value("bob"));
     }
+
+    @Test
+    @DisplayName("GET /api/v1/auth/token/{type} invalid type returns 400")
+    void generatePredefinedToken_invalidType() throws Exception {
+        mockMvc.perform(get("/api/v1/auth/token/does-not-exist"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.error").exists());
+    }
 }

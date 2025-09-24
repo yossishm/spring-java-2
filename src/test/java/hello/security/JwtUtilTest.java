@@ -34,6 +34,23 @@ class JwtUtilTest {
         assertThat(jwtUtil.hasAnyRole(token, "ZZZ")).isFalse();
         assertThat(jwtUtil.hasAnyPermission(token, "YYY")).isFalse();
     }
+
+    @Test
+    @DisplayName("JwtUtil validateToken with username (non-expired) and expired token handling")
+    void validateTokenWithUsername_andExpired() throws Exception {
+        JwtUtil jwtUtil = new JwtUtil();
+        org.springframework.test.util.ReflectionTestUtils.setField(jwtUtil, "secret", "mySecretKeymySecretKeymySecretKey123");
+        // Use a safe expiration for username-validation case
+        org.springframework.test.util.ReflectionTestUtils.setField(jwtUtil, "expiration", 60_000L);
+
+        String token = jwtUtil.generateToken("carol", java.util.List.of("USER"), java.util.List.of());
+        assertThat(jwtUtil.validateToken(token, "carol")).isTrue();
+
+        // Now create an immediately expired token and validate with the boolean API that handles expiry
+        org.springframework.test.util.ReflectionTestUtils.setField(jwtUtil, "expiration", 0L);
+        String expired = jwtUtil.generateToken("dave", java.util.List.of("USER"), java.util.List.of());
+        assertThat(jwtUtil.validateToken(expired)).isFalse();
+    }
 }
 
 

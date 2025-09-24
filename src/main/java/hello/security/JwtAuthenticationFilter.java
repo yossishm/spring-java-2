@@ -81,15 +81,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * Create authorities from roles and permissions
      */
     private List<SimpleGrantedAuthority> createAuthorities(List<String> roles, List<String> permissions) {
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase(Locale.ROOT)))
-            .toList();
-        
+        // Ensure we use a mutable list to support adding permissions below
+        java.util.ArrayList<SimpleGrantedAuthority> authorities = new java.util.ArrayList<>(
+            roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase(Locale.ROOT)))
+                .toList()
+        );
+
         // Add permissions as authorities
-        authorities.addAll(permissions.stream()
-            .map(permission -> new SimpleGrantedAuthority(permission.toUpperCase(Locale.ROOT)))
-            .toList());
-        
+        authorities.addAll(
+            permissions.stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.toUpperCase(Locale.ROOT)))
+                .toList()
+        );
+
         return authorities;
     }
 
