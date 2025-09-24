@@ -1,7 +1,6 @@
 package hello.controller;
 
 import hello.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -176,14 +175,14 @@ public class TokenController {
         token = jwtUtil.generateToken(username, roles, permissions, authLevel, idp);
 
         response.put("token", token);
-        response.put("username", username);
-        response.put("roles", roles);
-        response.put("permissions", permissions);
+        response.put(USERNAME_KEY, username);
+        response.put(ROLES_KEY, roles);
+        response.put(PERMISSIONS_KEY, permissions);
         response.put("auth_level", authLevel);
         response.put("idp", idp);
         response.put("type", type);
         response.put("expiresIn", "24 hours");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
 
         return ResponseEntity.ok(response);
     }

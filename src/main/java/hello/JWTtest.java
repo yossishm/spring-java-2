@@ -12,6 +12,7 @@ public class JWTtest {
     public static void main(final String[] args) {
         // We need a signing key, so we'll create one just for this example. Usually
         // the key would be read from your application configuration instead.
+        @SuppressWarnings("deprecation")
         final Key key = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
 
         final String jws = Jwts.builder()

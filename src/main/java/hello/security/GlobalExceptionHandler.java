@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
         body.put(TIMESTAMP_KEY, LocalDateTime.now());
         body.put(STATUS_KEY, HttpStatus.UNAUTHORIZED.value());
         body.put(ERROR_KEY, UNAUTHORIZED);
-        body.put("message", "Invalid credentials");
+        body.put(MESSAGE_KEY, "Invalid credentials");
         body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
@@ -105,8 +105,8 @@ public class GlobalExceptionHandler {
         
         Map<String, Object> body = new HashMap<>();
         body.put(TIMESTAMP_KEY, LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
+        body.put(STATUS_KEY, HttpStatus.BAD_REQUEST.value());
+        body.put(ERROR_KEY, "Bad Request");
         body.put(MESSAGE_KEY, ex.getMessage());
         body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         

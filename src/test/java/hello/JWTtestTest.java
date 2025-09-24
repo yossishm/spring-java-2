@@ -27,7 +27,7 @@ class JWTtestTest {
             var mainMethod = JWTtest.class.getDeclaredMethod("main", String[].class);
             assertThat(mainMethod).isNotNull();
         } catch (NoSuchMethodException e) {
-            assertThat(false).isTrue(); // Fail the test if main method doesn't exist
+            throw new AssertionError("Main method should exist");
         }
     }
 
@@ -40,7 +40,7 @@ class JWTtestTest {
             assertThat(loggerField.getType().getName()).contains("Logger");
         } catch (NoSuchFieldException e) {
             // If logger field doesn't exist, that's also acceptable
-            assertThat(true).isTrue();
+            // Logger field is optional, so this is acceptable
         }
     }
 }

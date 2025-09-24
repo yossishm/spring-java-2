@@ -81,7 +81,7 @@ public class AuthTestController {
     })
     public ResponseEntity<Map<String, Object>> adminEndpoint() {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "This is an admin-only endpoint");
+        response.put(MESSAGE_KEY, "This is an admin-only endpoint");
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
