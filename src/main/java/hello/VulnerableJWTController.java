@@ -12,6 +12,10 @@ import java.nio.charset.StandardCharsets;
 @RequestMapping("/api/jwt")
 public class VulnerableJWTController {
 
+    private static final String TOKEN_KEY = "token";
+    private static final String VALID_KEY = "valid";
+    private static final String ERROR_KEY = "error";
+
     // Vulnerable: Using weak secret key
     private static final String WEAK_SECRET = "mySecretKey123";
 
@@ -33,19 +37,19 @@ public class VulnerableJWTController {
     @PostMapping("/verify")
     public ResponseEntity<Map<String, Object>> verifyToken(@RequestBody Map<String, String> request) {
         try {
-            String token = request.get("token");
+            String token = request.get(TOKEN_KEY);
             
             // Vulnerable: No proper validation
             Map<String, Object> response = new HashMap<>();
-            response.put("valid", true);
+            response.put(VALID_KEY, true);
             response.put("token", token);
             response.put("message", "Token accepted without proper validation");
             
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
-            response.put("valid", false);
-            response.put("error", e.getMessage());
+            response.put(VALID_KEY, false);
+            response.put(ERROR_KEY, e.getMessage());
             
             return ResponseEntity.ok(response);
         }
@@ -66,7 +70,7 @@ public class VulnerableJWTController {
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("decoded", false);
-            response.put("error", e.getMessage());
+            response.put(ERROR_KEY, e.getMessage());
             
             return ResponseEntity.ok(response);
         }
@@ -75,12 +79,12 @@ public class VulnerableJWTController {
     @PostMapping("/verify-any-algorithm")
     public ResponseEntity<Map<String, Object>> verifyAnyAlgorithm(@RequestBody Map<String, String> request) {
         try {
-            String token = request.get("token");
+            String token = request.get(TOKEN_KEY);
             String algorithm = request.get("algorithm"); // Vulnerable: user-controlled algorithm
             
             // Vulnerable: Accepts any algorithm without validation
             Map<String, Object> response = new HashMap<>();
-            response.put("valid", true);
+            response.put(VALID_KEY, true);
             response.put("algorithm", algorithm);
             response.put("token", token);
             response.put("message", "Algorithm accepted without validation: " + algorithm);
@@ -88,8 +92,8 @@ public class VulnerableJWTController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
-            response.put("valid", false);
-            response.put("error", e.getMessage());
+            response.put(VALID_KEY, false);
+            response.put(ERROR_KEY, e.getMessage());
             
             return ResponseEntity.ok(response);
         }

@@ -2,7 +2,6 @@ package hello;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -14,6 +13,8 @@ import java.util.HashMap;
 @RequestMapping("/api")
 public class TestController {
 
+    private static final String STATUS_KEY = "status";
+
     /**
      * Test endpoint that processes chunked requests
      * This endpoint can be used to test for HTTP request smuggling
@@ -21,7 +22,7 @@ public class TestController {
     @PostMapping("/test")
     public ResponseEntity<Map<String, Object>> testChunked(@RequestBody(required = false) String body) {
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "success");
+        response.put(STATUS_KEY, "success");
         response.put("message", "Request processed");
         response.put("body", body != null ? body : "No body received");
         response.put("timestamp", System.currentTimeMillis());
@@ -35,7 +36,7 @@ public class TestController {
     @GetMapping("/health")
     public ResponseEntity<Map<String, String>> health() {
         Map<String, String> response = new HashMap<>();
-        response.put("status", "UP");
+        response.put(STATUS_KEY, "UP");
         response.put("service", "test-controller");
         
         return ResponseEntity.ok(response);
@@ -62,7 +63,7 @@ public class TestController {
             @RequestHeader(value = "Transfer-Encoding", required = false) String transferEncoding) {
         
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "chunked-request-processed");
+        response.put(STATUS_KEY, "chunked-request-processed");
         response.put("body", body != null ? body : "No body received");
         response.put("transferEncoding", transferEncoding);
         response.put("timestamp", System.currentTimeMillis());

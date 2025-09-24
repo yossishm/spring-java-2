@@ -25,7 +25,6 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -49,7 +48,6 @@ public class Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
-  // OpenTelemetry bean removed - using Spring Boot native OTLP
 
    // Server Side - cache - getObject
    @RequestMapping("/api/v1/cacheServices/getObject")
@@ -120,18 +118,13 @@ public class Application {
   // Server Side
   @RequestMapping("/")
   public String home(@RequestHeader final Map<String, String> headers) {
-    final String jwsHeader = java.util.Base64.getEncoder().encodeToString("Authorization: Bearer".getBytes(StandardCharsets.UTF_8));
     logger.info("JWT header processing completed");
-
-      
     return "Hello Docker Yossi World";
   }
 
 
-  public static void main(final String[] args) throws Exception {
+  public static void main(final String[] args) {
     SpringApplication.run(Application.class, args);
-
-
   }
 
   /**
@@ -200,7 +193,7 @@ public class Application {
    * @throws NoSuchAlgorithmException if the RSA algorithm is not available.
    * @throws InvalidKeySpecException if the key specification is invalid.
    */
-  public static PrivateKey readPrivateKey(final InputStream in) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+  public static PrivateKey readPrivateKey(final InputStream in) throws IOException, NoSuchAlgorithmException {
       final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
       return (PrivateKey) readKey(in, keyBytes -> {
           try {
@@ -220,7 +213,7 @@ public class Application {
    * @throws NoSuchAlgorithmException if the RSA algorithm is not available.
    * @throws InvalidKeySpecException if the key specification is invalid.
    */
-  public static PublicKey readPublicKey(final InputStream in) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+  public static PublicKey readPublicKey(final InputStream in) throws IOException, NoSuchAlgorithmException {
       final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
       return (PublicKey) readKey(in, keyBytes -> {
           try {

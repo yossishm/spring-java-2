@@ -22,6 +22,9 @@ import java.util.Map;
 @Tag(name = "Authorization Test", description = "Test endpoints demonstrating different authorization levels")
 public class AuthTestController {
 
+    private static final String MESSAGE_KEY = "message";
+    private static final String TIMESTAMP_KEY = "timestamp";
+
     /**
      * Public endpoint - no authentication required
      */
@@ -35,8 +38,8 @@ public class AuthTestController {
     })
     public ResponseEntity<Map<String, Object>> publicEndpoint() {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "This is a public endpoint");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(MESSAGE_KEY, "This is a public endpoint");
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 
@@ -56,7 +59,7 @@ public class AuthTestController {
     public ResponseEntity<Map<String, Object>> protectedEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "This is a protected endpoint");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 
@@ -79,7 +82,7 @@ public class AuthTestController {
     public ResponseEntity<Map<String, Object>> adminEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "This is an admin-only endpoint");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 
@@ -92,7 +95,7 @@ public class AuthTestController {
     public ResponseEntity<Map<String, Object>> cacheReadEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Cache read operation successful");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 
@@ -106,7 +109,7 @@ public class AuthTestController {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Cache write operation successful");
         response.put("data", data);
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 
@@ -119,7 +122,7 @@ public class AuthTestController {
     public ResponseEntity<Map<String, Object>> cacheAdminEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Cache admin operation successful");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 
@@ -132,7 +135,7 @@ public class AuthTestController {
     public ResponseEntity<Map<String, Object>> multiPermissionEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Multi-permission endpoint accessed successfully");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 
@@ -144,7 +147,7 @@ public class AuthTestController {
     public ResponseEntity<Map<String, Object>> allPermissionsEndpoint() {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "All permissions endpoint accessed successfully");
-        response.put("timestamp", System.currentTimeMillis());
+        response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
 }
