@@ -34,7 +34,7 @@ public class PrometheusController {
         Timer.Sample sample = Timer.start();
         try {
             // Simulate some processing time
-            Thread.sleep(random.nextInt(10) + 5);
+            Thread.sleep(5L + random.nextInt(10));
             
             // Generate Prometheus format metrics
             StringBuilder metrics = new StringBuilder();
