@@ -121,7 +121,7 @@ public class AuthTestController {
     @RequirePermission(value = {"CACHE_ADMIN"})
     public ResponseEntity<Map<String, Object>> cacheAdminEndpoint() {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Cache admin operation successful");
+        response.put(MESSAGE_KEY, "Cache admin operation successful");
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
@@ -134,7 +134,7 @@ public class AuthTestController {
     @RequirePermission(value = {"CACHE_READ", "CACHE_WRITE", "CACHE_ADMIN"})
     public ResponseEntity<Map<String, Object>> multiPermissionEndpoint() {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Multi-permission endpoint accessed successfully");
+        response.put(MESSAGE_KEY, "Multi-permission endpoint accessed successfully");
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }
@@ -146,7 +146,7 @@ public class AuthTestController {
     @RequirePermission(value = {"CACHE_READ", "CACHE_WRITE"}, requireAll = true)
     public ResponseEntity<Map<String, Object>> allPermissionsEndpoint() {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "All permissions endpoint accessed successfully");
+        response.put(MESSAGE_KEY, "All permissions endpoint accessed successfully");
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);
     }

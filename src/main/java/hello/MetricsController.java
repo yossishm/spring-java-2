@@ -35,7 +35,7 @@ public class MetricsController {
         Timer.Sample sample = Timer.start();
         try {
             // Simulate some work
-            Thread.sleep((long) (random.nextInt(100) + 50));
+            Thread.sleep(random.nextInt(100) + 50);
             return "Metrics test completed";
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -58,7 +58,7 @@ public class MetricsController {
         Timer.Sample sample = Timer.start();
         try {
             // Simulate slow operation
-            Thread.sleep((long) (random.nextInt(1000) + 500));
+            Thread.sleep(random.nextInt(1000) + 500);
             return "Slow operation completed";
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
