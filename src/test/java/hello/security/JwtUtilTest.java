@@ -27,6 +27,12 @@ class JwtUtilTest {
         assertThat(jwtUtil.hasAnyRole(token, "USER", "ADMIN")).isTrue();
         assertThat(jwtUtil.hasPermission(token, "CACHE_READ")).isTrue();
         assertThat(jwtUtil.hasAnyPermission(token, "X", "CACHE_WRITE")).isTrue();
+
+        // Negative branches
+        assertThat(jwtUtil.hasRole(token, "NOPE")).isFalse();
+        assertThat(jwtUtil.hasPermission(token, "NOPE")).isFalse();
+        assertThat(jwtUtil.hasAnyRole(token, "ZZZ")).isFalse();
+        assertThat(jwtUtil.hasAnyPermission(token, "YYY")).isFalse();
     }
 }
 
