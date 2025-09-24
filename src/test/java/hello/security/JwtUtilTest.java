@@ -68,10 +68,15 @@ class JwtUtilTest {
         );
 
         java.util.Map<String, Object> claims = jwtUtil.extractCustomClaims(token);
-        assertThat(claims.get("auth_level")).isEqualTo("AAL2");
-        assertThat(claims.get("idp")).isEqualTo("okta");
-        assertThat(((java.util.List<?>) claims.get("roles")).contains("USER")).isTrue();
-        assertThat(((java.util.List<?>) claims.get("permissions")).contains("CACHE_READ")).isTrue();
+        assertThat(claims)
+            .containsEntry("auth_level", "AAL2")
+            .containsEntry("idp", "okta");
+        @SuppressWarnings("unchecked")
+        java.util.List<String> roles = (java.util.List<String>) claims.get("roles");
+        @SuppressWarnings("unchecked")
+        java.util.List<String> perms = (java.util.List<String>) claims.get("permissions");
+        assertThat(roles).contains("USER");
+        assertThat(perms).contains("CACHE_READ");
     }
 }
 
