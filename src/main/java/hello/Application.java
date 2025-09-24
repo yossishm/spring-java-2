@@ -4,8 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
@@ -54,7 +51,7 @@ public class Application {
 
   // OpenTelemetry bean removed - using Spring Boot native OTLP
 
-   /// Server Side - cache - getObject
+   // Server Side - cache - getObject
    @RequestMapping("/api/v1/cacheServices/getObject")
    @PreAuthorize("hasAuthority('CACHE_READ') or hasAuthority('CACHE_ADMIN')")
    @RequirePermission(value = {"CACHE_READ", "CACHE_ADMIN"})
@@ -76,8 +73,7 @@ public class Application {
     return "get";
    }
 
-  /// Server Side - cache - putObject
-  //@RequestMapping("/api/v1/cacheServices/putObject")
+  // Server Side - cache - putObject
   @PutMapping("/api/v1/cacheServices/putObject")
   @PreAuthorize("hasAuthority('CACHE_WRITE') or hasAuthority('CACHE_ADMIN')")
   @RequirePermission(value = {"CACHE_WRITE", "CACHE_ADMIN"})
@@ -99,7 +95,7 @@ public class Application {
     return "put";
   }
 
-  /// Server Side - cache - deleteObject
+  // Server Side - cache - deleteObject
   @DeleteMapping("/api/v1/cacheServices/deleteObject")
   @PreAuthorize("hasAuthority('CACHE_DELETE') or hasAuthority('CACHE_ADMIN')")
   @RequirePermission(value = {"CACHE_DELETE", "CACHE_ADMIN"})
@@ -121,43 +117,12 @@ public class Application {
     return "delete";
   }
 
-  /// Server Side
+  // Server Side
   @RequestMapping("/")
   public String home(@RequestHeader final Map<String, String> headers) {
     final String jwsHeader = java.util.Base64.getEncoder().encodeToString("Authorization: Bearer".getBytes(StandardCharsets.UTF_8));
     logger.info("jws header base64 is : {}", jwsHeader);
 
-    // try {
-    //   Key publicKey = loadPublicKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/public-istio-demo-pkcs.der");//new FileInputStream(
-    //   headers.forEach((key, value) -> {
-    //   System.out.println(String.format("Header '%s' = %s", key, value));
-    //   Jws<Claims> jws;
-      
-      
-    //   if (key.equalsIgnoreCase (jwsHeader)){
-    //       String jwsString = value;
-    //       try {
-    //         jws = Jwts.parserBuilder()  // (1)
-    //         .setSigningKey(publicKey)         // (2)
-    //         .build()                    // (3)
-    //         .parseClaimsJws(jwsString); // (4)
-    //         System.out.println ("jws parsing is: " + jws);
-            
-    //         // we can safely trust the JWT
-
-            
-    //       }catch (JwtException ex) {       // (5)
-            
-    //         // we *cannot* use the JWT as intended by its creator
-    //       }
-    //     }
-    //   });
-      
-    
- 
-    // }catch (Exception e){
-    //   System.err.println (e.getStackTrace ());
-    // }
       
     return "Hello Docker Yossi World";
   }
@@ -167,152 +132,103 @@ public class Application {
     SpringApplication.run(Application.class, args);
 
 
-/// Client Side
-
-  //openssl genrsa -out istio-demo.pem 512
-
-  //You must make your PCKS8 file from your private key!
-
-// private.pem => name of private key file
-// openssl genrsa -out private-istio-demo.pem 2048
-// public_key.pem => name of public key file
-// openssl rsa -in private-istio-demo.pem -pubout -outform PEM -out public-istio-demo.pem
-// ‫‪private_key.pem‬‬ => name of private key with PCKS8 format! you can just read this format in java
-// openssl pkcs8 -topk8 -inform PEM -outform DER -in private-istio-demo.pem -out private-istio-demo-pkcs.der -nocrypt
-// public key in der format
-// openssl rsa -in private-istio-demo.pem -pubout -outform DER -out public-istio-demo-pkcs.der
-
-
-
-      // We need a signing key, so we'll create one just for this example. Usually
-      // the key would be read from your application configuration instead.
-      //Key key = "/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/istio-demo.pem"; //Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-
-      
-  //     KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-
-  //     Key privateKey = loadPrivateKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/private-istio-demo-pkcs.der");//new FileInputStream());
-  //     Key publicKey = loadPublicKey("/Users/yshmulev/dev/gs-spring-boot-docker/spring-java/public-istio-demo-pkcs.der");//new FileInputStream(
-
-  //     System.out.println(publicKey);
-  //     System.out.println(privateKey);
-
-  //     String jwt = Jwts.builder()
-  //             .setSubject("paul.simon")
-  //             .signWith(SignatureAlgorithm.RS256, privateKey)
-  //             .compact();
-
-  //     System.out.println(jwt);
-
-  //     String subject = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(jwt).getBody().getSubject();
-  //     System.out.println(subject);
-
-  //     String jwsString = Jwts.builder().setSubject("Joe").signWith(privateKey).compact();
-  //     System.out.println ("Token is: " + jwsString);
-
-  //     assert Jwts.parserBuilder().setSigningKey(privateKey).build().parseClaimsJws(jwsString).getBody().getSubject().equals("Jo");
-
-
-
-
-
-  // jwsString = Jwts.builder() // (1)
-
-  //   .setSubject("Bob")      // (2) 
-
-  //   .signWith(privateKey)          // (3)
-
-  //   .setIssuer("me")
-  //   .setSubject("Bob")
-  //   .setAudience("you")
-  //   //.setExpiration(expiration) //a java.util.Date
-  //   //.setNotBefore(notBefore) //a java.util.Date s
-  //   .setIssuedAt(new Date()) // for example, now
-  //   .setId(UUID.randomUUID().toString ()) //just an example id
-
-
-  //   .claim("yossi", "accoountdata")
-  //   .claim("foo" , "bar")
-     
-  //   .compact();             // (4)
-
-  //   System.out.println ("jws is: " + jwsString);
-
-
-
-
-  //   // get response to myself
-     LocalRestClient restClient = new LocalRestClient ("");//(jwsString);
-
-     String response = restClient.get("");
-     System.out.println ("local host called . status is:" + restClient.getStatus() + "response is: " + response);
   }
 
-  public static PrivateKey loadPrivateKey(String filename) throws Exception {
+  /**
+   * Loads a private key from a DER file.
+   * @param filename The path to the DER file.
+   * @return The loaded PrivateKey.
+   * @throws IOException if an I/O error occurs.
+   * @throws NoSuchAlgorithmException if the RSA algorithm is not available.
+   * @throws InvalidKeySpecException if the key specification is invalid.
+   */
+  public static PrivateKey loadPrivateKey(final String filename) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-    byte[] keyBytes = Files.readAllBytes(Paths.get(filename));
+    final byte[] keyBytes = Files.readAllBytes(Paths.get(filename));
 
-    PKCS8EncodedKeySpec spec =
+    final PKCS8EncodedKeySpec spec =
       new PKCS8EncodedKeySpec(keyBytes);
-    KeyFactory kf = KeyFactory.getInstance("RSA");
+    final KeyFactory kf = KeyFactory.getInstance("RSA");
     return kf.generatePrivate(spec);
   }
 
-  public static PublicKey loadPublicKey (String filename)throws Exception {
-    
-    byte[] keyBytes = Files.readAllBytes(Paths.get(filename));
+  /**
+   * Loads a public key from a DER file.
+   * @param filename The path to the DER file.
+   * @return The loaded PublicKey.
+   * @throws IOException if an I/O error occurs.
+   * @throws NoSuchAlgorithmException if the RSA algorithm is not available.
+   * @throws InvalidKeySpecException if the key specification is invalid.
+   */
+  public static PublicKey loadPublicKey(final String filename) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    final byte[] keyBytes = Files.readAllBytes(Paths.get(filename));
 
-    X509EncodedKeySpec spec =
+    final X509EncodedKeySpec spec =
       new X509EncodedKeySpec(keyBytes);
-    KeyFactory kf = KeyFactory.getInstance("RSA");
+    final KeyFactory kf = KeyFactory.getInstance("RSA");
     return kf.generatePublic(spec);
   }
 
-  private static Key loadKey(InputStream in, Function<byte[], Key> keyParser) throws IOException {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-        String line;
-        StringBuilder content = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            if (!(line.contains("BEGIN") || line.contains("END"))) {
-                content.append(line).append('\n');
-            }
-        }
-        byte[] encoded = Base64.decodeBase64(content.toString());
-        return keyParser.apply(encoded);
-    }
+  /**
+   * Reads a key from an InputStream using a provided key parser function.
+   * @param in The InputStream to read from.
+   * @param keyParser A function to parse the key bytes.
+   * @return The parsed Key.
+   * @throws IOException if an I/O error occurs.
+   */
+  private static Key readKey(final InputStream in, final Function<byte[], Key> keyParser) throws IOException {
+      final StringBuilder content = new StringBuilder();
+      try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+          String line;
+          while ((line = reader.readLine()) != null) {
+              content.append(line);
+          }
+      }
+      final String encoded = content.toString()
+              .replaceAll("-----BEGIN (.*) KEY-----", "")
+              .replaceAll("-----END (.*) KEY-----", "")
+              .replaceAll("\\s", "");
+      final byte[] keyBytes = Base64.decodeBase64(encoded);
+      return keyParser.apply(keyBytes);
+  }
+
+  /**
+   * Reads a private key from an InputStream.
+   * @param in The InputStream to read from.
+   * @return The loaded PrivateKey.
+   * @throws IOException if an I/O error occurs.
+   * @throws NoSuchAlgorithmException if the RSA algorithm is not available.
+   * @throws InvalidKeySpecException if the key specification is invalid.
+   */
+  public static PrivateKey readPrivateKey(final InputStream in) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+      final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+      return (PrivateKey) readKey(in, keyBytes -> {
+          try {
+              final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+              return keyFactory.generatePrivate(keySpec);
+          } catch (InvalidKeySpecException e) {
+              throw new RuntimeException("Invalid private key spec", e);
+          }
+      });
+  }
+
+  /**
+   * Reads a public key from an InputStream.
+   * @param in The InputStream to read from.
+   * @return The loaded PublicKey.
+   * @throws IOException if an I/O error occurs.
+   * @throws NoSuchAlgorithmException if the RSA algorithm is not available.
+   * @throws InvalidKeySpecException if the key specification is invalid.
+   */
+  public static PublicKey readPublicKey(final InputStream in) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+      final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+      return (PublicKey) readKey(in, keyBytes -> {
+          try {
+              final X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+              return keyFactory.generatePublic(spec);
+          } catch (InvalidKeySpecException e) {
+              throw new RuntimeException("Invalid public key spec", e);
+          }
+      });
+  }
 }
-
-public static Key loadPrivateKey(InputStream in) throws IOException, NoSuchAlgorithmException {
-    KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-
-    return loadKey(in, bytes -> {
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
-        try {
-            RSAPrivateKey key = (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
-            return key;
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        }
-    });
-}
-
-public static Key loadPublicKey(InputStream in) throws IOException, NoSuchAlgorithmException {
-    KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-
-    return loadKey(in, bytes -> {
-       // PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
-        try {
-            X509EncodedKeySpec spec =
-                    new X509EncodedKeySpec(bytes);
-            return keyFactory.generatePublic(spec);
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        }
-    });
-}
-  
-}
-
-
-
