@@ -37,7 +37,7 @@ class JwtUtilTest {
 
     @Test
     @DisplayName("JwtUtil validateToken with username (non-expired) and expired token handling")
-    void validateTokenWithUsername_andExpired() throws Exception {
+    void validateTokenWithUsername_andExpired() {
         JwtUtil jwtUtil = new JwtUtil();
         org.springframework.test.util.ReflectionTestUtils.setField(jwtUtil, "secret", "mySecretKeymySecretKeymySecretKey123");
         // Use a safe expiration for username-validation case

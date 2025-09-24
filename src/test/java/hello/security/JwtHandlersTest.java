@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 
@@ -25,7 +24,9 @@ class JwtHandlersTest {
         private final OutputStream delegate;
         MockServletOutputStream(OutputStream delegate) { this.delegate = delegate; }
         @Override public boolean isReady() { return true; }
-        @Override public void setWriteListener(WriteListener writeListener) { }
+        @Override public void setWriteListener(WriteListener writeListener) {
+            // Not used in these unit tests; response is fully buffered via ByteArrayOutputStream.
+        }
         @Override public void write(int b) throws IOException { delegate.write(b); }
     }
 
