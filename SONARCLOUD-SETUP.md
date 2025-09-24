@@ -84,3 +84,30 @@ After setup, SonarCloud will show:
 - **Enterprise**: Advanced features, custom rules
 
 Your setup will work perfectly with the free tier for public repositories!
+
+---
+
+# Java SonarCloud Integration
+
+## 🚀 Java Setup (Additional)
+
+The Java project uses the same SonarCloud organization but sends analysis to the main `spring-java-2` project.
+
+### Java Configuration:
+- **Project Key**: `spring-java-2` (same as main project)
+- **Organization**: `yossishm`
+- **Coverage Format**: JaCoCo XML (`target/site/jacoco/jacoco.xml`)
+- **Test Reports**: Surefire (`target/surefire-reports`)
+- **Exclusions**: `**/target/**,**/build/**,**/*.class,**/node_modules/**,**/logs/**,**/bin/**,**/obj/**,**/TestResults/**`
+
+### Java Quality Tools:
+- **SpotBugs**: Static analysis for bugs
+- **Checkstyle**: Code style checking
+- **PMD**: Code quality analysis
+- **OWASP**: Dependency vulnerability scanning
+- **Trivy**: Security scanning
+
+### Java Workflow:
+- Triggered on changes to `src/**` or `pom.xml`
+- Runs quality gate, security checks, and SonarCloud analysis
+- Uses existing `SONAR_TOKEN` secret
