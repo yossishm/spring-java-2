@@ -301,7 +301,6 @@ jobs:
           -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
           -Dsonar.junit.reportPaths=target/surefire-reports \
           -Dsonar.java.binaries=target/classes \
-          -Dsonar.java.libraries=target/dependency/*.jar \
           -Dsonar.java.source=21 \
           -Dsonar.java.target=21 \
           -Dsonar.exclusions="**/target/**,**/build/**,**/*.class,**/node_modules/**,**/logs/**,**/bin/**,**/obj/**,**/TestResults/**" \
