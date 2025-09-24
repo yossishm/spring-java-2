@@ -2,7 +2,7 @@ package hello;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.http.HttpStatus;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Base64;
@@ -51,7 +51,7 @@ public class VulnerableJWTController {
             response.put(VALID_KEY, false);
             response.put(ERROR_KEY, e.getMessage());
             
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 
@@ -72,7 +72,7 @@ public class VulnerableJWTController {
             response.put("decoded", false);
             response.put(ERROR_KEY, e.getMessage());
             
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 
@@ -95,7 +95,7 @@ public class VulnerableJWTController {
             response.put(VALID_KEY, false);
             response.put(ERROR_KEY, e.getMessage());
             
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 }

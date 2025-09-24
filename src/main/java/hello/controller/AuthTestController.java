@@ -107,7 +107,7 @@ public class AuthTestController {
     @RequirePermission(value = {"CACHE_WRITE"})
     public ResponseEntity<Map<String, Object>> cacheWriteEndpoint(@RequestBody Map<String, Object> data) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Cache write operation successful");
+        response.put(MESSAGE_KEY, "Cache write operation successful");
         response.put("data", data);
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
         return ResponseEntity.ok(response);

@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = "spring.profiles.active=test")
 @Import(TestSecurityConfig.class)
-public class JWTCVETest {
+class JWTCVETest {
 
     @LocalServerPort
     private int port;
