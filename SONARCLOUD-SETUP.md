@@ -91,10 +91,10 @@ Your setup will work perfectly with the free tier for public repositories!
 
 ## 🚀 Java Setup (Additional)
 
-The Java project uses the same SonarCloud organization but sends analysis to the main `spring-java-2` project.
+The Java project uses the existing SonarCloud project `yossishm_spring-java-2`.
 
 ### Java Configuration:
-- **Project Key**: `spring-java-2` (same as main project)
+- **Project Key**: `yossishm_spring-java-2`
 - **Organization**: `yossishm`
 - **Coverage Format**: JaCoCo XML (`target/site/jacoco/jacoco.xml`)
 - **Test Reports**: Surefire (`target/surefire-reports`)

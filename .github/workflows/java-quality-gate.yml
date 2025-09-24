@@ -294,7 +294,7 @@ jobs:
         ls -la target/site/jacoco/jacoco.xml || echo "Coverage file not found"
         
         mvn sonar:sonar \
-          -Dsonar.projectKey=spring-java-2 \
+          -Dsonar.projectKey=yossishm_spring-java-2 \
           -Dsonar.organization=yossishm \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login="${{ secrets.SONAR_TOKEN }}" \
