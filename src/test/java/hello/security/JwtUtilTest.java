@@ -51,6 +51,28 @@ class JwtUtilTest {
         String expired = jwtUtil.generateToken("dave", java.util.List.of("USER"), java.util.List.of());
         assertThat(jwtUtil.validateToken(expired)).isFalse();
     }
+
+    @Test
+    @DisplayName("extractCustomClaims returns full claims including auth_level and idp")
+    void extractCustomClaims_includesAuthLevelAndIdp() {
+        JwtUtil jwtUtil = new JwtUtil();
+        ReflectionTestUtils.setField(jwtUtil, "secret", "mySecretKeymySecretKeymySecretKey123");
+        ReflectionTestUtils.setField(jwtUtil, "expiration", 3600_000L);
+
+        String token = jwtUtil.generateToken(
+            "erin",
+            java.util.List.of("USER"),
+            java.util.List.of("CACHE_READ"),
+            "AAL2",
+            "okta"
+        );
+
+        java.util.Map<String, Object> claims = jwtUtil.extractCustomClaims(token);
+        assertThat(claims.get("auth_level")).isEqualTo("AAL2");
+        assertThat(claims.get("idp")).isEqualTo("okta");
+        assertThat(((java.util.List<?>) claims.get("roles")).contains("USER")).isTrue();
+        assertThat(((java.util.List<?>) claims.get("permissions")).contains("CACHE_READ")).isTrue();
+    }
 }
 
 
