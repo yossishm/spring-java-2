@@ -58,3 +58,4 @@ minikube-darwin-amd64
 target/classes/hello/TestController.class
 target/classes/hello/TestController.class
 target/classes/hello/TestController.class
+*.class
