@@ -69,7 +69,7 @@ public class Application {
        @RequestHeader final Map<String, String> headers,
        @Parameter(description = "Cache object ID", required = true, example = "123")
        @RequestParam(name = "id") final String objectId) {  
-    logger.info("Get: {} Called", objectId);
+    logger.info("Get operation called for object ID: [REDACTED]");
     return "get";
    }
 
@@ -91,7 +91,7 @@ public class Application {
       @RequestHeader final Map<String, String> headers,
       @Parameter(description = "Cache object ID", required = true, example = "123")
       @RequestParam(name = "id") final String objectId) {
-    logger.info("Put: {} Called", objectId);
+    logger.info("Put operation called for object ID: [REDACTED]");
     return "put";
   }
 
@@ -113,7 +113,7 @@ public class Application {
       @RequestHeader final Map<String, String> headers,
       @Parameter(description = "Cache object ID", required = true, example = "123")
       @RequestParam(name = "id") final String objectId) {
-    logger.info("Delete: {} Called", objectId);
+    logger.info("Delete operation called for object ID: [REDACTED]");
     return "delete";
   }
 
@@ -121,7 +121,7 @@ public class Application {
   @RequestMapping("/")
   public String home(@RequestHeader final Map<String, String> headers) {
     final String jwsHeader = java.util.Base64.getEncoder().encodeToString("Authorization: Bearer".getBytes(StandardCharsets.UTF_8));
-    logger.info("jws header base64 is : {}", jwsHeader);
+    logger.info("JWT header processing completed");
 
       
     return "Hello Docker Yossi World";
