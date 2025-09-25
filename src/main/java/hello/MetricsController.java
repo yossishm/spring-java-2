@@ -6,7 +6,7 @@ import io.micrometer.core.instrument.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 
 @RestController
@@ -15,7 +15,8 @@ public class MetricsController {
 
     private final Counter requestCounter;
     private final Timer responseTimer;
-    private final Random random = new Random();
+    // Use SecureRandom to avoid weak PRNG hotspot (non-security critical usage)
+    private final SecureRandom random = new SecureRandom();
 
     @Autowired
     public MetricsController(MeterRegistry meterRegistry) {

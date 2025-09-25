@@ -8,14 +8,15 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Timer;
 // Prometheus imports removed - using basic Micrometer
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 @RestController
 public class PrometheusController {
 
     private final Counter prometheusRequests;
     private final Timer prometheusResponseTime;
-    private final Random random = new Random();
+    // Use SecureRandom to avoid weak PRNG hotspot (non-security critical usage)
+    private final SecureRandom random = new SecureRandom();
 
     @Autowired
     public PrometheusController(MeterRegistry meterRegistry) {
