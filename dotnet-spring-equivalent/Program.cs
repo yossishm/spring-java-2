@@ -150,8 +150,15 @@ builder.Services.AddOpenTelemetry()
         .AddRuntimeInstrumentation()
         .AddOtlpExporter());
 
-// Add Prometheus metrics (skip in test environment)
-if (!builder.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalIgnoreCase))
+var disablePrometheusServer = builder.Configuration.GetValue("DisablePrometheusServer", false);
+var otlpEndpointConfigured = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
+var enableStandalonePrometheus = !disablePrometheusServer
+    && string.IsNullOrWhiteSpace(builder.Environment.EnvironmentName)
+        ? !otlpEndpointConfigured
+        : (!builder.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalIgnoreCase) && !otlpEndpointConfigured);
+
+// Add Prometheus metrics server only when we are not exporting via OTLP
+if (enableStandalonePrometheus)
 {
     builder.Services.AddSingleton<MetricServer>();
 }
@@ -189,8 +196,8 @@ app.MapHealthChecks("/health/live", new HealthCheckOptions
 // Map Prometheus metrics endpoint
 app.MapMetrics();
 
-// Start the Prometheus metrics server (skip in test environment)
-if (!app.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalIgnoreCase))
+// Start the Prometheus metrics server when it is enabled
+if (enableStandalonePrometheus)
 {
     var metricServer = app.Services.GetRequiredService<MetricServer>();
     metricServer.Start();
