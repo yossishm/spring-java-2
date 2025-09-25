@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import hello.security.RequirePermission;
@@ -67,7 +67,7 @@ public class Application {
 
 
    // Server Side - cache - getObject
-   @RequestMapping("/api/v1/cacheServices/getObject")
+   @GetMapping("/api/v1/cacheServices/getObject")
    @PreAuthorize("hasAuthority('CACHE_READ') or hasAuthority('CACHE_ADMIN')")
    @RequirePermission(value = {"CACHE_READ", "CACHE_ADMIN"})
    @Operation(
@@ -133,7 +133,7 @@ public class Application {
   }
 
   // Server Side
-  @RequestMapping("/")
+  @GetMapping("/")
   public String home(@RequestHeader final Map<String, String> headers) {
     logger.info("JWT header processing completed");
     return "Hello Docker Yossi World";
