@@ -1,0 +1,64 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "java-vs-dotnet",
+    "title": "⚔️ Java vs .NET Performance Comparison (Both Active!)",
+    "tags": ["java", "dotnet", "performance"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "HTTP Request Rate: Java vs .NET",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps",
+            "custom": {"drawStyle": "line", "lineWidth": 2}
+          }
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"}[1m]))",
+            "legendFormat": "Java App",
+            "refId": "A"
+          },
+          {
+            "expr": "sum(rate(otel_aspnetcore_routing_match_attempts_total{service_name=\"SpringJavaEquivalent\"}[1m]))",
+            "legendFormat": ".NET App",
+            "refId": "B"
+          }
+        ],
+        "datasource": {"uid": "PBFA97CFB590B2093"}
+      },
+      {
+        "id": 2,
+        "title": "Total Requests (5m): Java vs .NET",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "custom": {"drawStyle": "line", "lineWidth": 2}
+          }
+        },
+        "targets": [
+          {
+            "expr": "sum(increase(otel_http_server_requests_milliseconds_count{service_name=\"java-spring-app\"}[5m]))",
+            "legendFormat": "Java App",
+            "refId": "A"
+          },
+          {
+            "expr": "sum(increase(otel_aspnetcore_routing_match_attempts_total{service_name=\"SpringJavaEquivalent\"}[5m]))",
+            "legendFormat": ".NET App",
+            "refId": "B"
+          }
+        ],
+        "datasource": {"uid": "PBFA97CFB590B2093"}
+      }
+    ],
+    "time": {"from": "now-5m", "to": "now"},
+    "refresh": "5s"
+  },
+  "overwrite": true
+}

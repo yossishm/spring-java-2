@@ -141,7 +141,10 @@ builder.Services.AddOpenTelemetry()
             ["deployment.environment"] = builder.Environment.EnvironmentName,
         }))
     .WithTracing(tracing => tracing
-        .AddAspNetCoreInstrumentation()
+        .AddAspNetCoreInstrumentation(options =>
+        {
+            options.RecordException = true;
+        })
         .AddHttpClientInstrumentation()
         .AddOtlpExporter())
     .WithMetrics(metrics => metrics

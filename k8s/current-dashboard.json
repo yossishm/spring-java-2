@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -86,8 +86,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -101,8 +101,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
+                  "fixedColor": "blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -143,7 +143,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_aspnetcore_routing_match_attempts_total{service_name=\"SpringJavaEquivalent\"}[1m]))",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[1m]))",
           "interval": "",
           "legendFormat": ".NET App - HTTP Request Rate/sec",
           "refId": "B"
@@ -216,8 +216,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -231,8 +231,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
+                  "fixedColor": "blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -273,7 +273,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(increase(otel_aspnetcore_routing_match_attempts_total{service_name=\"SpringJavaEquivalent\"}[5m]))",
+          "expr": "sum(increase(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m]))",
           "interval": "",
           "legendFormat": ".NET App - Requests (5m)",
           "refId": "B"
@@ -346,8 +346,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -361,8 +361,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
+                  "fixedColor": "blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -403,7 +403,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_aspnetcore_routing_match_attempts_total{service_name=\"SpringJavaEquivalent\"}[5m]))",
+          "expr": "sum(rate(otel_http_server_request_duration_seconds_sum{service_name=\"dotnet-app\"}[5m])) / sum(rate(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[5m]))",
           "interval": "",
           "legendFormat": ".NET App - Avg Response Time (s)",
           "refId": "B"
@@ -476,8 +476,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -491,8 +491,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
+                  "fixedColor": "blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -533,7 +533,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(increase(otel_aspnetcore_routing_match_attempts_total{service_name=\"SpringJavaEquivalent\"}[1m]))",
+          "expr": "sum(increase(otel_http_server_request_duration_seconds_count{service_name=\"dotnet-app\"}[1m]))",
           "interval": "",
           "legendFormat": ".NET App - Requests (1m)",
           "refId": "B"
@@ -563,6 +563,6 @@
   "timezone": "",
   "title": "⚔️ Java vs .NET Performance Comparison (Both Active!)",
   "uid": "java-vs-dotnet",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }
