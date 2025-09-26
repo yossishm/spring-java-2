@@ -1,0 +1,46 @@
+# Alpine-based .NET image for better security (smaller attack surface)
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
+WORKDIR /src
+
+# Copy project file and restore dependencies
+COPY ["SpringJavaEquivalent.csproj", "."]
+RUN dotnet restore "SpringJavaEquivalent.csproj"
+
+# Copy source code
+COPY ["Controllers/", "Controllers/"]
+COPY ["Services/", "Services/"]
+COPY ["Authorization/", "Authorization/"]
+COPY ["Program.cs", "."]
+COPY ["appsettings.json", "."]
+COPY ["appsettings.Development.json", "."]
+
+# Build and publish the application
+WORKDIR "/src"
+RUN dotnet publish "SpringJavaEquivalent.csproj" \
+    -c Release \
+    -o /app/publish \
+    --self-contained false \
+    --no-restore
+
+# Use Alpine-based .NET runtime (much smaller and more secure than Debian)
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS final
+WORKDIR /app
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -S appuser -u 1001 -G appgroup
+
+# Copy the published application
+COPY --from=build /app/publish .
+
+# Change ownership to non-root user
+RUN chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
+
+# Expose port
+EXPOSE 5000
+
+# Entry point
+ENTRYPOINT ["dotnet", "SpringJavaEquivalent.dll"]
