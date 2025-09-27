@@ -24,15 +24,25 @@ RUN dotnet publish "SpringJavaEquivalent.csproj" -c Release -o /app/publish \
     --self-contained false \
     --no-restore
 
-# Use Microsoft's distroless ASP.NET Core runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-distroless AS final
+# Use Microsoft's standard ASP.NET Core runtime image (distroless not available for .NET 9)
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
+
+# Create non-root user for security
+RUN groupadd -g 1001 appgroup && \
+    useradd -r -u 1001 -g appgroup appuser
 
 # Copy the published application
 COPY --from=publish /app/publish .
 
-# Set the user to non-root for security
-USER $APP_UID
+# Change ownership to non-root user
+RUN chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
+
+# Expose port
+EXPOSE 5000
 
 # Configure the entry point
-ENTRYPOINT ["./SpringJavaEquivalent"]
+ENTRYPOINT ["dotnet", "SpringJavaEquivalent.dll"]
