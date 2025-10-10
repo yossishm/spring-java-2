@@ -1,4 +1,4 @@
-name: Security Scan
+name: Security Scan (.NET Alpine)
 
 on:
   push:
@@ -6,115 +6,49 @@ on:
   pull_request:
     branches: [ main, develop ]
   schedule:
-    # Run security scans daily at 3 AM UTC
     - cron: '0 3 * * *'
 
 permissions:
   contents: read
   security-events: write
-  actions: read
-  checks: write
-  pull-requests: write
-
-env:
-  MAVEN_OPTS: "-Xmx1024m -XX:+UseG1GC"
-  JAVA_VERSION: '21'
 
 jobs:
-  security-scan:
-    name: Security Scan
+  dotnet-alpine-trivy:
+    name: .NET Alpine Trivy Scan
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
-      uses: actions/setup-java@v4
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'temurin'
-        cache: maven
-    
-    - name: Cache Maven dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
-    
-    - name: OWASP Dependency Check
-      run: |
-        echo "🔒 Running OWASP Dependency Check..."
-        mvn org.owasp:dependency-check-maven:check || echo "⚠️ OWASP Dependency Check failed (likely due to network issues)"
-        echo "✅ OWASP Dependency Check completed"
-      continue-on-error: true
-    
-    - name: Security Scan with Trivy
-      run: |
-        echo "🔍 Running Trivy Security Scan..."
-        docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format table --severity HIGH,CRITICAL /workspace
-        docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format sarif --output /workspace/trivy-results.sarif /workspace
-        echo "✅ Trivy Security Scan completed"
-    
-    - name: Verify SARIF file
-      run: |
-        if [ -f "trivy-results.sarif" ]; then
-          echo "✅ SARIF file exists"
-          echo "File size: $(wc -c < trivy-results.sarif) bytes"
-          echo "First few lines:"
-          head -5 trivy-results.sarif
-        else
-          echo "⚠️ SARIF file not found, creating empty one"
-          echo '{"version": "2.1.0", "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json", "runs": [{"tool": {"driver": {"name": "Trivy", "version": "latest"}}, "results": []}]}' > trivy-results.sarif
-        fi
-    
-    - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v3
-      if: always() && hashFiles('trivy-results.sarif') != ''
-      with:
-        sarif_file: 'trivy-results.sarif'
-    
-    - name: Upload Security Reports
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: security-reports
-        path: |
-          target/dependency-check-report.html
-          trivy-results.sarif
-    
-    - name: Notify on Security Issues
-      if: failure()
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "🚨 Security Issues Found - ${{ github.repository }}"
-        to: ${{ secrets.NOTIFICATION_EMAIL }}
-        from: ${{ secrets.EMAIL_USERNAME }}
-        html_body: |
-          <h2>🚨 Security Issues Found</h2>
-          
-          <p><strong>Repository:</strong> ${{ github.repository }}</p>
-          <p><strong>Branch:</strong> ${{ github.ref_name }}</p>
-          <p><strong>Commit:</strong> ${{ github.sha }}</p>
-          <p><strong>Author:</strong> ${{ github.actor }}</p>
-          
-          <h3>Security Scan Results:</h3>
-          <ul>
-            <li>OWASP Dependency Check: Failed</li>
-            <li>Trivy Security Scan: Completed</li>
-          </ul>
-          
-          <h3>Links:</h3>
-          <ul>
-            <li><a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">View Workflow Run</a></li>
-            <li><a href="${{ github.server_url }}/${{ github.repository }}/security">View Security Tab</a></li>
-          </ul>
-          
-          <p>Please review the security reports and address any vulnerabilities found.</p>
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build .NET (Alpine) image
+        run: |
+          docker build \
+            -f dotnet-spring-equivalent/Dockerfile.alpine \
+            -t dotnet-app:alpine \
+            ./dotnet-spring-equivalent
+      
+      - name: Run Trivy vulnerability scanner
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v $PWD:/workspace \
+            aquasec/trivy:latest \
+            --exit-code 0 \
+            --format sarif \
+            --output /workspace/trivy-results-dotnet-alpine.sarif \
+            dotnet-app:alpine
+
+      - name: Upload SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results-dotnet-alpine.sarif
+
+      - name: Upload scan artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-alpine-trivy
+          path: |
+            trivy-results-dotnet-alpine.sarif

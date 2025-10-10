@@ -31,7 +31,7 @@ Go to your GitHub repository → Settings → Secrets and variables → Actions,
 The following workflow files are already created:
 
 - `.github/workflows/quality-gate.yml` - Main quality gate workflow
-- `.github/workflows/security-scan.yml` - Security scanning workflow
+- `.github/workflows/security-scan.yml` - Security scanning workflow (builds and scans .NET Alpine image)
 
 ## 🔧 Workflow Features
 
@@ -48,7 +48,7 @@ The following workflow files are already created:
 3. **SonarQube Analysis** - Code quality analysis (if secrets configured)
 4. **Notifications** - Email notifications on success/failure
 
-### Security Scan Workflow
+### Security Scan Workflow (.NET Alpine)
 
 **Triggers:**
 - Push to `main` or `develop` branches
@@ -56,8 +56,8 @@ The following workflow files are already created:
 - Daily at 3 AM UTC
 
 **Features:**
-- OWASP Dependency Check
-- Trivy security scanning
+- Builds `.NET` image with `dotnet-spring-equivalent/Dockerfile.alpine`
+- Trivy image scanning with SARIF upload
 - GitHub Security tab integration
 - Email notifications on security issues
 
