@@ -39,12 +39,13 @@ fi
 
 echo -e "${BLUE}🔍 Running Trivy Security Scan for .NET...${NC}"
 
-# Run Trivy scan using Docker container
+# Build the Alpine-based image first
+echo -e "${YELLOW}📦 Building .NET Alpine image for security scan...${NC}"
+docker build -f Dockerfile.alpine -t dotnet-app:alpine .
+
+# Run Trivy scan using Docker container on the new image
 echo -e "${YELLOW}📦 Using Trivy container for .NET security scan...${NC}"
-mkdir -p /tmp/dotnet-trivy-scan
-cp -r . /tmp/dotnet-trivy-scan/
-docker run --rm -v /tmp/dotnet-trivy-scan:/workspace aquasec/trivy:latest fs --format table --severity HIGH,CRITICAL /workspace
-rm -rf /tmp/dotnet-trivy-scan
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --format table --severity HIGH,CRITICAL dotnet-app:alpine
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Trivy Security Scan completed successfully${NC}"
