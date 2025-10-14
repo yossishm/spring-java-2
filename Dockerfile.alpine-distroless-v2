@@ -3,11 +3,12 @@ FROM eclipse-temurin:21.0.8_9-jre-alpine-3.22 AS builder
 WORKDIR /build
 COPY target/gs-spring-boot-docker-0.2.0.jar /build/app.jar
 
-# Runtime stage - latest Alpine version with security patches
-FROM alpine:3.23
+# Runtime stage - Alpine with updated packages
+FROM alpine:3.22.1
 
-# Install specific OpenJDK JRE version
-RUN apk add --no-cache openjdk21-jre-headless && \
+# Update packages and install OpenJDK JRE
+RUN apk update && apk upgrade && \
+    apk add --no-cache openjdk21-jre-headless && \
     # Remove package manager and cache
     rm -rf /var/cache/apk/* /etc/apk && \
     # Create non-root user
