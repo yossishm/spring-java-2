@@ -4,7 +4,7 @@ WORKDIR /build
 COPY target/gs-spring-boot-docker-0.2.0.jar /build/app.jar
 
 # Runtime stage - Alpine-based minimal image (no zlib vulnerability)
-FROM alpine:3.22
+FROM alpine:3.22.2
 
 # Install only OpenJDK JRE (no zlib package manager)
 RUN apk add --no-cache openjdk21-jre-headless && \

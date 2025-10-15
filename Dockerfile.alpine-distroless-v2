@@ -4,7 +4,7 @@ WORKDIR /build
 COPY target/gs-spring-boot-docker-0.2.0.jar /build/app.jar
 
 # Runtime stage - Alpine with updated packages
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 
 # Update packages and install OpenJDK JRE
 RUN apk update && apk upgrade && \
