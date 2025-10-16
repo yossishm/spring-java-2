@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
  * Our fix: Explicit dependency on commons-lang3:3.19.0 in pom.xml
  */
 @DisplayName("CVE-2025-48924 Attack Surface Test")
-public class CVE202548924AttackTest {
+class CVE202548924AttackTest {
 
     private static final String VULNERABLE_INPUT = "\\\\u\\\\u\\\\u\\\\u\\\\u\\\\u\\\\u\\\\u\\\\u\\\\u";
     

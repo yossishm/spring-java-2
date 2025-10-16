@@ -13,7 +13,7 @@ import java.time.Instant;
  * WITHOUT our security fix. It shows what attacks are NOT mitigated.
  */
 @DisplayName("Vulnerable Version DoS Test - Shows What's NOT Mitigated")
-public class VulnerableVersionDoSTest {
+class VulnerableVersionDoSTest {
 
     @Test
     @DisplayName("Demonstrate CVE-2025-48924 Vulnerability - DoS Attack")

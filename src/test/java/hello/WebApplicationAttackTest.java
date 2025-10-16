@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
     "spring.security.user.password=test"
 })
 @DisplayName("Web Application Attack Test for CVE-2025-48924")
-public class WebApplicationAttackTest {
+class WebApplicationAttackTest {
 
     @LocalServerPort
     private int port;
@@ -112,7 +112,7 @@ public class WebApplicationAttackTest {
                         String url = "http://localhost:" + port + "/api/v1/auth/token?username=" + maliciousUsername;
                         Instant start = Instant.now();
                         
-                        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+                        restTemplate.getForEntity(url, String.class);
                         
                         Instant end = Instant.now();
                         long duration = Duration.between(start, end).toMillis();
