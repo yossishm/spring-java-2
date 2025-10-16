@@ -45,14 +45,14 @@ dotnet test "SpringJavaEquivalent.Tests/SpringJavaEquivalent.Tests.csproj" \
   /p:CoverletOutput=/Users/yshmulev/dev/spring-java-2/TestResults/opencover-report.xml \
   --verbosity minimal 2>&1 | grep -v "Build FAILED"
 
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]]; then
     echo -e "${GREEN}✅ Tests completed with coverage collection${NC}"
 else
     echo -e "${YELLOW}⚠️  Some tests failed, but continuing with SonarQube analysis...${NC}"
 fi
 
 echo -e "\n${BLUE}🔍 Step 4: Verifying coverage report was generated...${NC}"
-if [ -f "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/target/site/jacoco/jacoco.xml" ]; then
+if [[ -f "/Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/target/site/jacoco/jacoco.xml" ]]; then
     echo -e "${GREEN}✅ JaCoCo report generated at: /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/target/site/jacoco/jacoco.xml${NC}"
     # Show a bit of the report to verify it's JaCoCo format
     head -5 /Users/yshmulev/dev/spring-java-2/dotnet-spring-equivalent/target/site/jacoco/jacoco.xml

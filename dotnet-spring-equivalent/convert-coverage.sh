@@ -5,7 +5,7 @@ echo "🔄 Converting Cobertura coverage to OpenCover format..."
 # Find the latest coverage file
 LATEST_COVERAGE=$(find TestResults -name "coverage.cobertura.xml" -type f -exec ls -t {} + | head -1)
 
-if [ -z "$LATEST_COVERAGE" ]; then
+if [[ -z "$LATEST_COVERAGE" ]]; then
     echo "❌ No coverage file found"
     exit 1
 fi

@@ -42,7 +42,7 @@ fi
 # Find and copy the latest coverage file to a consistent location
 echo -e "\n${BLUE}🔍 Locating coverage file...${NC}"
 COVERAGE_FILE=$(find ./TestResults -name "coverage.cobertura.xml" 2>/dev/null | sort | tail -1)
-if [ -n "$COVERAGE_FILE" ]; then
+if [[ -n "$COVERAGE_FILE" ]]; then
     cp "$COVERAGE_FILE" ./TestResults/coverage.cobertura.xml
     echo -e "${GREEN}✅ Coverage file found and copied: $COVERAGE_FILE${NC}"
 else
@@ -50,7 +50,7 @@ else
 fi
 
 # Check if coverage file was generated
-if [ ! -f "./TestResults/coverage.cobertura.xml" ]; then
+if [[ ! -f "./TestResults/coverage.cobertura.xml" ]]; then
     echo -e "${RED}❌ Coverage file was not generated${NC}"
     exit 1
 fi
@@ -81,7 +81,7 @@ echo -e "\n${BLUE}🔧 Normalizing paths for Docker compatibility...${NC}"
 if command -v reportgenerator >/dev/null 2>&1; then
     echo -e "${YELLOW}Using reportgenerator to normalize paths...${NC}"
     reportgenerator -reports:./TestResults/coverage.cobertura.xml -targetdir:./TestResults/coverage-report -reporttypes:Cobertura -sourcedirs:.
-    if [ -f "./TestResults/coverage-report/Cobertura.xml" ]; then
+    if [[ -f "./TestResults/coverage-report/Cobertura.xml" ]]; then
         mv ./TestResults/coverage-report/Cobertura.xml ./TestResults/coverage.cobertura.xml
         echo -e "${GREEN}✅ Paths normalized using reportgenerator${NC}"
     fi
