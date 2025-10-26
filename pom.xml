@@ -72,6 +72,12 @@
             <version>1.17.1</version>
         </dependency>
 
+        <!-- MongoDB Driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>5.5.1</version>
+        </dependency>
 
         <!-- OpenTelemetry SDK auto-configuration for Spring Boot OTLP -->
   

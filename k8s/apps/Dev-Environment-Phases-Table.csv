@@ -1,0 +1,14 @@
+Phase,Task/Requirement,Status,Comments
+"Phase 1: Local Development","Development continues locally, no integration","In Progress","Move .NET developers to .NET 9"
+"Phase 2: EKS Dev Environment","Enable integration tests with other services","Planning","First-time continuous integration capability"
+"Phase 2a: Network & DNS","Dev DNS - new network definition for complete Dev environment","Pending","Developers need Postman access to EKS microservices"
+"Phase 2b: CI/CD Pipeline","Containerization pipeline for locally developed services","Pending","Push to Git, containerize services"
+"Phase 2c: Base Images","Base image for new services using .NET 9","Pending","All microservices built using this image. Check if Pattern has Java equivalent"
+"Phase 2d: DevSecOps","Security integration in CI/CD","Parallel","Not mandatory initially, can be defined alongside environment setup"
+"Phase 2e: ArgoCD","Git-EKS connection for continuous deployment","Pending","Developers need ArgoCD access, minimal logging capability"
+"Phase 2f: Helm Charts","HelmChart connected to ArgoCD","Pending","To be built by DevOps team"
+"Phase 3: Service Mesh","Service mesh deployment and configuration","Future","Needed when multiple services are on EKS"
+"Phase 3a: Gateway API","Gateway API for managing ingress traffic in EKS","Pending","Traffic management solution"
+"Phase 3b: ELK Stack","Logging and monitoring stack","Pending","ELK or alternative logging solution"
+"Phase 3c: Egress Configuration","Complete egress design for Claims MS","Pending","Define egress requirements (e.g., customer-claim to Ensure). Create mock services until egress is configured"
+
