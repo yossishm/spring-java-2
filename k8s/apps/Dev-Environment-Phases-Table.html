@@ -23,11 +23,25 @@
             text-align: left;
             vertical-align: top;
         }
-        th:nth-child(1), td:nth-child(1) { width: 15%; }
-        th:nth-child(2), td:nth-child(2) { width: 25%; }
-        th:nth-child(3), td:nth-child(3) { width: 10%; }
-        th:nth-child(4), td:nth-child(4) { width: 25%; }
-        th:nth-child(5), td:nth-child(5) { width: 25%; }
+        th:nth-child(1), td:nth-child(1) { width: 10%; }
+        th:nth-child(2), td:nth-child(2) { width: 18%; }
+        th:nth-child(3), td:nth-child(3) { width: 6%; }
+        th:nth-child(4), td:nth-child(4) { width: 16%; }
+        th:nth-child(5), td:nth-child(5) { width: 16%; }
+        th:nth-child(6), td:nth-child(6) { width: 8%; }
+        th:nth-child(7), td:nth-child(7) { width: 8%; }
+        th:nth-child(8), td:nth-child(8) { width: 9%; }
+        th:nth-child(9), td:nth-child(9) { width: 9%; }
+        
+        /* Print-specific styles */
+        @media print {
+            table { font-size: 8px; }
+            th, td { padding: 4px; }
+            th:nth-child(6), td:nth-child(6) { width: 10%; }
+            th:nth-child(7), td:nth-child(7) { width: 10%; }
+            th:nth-child(8), td:nth-child(8) { width: 10%; }
+            th:nth-child(9), td:nth-child(9) { width: 10%; }
+        }
         th {
             background-color: #f2f2f2;
             font-weight: bold;
@@ -46,6 +60,10 @@
 <body>
     <h1>Development Environment Modernization - Phases Table</h1>
     
+    <div style="margin-bottom: 10px; font-size: 12px; background-color: #f8f9fa; padding: 8px; border-radius: 4px;">
+        <strong>RACI Legend:</strong> R = Responsible (does the work) | A = Accountable (answerable for outcome) | C = Consulted (provides input) | I = Informed (kept updated)
+    </div>
+    
     <table>
         <thead>
             <tr>
@@ -54,6 +72,10 @@
                 <th>Status</th>
                 <th>Comments</th>
                 <th>Reasoning</th>
+                <th>R</th>
+                <th>A</th>
+                <th>C</th>
+                <th>I</th>
             </tr>
         </thead>
         <tbody>
@@ -63,27 +85,43 @@
                 <td>Planning</td>
                 <td>Move .NET developers to .NET 9 and Java developers to Spring 3.5.6 with Java 21</td>
                 <td>Foundation phase - maintains current workflow while preparing for cloud migration with best security baseline</td>
+                <td>Dev Teams</td>
+                <td>Tech Leads</td>
+                <td>Architecture</td>
+                <td>Management</td>
             </tr>
-            <tr class="phase-1">
-                <td><strong>Phase 1a: Network & DNS</strong></td>
+            <tr class="phase-1" style="background-color: #ff6b6b; border: 3px solid #d63031;">
+                <td><strong>Phase 1a: Network & DNS (TOP PRIORITY)</strong></td>
                 <td>Dev DNS - new network definition for complete Dev environment</td>
                 <td>Pending</td>
                 <td>Developers need Postman access to EKS microservices</td>
-                <td>Prerequisite for developer access - enables external connectivity to EKS</td>
+                <td>Prerequisite for developer access - enables external connectivity to EKS. Required before 1b and 1c can be fully utilized</td>
+                <td>Network Team</td>
+                <td>Infrastructure Lead</td>
+                <td>Dev Teams</td>
+                <td>Management</td>
             </tr>
             <tr class="phase-1">
                 <td><strong>Phase 1b: ArgoCD</strong></td>
                 <td>Git-EKS mediator for continuous deployment and configuration management</td>
-                <td>Pending</td>
-                <td>Developers need RO ArgoCD access, minimal logging capability</td>
-                <td>Deployment automation - enables GitOps workflow for developers</td>
+                <td>In Progress</td>
+                <td>Developers need RO ArgoCD access, minimal logging capability. Currently used by some dev teams</td>
+                <td>Deployment automation - enables GitOps workflow for developers. Dependent on 1a for full functionality</td>
+                <td>DevOps Team</td>
+                <td>DevOps Lead</td>
+                <td>Dev Teams</td>
+                <td>Management</td>
             </tr>
             <tr class="phase-1">
                 <td><strong>Phase 1c: CI/CD Pipeline</strong></td>
                 <td>Containerization pipeline for locally developed services</td>
-                <td>Pending</td>
-                <td>Push to Git, containerize services using artifactory as image registry</td>
-                <td>Essential automation - bridges local development to cloud deployment</td>
+                <td>In Progress</td>
+                <td>Push to Git, containerize services using artifactory as image registry. Currently used by some dev teams</td>
+                <td>Essential automation - bridges local development to cloud deployment. Dependent on 1a for full functionality</td>
+                <td>DevOps Team</td>
+                <td>DevOps Lead</td>
+                <td>Dev Teams</td>
+                <td>Management</td>
             </tr>
             <tr class="phase-2">
                 <td><strong>Phase 2: EKS Dev Environment</strong></td>
@@ -91,6 +129,10 @@
                 <td>Planning</td>
                 <td>First-time continuous integration capability</td>
                 <td>Core infrastructure phase - establishes cloud-based development environment</td>
+                <td>DevOps Team</td>
+                <td>Infrastructure Lead</td>
+                <td>Dev Teams</td>
+                <td>Management</td>
             </tr>
             <tr class="phase-2">
                 <td><strong>Phase 2a: Base Images</strong></td>
@@ -98,48 +140,87 @@
                 <td>Pending</td>
                 <td>All microservices built using these standardized images. Pattern team to provide Java Spring base image</td>
                 <td>Standardization requirement - ensures consistent, secure container base for both .NET and Java services</td>
+                <td>DevOps Team</td>
+                <td>DevOps Lead</td>
+                <td>Pattern Team</td>
+                <td>Dev Teams</td>
             </tr>
             <tr class="phase-2">
                 <td><strong>Phase 2b: DevSecOps</strong></td>
-                <td>Security integration in CI/CD</td>
-                <td>Parallel</td>
-                <td>Not mandatory initially, can be defined alongside environment setup</td>
-                <td>Security can be implemented in parallel - not blocking for initial setup , We are in latest and greatest security baseline due to latest versions</td>
+                <td>Security integration in CI/CD with <strong>OX Security platform (INSTALLED)</strong></td>
+                <td>Pending</td>
+                <td><strong>OX Security is installed and operational, but not yet integrated into DevOps pipelines.</strong> Unified platform provides: SAST, DAST, IAST, and SCA tools in one integrated solution. Offers end-to-end visibility across entire application stack. Integration with CI/CD pipeline pending</td>
+                <td>Security can be implemented in parallel - not blocking for initial setup. <strong>OX Security is installed and ready for integration</strong> with complete DevSecOps toolchain and latest security baseline due to latest versions</td>
+                <td>Security Team</td>
+                <td>Security Lead</td>
+                <td>DevOps Team</td>
+                <td>Dev Teams</td>
             </tr>
             <tr class="phase-2">
                 <td><strong>Phase 2c: Helm Charts</strong></td>
                 <td>HelmChart connected to ArgoCD</td>
-                <td>Pending</td>
-                <td>To be built by DevOps team</td>
+                <td>In Progress</td>
+                <td>To be built by DevOps team. Currently used by some dev teams with basic charts</td>
                 <td>Package management - start with simple baseline charts for standardization, evolve complexity as services mature and requirements grow</td>
+                <td>DevOps Team</td>
+                <td>DevOps Lead</td>
+                <td>Dev Teams</td>
+                <td>Management</td>
             </tr>
             <tr class="phase-2">
-                <td><strong>Phase 2d: Egress Configuration</strong></td>
-                <td>Complete egress design for Claims MS and Pattern Java microservices</td>
-                <td>Pending</td>
-                <td>Define egress requirements (e.g., customer-claim to Ensure). Pattern team to provide Java MS egress requirements. Create mock services until egress is configured</td>
-                <td>External connectivity - complex integration requiring careful design and testing for both .NET and Java services</td>
-            </tr>
-            <tr class="phase-3">
-                <td><strong>Phase 3: Service Mesh</strong></td>
-                <td>Service mesh deployment and configuration</td>
-                <td>Future</td>
-                <td>Needed when multiple services are on EKS</td>
-                <td>Advanced networking - only needed when multiple services require inter-service communication</td>
-            </tr>
-            <tr class="phase-3">
-                <td><strong>Phase 3a: Gateway API</strong></td>
+                <td><strong>Phase 2d: Gateway API</strong></td>
                 <td>Gateway API for managing ingress traffic in EKS</td>
                 <td>Pending</td>
-                <td>Traffic management solution</td>
-                <td>Traffic control - manages external access to services</td>
+                <td>Traffic management solution using Kubernetes Gateway API instead of traditional Ingress</td>
+                <td>Modern ingress solution - provides better traffic control and can replace service mesh for basic routing needs</td>
+                <td>DevOps Team</td>
+                <td>Infrastructure Lead</td>
+                <td>Network Team</td>
+                <td>Dev Teams</td>
+            </tr>
+            <tr class="phase-2" style="background-color: #ffebee;">
+                <td><strong>Phase 2e: Egress Configuration (PROBLEMATIC)</strong></td>
+                <td>Complete egress design for Claims MS and Pattern Java microservices</td>
+                <td>Blocked</td>
+                <td>Define egress requirements (e.g., customer-claim to Ensure). Pattern team to provide Java MS egress requirements. Create mock services until egress is configured. NOW ONLY CYBER TEAM RESPONSIBILITY</td>
+                <td>External connectivity - complex integration requiring careful design and testing for both .NET and Java services. BLOCKED - Cyber team dependency creates bottleneck</td>
+                <td>Cyber Team</td>
+                <td>Cyber Lead</td>
+                <td>Pattern Team</td>
+                <td>Dev Teams</td>
             </tr>
             <tr class="phase-3">
-                <td><strong>Phase 3b: ELK Stack</strong></td>
+                <td><strong>Phase 3: Service Mesh (Optional)</strong></td>
+                <td>Service mesh deployment and configuration (Istio or alternative)</td>
+                <td>Future</td>
+                <td>Optional - Gateway API can handle basic traffic routing. Service mesh only needed for advanced features like mTLS, circuit breaking, observability, progressive delivery</td>
+                <td>Detachable architecture - Gateway API provides sufficient ingress control. Service mesh adds complexity and is only beneficial when advanced inter-service features are required (mTLS, traffic splitting, observability, progressive delivery). Can be added later without disrupting existing services</td>
+                <td>DevOps Team</td>
+                <td>Architecture</td>
+                <td>Security Team</td>
+                <td>Dev Teams</td>
+            </tr>
+            <tr class="phase-3">
+                <td><strong>Phase 3b: Progressive Delivery</strong></td>
+                <td>Progressive delivery implementation (canary, blue-green, feature flags)</td>
+                <td>Future</td>
+                <td>Advanced deployment strategies for safer releases. Can be implemented with service mesh or standalone tools like Argo Rollouts, Flagger</td>
+                <td>Risk mitigation - enables safer deployments with gradual rollouts, automatic rollback, and traffic shifting. Reduces blast radius of failed deployments</td>
+                <td>DevOps Team</td>
+                <td>DevOps Lead</td>
+                <td>Dev Teams</td>
+                <td>Management</td>
+            </tr>
+            <tr class="phase-3">
+                <td><strong>Phase 3c: ELK Stack</strong></td>
                 <td>Logging and monitoring stack</td>
                 <td>Pending</td>
                 <td>ELK or alternative logging solution</td>
                 <td>Observability - essential for production but can be deferred for initial dev setup</td>
+                <td>DevOps Team</td>
+                <td>Infrastructure Lead</td>
+                <td>Dev Teams</td>
+                <td>Management</td>
             </tr>
         </tbody>
     </table>
@@ -151,6 +232,85 @@
             <li><strong>Relevant Teams:</strong> Pattern & Claims  - More teams to onboard later</li>
             <li><strong>Current Status:</strong> Some requirements exist or are in process of being created</li>
             <li><strong>Development Approach:</strong> Local development continues, EKS environment for DEV/ QA/ UAT integration testing</li>
+        </ul>
+        
+        <h3>OX Security Platform Capabilities:</h3>
+        <ul>
+            <li><strong>Unified Security Platform:</strong> OX Security provides SAST, DAST, IAST, and SCA tools in one integrated solution</li>
+            <li><strong>End-to-End Visibility:</strong> Complete visibility across the entire application stack from development to deployment</li>
+            <li><strong>Streamlined Security Processes:</strong> Unified platform helps organizations streamline security processes and improve overall application security</li>
+            <li><strong>Holistic Security Posture:</strong> Combines strengths of each testing method to detect vulnerabilities throughout the software development lifecycle</li>
+            <li><strong>SAST (Static Analysis):</strong> Source code analysis for .NET and Java applications</li>
+            <li><strong>DAST (Dynamic Analysis):</strong> Runtime testing of deployed microservices in EKS</li>
+            <li><strong>IAST (Interactive Analysis):</strong> Runtime monitoring with high accuracy and low false positives</li>
+            <li><strong>SCA (Software Composition Analysis):</strong> Dependency scanning for containerized applications</li>
+        </ul>
+        
+        <h3>Why OX Security for DevSecOps Phase:</h3>
+        <p><strong>Traditional Approach Challenges:</strong> Organizations typically need to integrate multiple separate security tools (SAST from one vendor, DAST from another, SCA from a third), leading to:</p>
+        <ul>
+            <li>Complex integration and management overhead</li>
+            <li>Inconsistent reporting and dashboards across tools</li>
+            <li>Higher licensing costs and vendor management complexity</li>
+            <li>Gaps in security coverage due to tool incompatibilities</li>
+            <li>Time-consuming setup and maintenance of multiple tools</li>
+        </ul>
+        
+        <p><strong>OX Security Unified Platform Benefits:</strong></p>
+        <ul>
+            <li><strong>Single Integration Point:</strong> One platform to integrate with CI/CD pipelines instead of multiple tools</li>
+            <li><strong>Unified Dashboard:</strong> Consolidated reporting and vulnerability management across all security testing types</li>
+            <li><strong>Consistent Data Format:</strong> All security findings in one standardized format, reducing analysis time</li>
+            <li><strong>Reduced Complexity:</strong> Single vendor relationship, unified support, and streamlined maintenance</li>
+            <li><strong>Comprehensive Coverage:</strong> No gaps in security testing - all tools work together seamlessly</li>
+            <li><strong>Cost Efficiency:</strong> Single licensing model instead of multiple vendor contracts</li>
+            <li><strong>Faster Implementation:</strong> Quicker setup and deployment compared to integrating multiple separate tools</li>
+        </ul>
+        
+        <p><strong>Perfect Fit for Our Environment:</strong> OX Security's unified approach aligns perfectly with our goal of establishing a comprehensive yet manageable DevSecOps pipeline for both .NET 9 and Java Spring microservices on AWS-EKS, without the complexity of managing multiple security vendors and tools.</p>
+        
+        <h3>Service Mesh Security & Development Benefits:</h3>
+        <h4>Security Benefits of Service Mesh (Istio):</h4>
+        <ul>
+            <li><strong>mTLS (Mutual TLS):</strong> Automatic encryption of all service-to-service communication without application changes</li>
+            <li><strong>Zero-Trust Network:</strong> Every service communication is authenticated and authorized</li>
+            <li><strong>Traffic Encryption:</strong> All inter-service traffic encrypted in transit by default</li>
+            <li><strong>Policy Enforcement:</strong> Centralized security policies applied consistently across all services</li>
+            <li><strong>Identity Management:</strong> Automatic service identity and certificate management</li>
+            <li><strong>Network Segmentation:</strong> Fine-grained control over which services can communicate</li>
+            <li><strong>Audit Trail:</strong> Complete visibility into all service communications for security monitoring</li>
+        </ul>
+        
+        <h4>Development Benefits:</h4>
+        <ul>
+            <li><strong>Traffic Management:</strong> Advanced routing, load balancing, and traffic splitting without code changes</li>
+            <li><strong>Circuit Breaking:</strong> Automatic failure handling and service resilience</li>
+            <li><strong>Progressive Delivery:</strong> Canary deployments, blue-green, and A/B testing capabilities</li>
+            <li><strong>Observability:</strong> Built-in metrics, tracing, and logging for all service communications</li>
+            <li><strong>Service Discovery:</strong> Automatic service registration and discovery</li>
+            <li><strong>Load Balancing:</strong> Advanced load balancing algorithms (round-robin, least connections, etc.)</li>
+            <li><strong>Retry Logic:</strong> Automatic retry mechanisms with configurable policies</li>
+        </ul>
+        
+        <h4>Complex Components (High Learning Curve):</h4>
+        <ul>
+            <li><strong>Virtual Services:</strong> Complex routing rules that define how requests are routed to service versions</li>
+            <li><strong>Destination Rules:</strong> Traffic policies for load balancing, connection pooling, and outlier detection</li>
+            <li><strong>Gateway Configuration:</strong> Ingress/egress gateway setup and management</li>
+            <li><strong>Service Entries:</strong> Adding external services to the mesh</li>
+            <li><strong>Authorization Policies:</strong> Fine-grained access control using RBAC and ABAC</li>
+            <li><strong>Peer Authentication:</strong> mTLS configuration and certificate management</li>
+            <li><strong>Sidecar Injection:</strong> Automatic proxy injection and configuration</li>
+            <li><strong>Telemetry Configuration:</strong> Metrics, tracing, and logging setup</li>
+        </ul>
+        
+        <h4>Why Gateway API is Sufficient Initially:</h4>
+        <ul>
+            <li><strong>Simpler Setup:</strong> Standard Kubernetes resources, no additional control plane</li>
+            <li><strong>Basic Traffic Control:</strong> Handles ingress routing, load balancing, and SSL termination</li>
+            <li><strong>Lower Complexity:</strong> No sidecar proxies or complex configuration</li>
+            <li><strong>Faster Implementation:</strong> Can be deployed immediately with basic functionality</li>
+            <li><strong>Gradual Migration:</strong> Service mesh can be added later without changing existing Gateway API setup</li>
         </ul>
     </div>
 </body>
