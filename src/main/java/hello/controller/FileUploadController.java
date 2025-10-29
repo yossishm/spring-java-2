@@ -2,6 +2,7 @@ package hello.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,22 +59,6 @@ public class FileUploadController {
         logger.info("File upload attempt: {} (size: {} bytes)", 
                    file.getOriginalFilename(), file.getSize());
         
-        // Check file size - this will trigger CVE-2025-61795 when exceeded
-        if (file.getSize() > MAX_FILE_SIZE) {
-            logger.warn("File size {} exceeds limit {} - this triggers CVE-2025-61795", 
-                       file.getSize(), MAX_FILE_SIZE);
-            
-            // This is where the vulnerability occurs - Tomcat creates temporary files
-            // but doesn't clean them up properly when size limit is exceeded
-            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                .body(Map.of(
-                    "error", "File too large",
-                    "maxSize", MAX_FILE_SIZE,
-                    "actualSize", file.getSize(),
-                    "vulnerability", "CVE-2025-61795 triggered - temporary files not cleaned up"
-                ));
-        }
-        
         try {
             // Process the file (in a real app, you'd save it somewhere)
             String content = new String(file.getBytes());
@@ -93,6 +78,25 @@ public class FileUploadController {
         }
     }
     
+    /**
+     * Exception handler for multipart upload size exceeded.
+     * This is where CVE-2025-61795 vulnerability occurs - temporary files
+     * are created but not immediately cleaned up.
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, Object>> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex) {
+        logger.warn("File upload size exceeded - this triggers CVE-2025-61795: {}", ex.getMessage());
+        
+        // This is where the vulnerability occurs - temp files are created but not cleaned up
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+            .body(Map.of(
+                "error", "File too large",
+                "maxSize", "1KB",
+                "vulnerability", "CVE-2025-61795 triggered - temporary files not cleaned up",
+                "message", "This demonstrates the vulnerability where temp files accumulate"
+            ));
+    }
+
     /**
      * Endpoint to check system resources and temporary file accumulation.
      * This helps monitor the impact of CVE-2025-61795.

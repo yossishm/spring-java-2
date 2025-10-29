@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -111,6 +112,27 @@ public class GlobalExceptionHandler {
         body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
         
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handle multipart upload size exceeded exceptions (413 Payload Too Large)
+     * This is where CVE-2025-61795 vulnerability occurs - temporary files
+     * are created but not immediately cleaned up.
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, Object>> handleMaxUploadSizeExceededException(
+            MaxUploadSizeExceededException ex, WebRequest request) {
+        
+        Map<String, Object> body = new HashMap<>();
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, HttpStatus.PAYLOAD_TOO_LARGE.value());
+        body.put(ERROR_KEY, "File too large");
+        body.put(MESSAGE_KEY, "CVE-2025-61795 triggered - temporary files not cleaned up");
+        body.put(PATH_KEY, request.getDescription(false).replace("uri=", ""));
+        body.put("vulnerability", "CVE-2025-61795");
+        body.put("maxSize", "1KB");
+        
+        return new ResponseEntity<>(body, HttpStatus.PAYLOAD_TOO_LARGE);
     }
 
     /**

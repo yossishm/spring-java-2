@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -123,6 +121,7 @@ public class CVE202561795Test {
         
         // Verify the request was rejected due to size limit
         assertEquals(HttpStatus.PAYLOAD_TOO_LARGE, response.getStatusCode());
+        assertNotNull(response.getBody());
         assertTrue(response.getBody().toString().contains("File too large"));
         
         // Wait a moment for any async cleanup (which won't happen due to the vulnerability)
@@ -282,6 +281,7 @@ public class CVE202561795Test {
         );
         
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
         assertTrue(response.getBody().toString().contains("File uploaded successfully"));
         
         System.out.println("✅ Valid file upload works correctly");
