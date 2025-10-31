@@ -116,16 +116,12 @@ public class FileUploadController {
             long tempFileCount = 0;
             long tempFileSize = 0;
             
-            try (var stream = Files.list(tempDir)) {
-                tempFileCount = stream
+            try {
+                tempFileCount = Files.list(tempDir)
                     .filter(path -> path.getFileName().toString().startsWith("tomcat"))
                     .count();
-            } catch (IOException e) {
-                logger.warn("Could not check temp directory for count", e);
-            }
-            
-            try (var stream = Files.list(tempDir)) {
-                tempFileSize = stream
+                
+                tempFileSize = Files.list(tempDir)
                     .filter(path -> path.getFileName().toString().startsWith("tomcat"))
                     .mapToLong(path -> {
                         try {
@@ -136,7 +132,7 @@ public class FileUploadController {
                     })
                     .sum();
             } catch (IOException e) {
-                logger.warn("Could not check temp directory for size", e);
+                logger.warn("Could not check temp directory", e);
             }
             
             return ResponseEntity.ok(Map.of(
