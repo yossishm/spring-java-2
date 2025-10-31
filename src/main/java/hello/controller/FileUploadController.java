@@ -32,9 +32,6 @@ public class FileUploadController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
     
-    // Small file size limit to trigger CVE-2025-61795
-    private static final long MAX_FILE_SIZE = 1024; // 1KB limit to easily trigger the vulnerability
-    
     /**
      * Upload endpoint that demonstrates CVE-2025-61795.
      * When file size exceeds the limit, Tomcat creates temporary files
@@ -119,12 +116,16 @@ public class FileUploadController {
             long tempFileCount = 0;
             long tempFileSize = 0;
             
-            try {
-                tempFileCount = Files.list(tempDir)
+            try (var stream = Files.list(tempDir)) {
+                tempFileCount = stream
                     .filter(path -> path.getFileName().toString().startsWith("tomcat"))
                     .count();
-                
-                tempFileSize = Files.list(tempDir)
+            } catch (IOException e) {
+                logger.warn("Could not check temp directory for count", e);
+            }
+            
+            try (var stream = Files.list(tempDir)) {
+                tempFileSize = stream
                     .filter(path -> path.getFileName().toString().startsWith("tomcat"))
                     .mapToLong(path -> {
                         try {
@@ -135,7 +136,7 @@ public class FileUploadController {
                     })
                     .sum();
             } catch (IOException e) {
-                logger.warn("Could not check temp directory", e);
+                logger.warn("Could not check temp directory for size", e);
             }
             
             return ResponseEntity.ok(Map.of(
