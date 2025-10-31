@@ -31,6 +31,7 @@ import java.util.Map;
 public class FileUploadController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+    private static final String ERROR_KEY = "error";
     
     /**
      * Upload endpoint that demonstrates CVE-2025-61795.
@@ -53,8 +54,7 @@ public class FileUploadController {
         @Parameter(description = "File to upload", required = true)
         @RequestParam("file") MultipartFile file) {
         
-        logger.info("File upload attempt: {} (size: {} bytes)", 
-                   file.getOriginalFilename(), file.getSize());
+        logger.info("File upload attempt (size: {} bytes)", file.getSize());
         
         try {
             // Process the file (in a real app, you'd save it somewhere)
@@ -71,7 +71,7 @@ public class FileUploadController {
         } catch (IOException e) {
             logger.error("Error processing file", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Failed to process file: " + e.getMessage()));
+                .body(Map.of(ERROR_KEY, "Failed to process file: " + e.getMessage()));
         }
     }
     
@@ -87,7 +87,7 @@ public class FileUploadController {
         // This is where the vulnerability occurs - temp files are created but not cleaned up
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
             .body(Map.of(
-                "error", "File too large",
+                ERROR_KEY, "File too large",
                 "maxSize", "1KB",
                 "vulnerability", "CVE-2025-61795 triggered - temporary files not cleaned up",
                 "message", "This demonstrates the vulnerability where temp files accumulate"
@@ -113,27 +113,7 @@ public class FileUploadController {
             
             // Check for temporary files in system temp directory
             Path tempDir = Paths.get(System.getProperty("java.io.tmpdir"));
-            long tempFileCount = 0;
-            long tempFileSize = 0;
-            
-            try {
-                tempFileCount = Files.list(tempDir)
-                    .filter(path -> path.getFileName().toString().startsWith("tomcat"))
-                    .count();
-                
-                tempFileSize = Files.list(tempDir)
-                    .filter(path -> path.getFileName().toString().startsWith("tomcat"))
-                    .mapToLong(path -> {
-                        try {
-                            return Files.size(path);
-                        } catch (IOException e) {
-                            return 0;
-                        }
-                    })
-                    .sum();
-            } catch (IOException e) {
-                logger.warn("Could not check temp directory", e);
-            }
+            TempFileStats stats = getTempFileStats(tempDir);
             
             return ResponseEntity.ok(Map.of(
                 "memory", Map.of(
@@ -144,8 +124,8 @@ public class FileUploadController {
                     "usagePercent", (double) usedMemory / maxMemory * 100
                 ),
                 "tempFiles", Map.of(
-                    "count", tempFileCount,
-                    "totalSize", tempFileSize,
+                    "count", stats.count(),
+                    "totalSize", stats.totalSize(),
                     "directory", tempDir.toString()
                 ),
                 "vulnerability", "CVE-2025-61795 - check temp file accumulation"
@@ -154,7 +134,49 @@ public class FileUploadController {
         } catch (Exception e) {
             logger.error("Error getting system info", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Failed to get system info: " + e.getMessage()));
+                .body(Map.of(ERROR_KEY, "Failed to get system info: " + e.getMessage()));
         }
+    }
+    
+    /**
+     * Retrieves statistics about temporary files in the specified directory.
+     * 
+     * @param tempDir the temporary directory to scan
+     * @return statistics about temporary files
+     */
+    private TempFileStats getTempFileStats(Path tempDir) {
+        long tempFileCount = 0;
+        long tempFileSize = 0;
+        
+        try {
+            try (var stream = Files.list(tempDir)) {
+                tempFileCount = stream
+                    .filter(path -> path.getFileName().toString().startsWith("tomcat"))
+                    .count();
+            }
+            
+            try (var stream = Files.list(tempDir)) {
+                tempFileSize = stream
+                    .filter(path -> path.getFileName().toString().startsWith("tomcat"))
+                    .mapToLong(path -> {
+                        try {
+                            return Files.size(path);
+                        } catch (IOException e) {
+                            return 0;
+                        }
+                    })
+                    .sum();
+            }
+        } catch (IOException e) {
+            logger.warn("Could not check temp directory", e);
+        }
+        
+        return new TempFileStats(tempFileCount, tempFileSize);
+    }
+    
+    /**
+     * Record class to hold temporary file statistics.
+     */
+    private record TempFileStats(long count, long totalSize) {
     }
 }

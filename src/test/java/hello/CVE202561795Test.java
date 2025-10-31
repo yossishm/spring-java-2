@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
     "spring.servlet.multipart.max-request-size=1KB",
     "logging.level.org.apache.tomcat=DEBUG"
 })
-public class CVE202561795Test {
+class CVE202561795Test {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -56,7 +56,7 @@ public class CVE202561795Test {
     private long initialTempFileCount;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() {
         baseUrl = "http://localhost:" + port;
         tempDir = Paths.get(System.getProperty("java.io.tmpdir"));
         
@@ -68,8 +68,8 @@ public class CVE202561795Test {
     @AfterEach
     void tearDown() {
         // Clean up any test files
-        try {
-            Files.list(tempDir)
+        try (var stream = Files.list(tempDir)) {
+            stream
                 .filter(path -> path.getFileName().toString().startsWith("tomcat"))
                 .forEach(path -> {
                     try {
@@ -88,7 +88,7 @@ public class CVE202561795Test {
      * This should create temporary files that are not properly cleaned up.
      */
     @Test
-    void testCVE202561795_VulnerabilityTrigger() throws IOException {
+    void testCVE202561795_VulnerabilityTrigger() {
         System.out.println("\n=== CVE-2025-61795 Vulnerability Test ===");
         
         // Create a file that exceeds the size limit
@@ -124,14 +124,8 @@ public class CVE202561795Test {
         assertNotNull(response.getBody());
         assertTrue(response.getBody().toString().contains("File too large"));
         
-        // Wait a moment for any async cleanup (which won't happen due to the vulnerability)
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        
         // Check if temporary files were created and not cleaned up
+        // Note: We check immediately as the vulnerability means temp files are not cleaned up
         long finalTempFileCount = countTomcatTempFiles();
         long tempFilesCreated = finalTempFileCount - initialTempFileCount;
         
@@ -251,7 +245,7 @@ public class CVE202561795Test {
      * Test with a valid file size to ensure normal operation works.
      */
     @Test
-    void testValidFileUpload() throws IOException {
+    void testValidFileUpload() {
         System.out.println("\n=== Valid File Upload Test ===");
         
         // Create a small file that should be accepted
@@ -291,8 +285,8 @@ public class CVE202561795Test {
      * Count Tomcat temporary files in the system temp directory.
      */
     private long countTomcatTempFiles() {
-        try {
-            return Files.list(tempDir)
+        try (var stream = Files.list(tempDir)) {
+            return stream
                 .filter(path -> path.getFileName().toString().startsWith("tomcat"))
                 .count();
         } catch (IOException e) {
