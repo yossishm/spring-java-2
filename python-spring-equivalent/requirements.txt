@@ -7,7 +7,7 @@ pydantic-settings==2.7.0
 # JWT and security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-python-multipart==0.0.12
+python-multipart==0.0.18
 
 # OpenTelemetry and monitoring
 opentelemetry-api==1.28.0
@@ -20,7 +20,7 @@ opentelemetry-instrumentation-logging==0.49b0
 
 # HTTP client
 httpx==0.28.1
-requests==2.32.3
+requests==2.32.4
 
 # Database and caching
 redis==5.2.1

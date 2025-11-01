@@ -147,7 +147,7 @@ class LocalRestClient:
     
     async def get(self, uri: str) -> Dict[str, Any]:
         """Make a GET request."""
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=30.0) as client:
             try:
                 response = await client.get(
                     f"{self.base_url}{uri}",
@@ -169,7 +169,7 @@ class LocalRestClient:
     
     async def post(self, uri: str, json_data: Dict[str, Any]) -> Dict[str, Any]:
         """Make a POST request."""
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=30.0) as client:
             try:
                 response = await client.post(
                     f"{self.base_url}{uri}",
@@ -192,7 +192,7 @@ class LocalRestClient:
     
     async def put(self, uri: str, json_data: Dict[str, Any]) -> Dict[str, Any]:
         """Make a PUT request."""
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=30.0) as client:
             try:
                 response = await client.put(
                     f"{self.base_url}{uri}",
@@ -215,7 +215,7 @@ class LocalRestClient:
     
     async def delete(self, uri: str) -> Dict[str, Any]:
         """Make a DELETE request."""
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=30.0) as client:
             try:
                 response = await client.delete(
                     f"{self.base_url}{uri}",

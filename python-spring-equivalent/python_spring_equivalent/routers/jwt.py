@@ -70,7 +70,7 @@ async def create_token(
         
         return JWTTokenResponse(
             access_token=access_token,
-            token_type="bearer",
+            token_type="bearer",  # nosec B106 - This is JWT token type, not a password
             expires_in=settings.jwt_expiration_hours * 3600
         )
         
@@ -255,7 +255,7 @@ async def create_vulnerable_token(
     
     try:
         # VULNERABLE: Create token with weak secret and any algorithm
-        weak_secret = "weak-secret"
+        weak_secret = "weak-secret"  # nosec B105 - Intentionally vulnerable for security testing
         algorithm = vulnerable_request.algorithm or "HS256"
         
         token_data = {

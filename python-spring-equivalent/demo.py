@@ -15,7 +15,7 @@ import httpx
 class PythonSpringEquivalentDemo:
     """Demo class for Python Spring Equivalent application."""
     
-    def __init__(self, base_url: str = "http://localhost:8080"):
+    def __init__(self, base_url: str = "http://localhost:8081"):
         self.base_url = base_url
         self.client = httpx.AsyncClient(timeout=30.0)
         self.auth_token = None
