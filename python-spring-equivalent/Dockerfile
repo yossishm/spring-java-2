@@ -1,5 +1,6 @@
 # Multi-stage Dockerfile for Python Spring Equivalent
-FROM python:3.11-slim as builder
+# Pinned to specific version for security and reproducibility
+FROM python:3.11.9-slim as builder
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -19,11 +20,15 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
+# Upgrade pip to fix CVE-2025-8869 (MEDIUM)
+RUN pip install --upgrade pip>=25.3
+
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Production stage
-FROM python:3.11-slim
+# Pinned to specific version matching builder stage
+FROM python:3.11.9-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
