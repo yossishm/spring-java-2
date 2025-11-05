@@ -1,5 +1,5 @@
-# Multi-stage Dockerfile optimized for Kubernetes deployment
-# Using Alpine for security (matches Java's Alpine approach - minimal CVEs)
+# Alpine-based Dockerfile for Python Spring Equivalent - Security optimized
+# Similar to Java's Alpine approach for minimal CVEs
 FROM python:3.11-alpine3.22 as builder
 
 # Set environment variables
@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Install build dependencies (Alpine)
+# Install build dependencies
 RUN apk add --no-cache \
     gcc \
     musl-dev \
@@ -23,13 +23,10 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Upgrade pip to fix CVE-2025-8869 (MEDIUM)
-RUN pip install --upgrade pip>=25.3
-
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Production stage - Alpine with minimal packages (matches Java Alpine security)
+# Production stage - Alpine with minimal packages
 FROM alpine:3.22.2
 
 # Install Python runtime and essential packages only
@@ -37,9 +34,10 @@ RUN apk update && apk upgrade && \
     apk add --no-cache \
     python3 \
     py3-pip \
+    curl \
     && \
-    # Clear package cache for security (keep apk for potential debugging)
-    rm -rf /var/cache/apk/* && \
+    # Remove package manager and cache for security
+    rm -rf /var/cache/apk/* /etc/apk && \
     # Create non-root user (matching Java's nonroot approach)
     addgroup -g 65532 -S nonroot && \
     adduser -u 65532 -S nonroot -G nonroot
@@ -70,12 +68,10 @@ USER nonroot:nonroot
 # Expose port
 EXPOSE 8080
 
-# Health check (using Python instead of curl for Alpine minimal image)
+# Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health/ready')" || exit 1
 
 # Run the application
 CMD ["python3", "-m", "uvicorn", "python_spring_equivalent.main:app", "--host", "0.0.0.0", "--port", "8080"]
-
-
 
