@@ -1,0 +1,88 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="architecture" name="Developer-to-EKS Architecture">
+    <mxGraphModel dx="1280" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="onprem" value="On-Premises" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=14;strokeColor=#23445D;fillColor=#E3F2FD;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="300" height="350" as="geometry"/>
+        </mxCell>
+        <mxCell id="devWorkstation" value="Developer Workstation&#10;- Postman&#10;- kubectl / CLI" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#1565C0;fillColor=#BBDEFB;" vertex="1" parent="onprem">
+          <mxGeometry x="20" y="40" width="260" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="samlIdp" value="Corporate SAML IdP" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#1565C0;fillColor=#BBDEFB;" vertex="1" parent="onprem">
+          <mxGeometry x="20" y="180" width="260" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="networkConnector" value="Secure Connectivity&#10;(VPN / Direct Connect / SD-WAN)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#455A64;fillColor=#CFD8DC;" vertex="1" parent="onprem">
+          <mxGeometry x="20" y="280" width="260" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="awsCloud" value="AWS Cloud" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=14;strokeColor=#2E7D32;fillColor=#E8F5E9;" vertex="1" parent="1">
+          <mxGeometry x="380" y="40" width="640" height="380" as="geometry"/>
+        </mxCell>
+        <mxCell id="vpc" value="VPC" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;strokeColor=#1B5E20;fillColor=#C8E6C9;" vertex="1" parent="awsCloud">
+          <mxGeometry x="20" y="40" width="400" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="eksCluster" value="Amazon EKS Cluster" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;strokeColor=#0D47A1;fillColor=#E3F2FD;" vertex="1" parent="vpc">
+          <mxGeometry x="20" y="30" width="360" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="argoCd" value="Argo CD&#10;- SAML Authentication&#10;- ApplicationSet" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#1976D2;fillColor=#BBDEFB;" vertex="1" parent="eksCluster">
+          <mxGeometry x="30" y="40" width="150" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="gitRepo" value="Git Repository&#10;- Application Manifests&#10;- Helm Charts&#10;(Argo CD AppSet access)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#5D4037;fillColor=#D7CCC8;" vertex="1" parent="awsCloud">
+          <mxGeometry x="460" y="60" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="appServices" value="Microservices" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#388E3C;fillColor=#A5D6A7;" vertex="1" parent="eksCluster">
+          <mxGeometry x="210" y="40" width="150" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="ingress" value="Ingress Controller / ALB" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#43A047;fillColor=#C8E6C9;" vertex="1" parent="eksCluster">
+          <mxGeometry x="120" y="190" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="automation" value="DNS Automation&#10;* Triggered on new microservice&#10;* Creates Route 53 records&#10;(Lambda / Terraform / ExternalDNS)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#00796B;fillColor=#B2DFDB;" vertex="1" parent="awsCloud">
+          <mxGeometry x="460" y="220" width="200" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="route53" value="Amazon Route 53&#10;- New domain&#10;- Per-microservice DNS records" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#6A1B9A;fillColor=#E1BEE7;" vertex="1" parent="awsCloud">
+          <mxGeometry x="460" y="340" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="devToConnector" style="endArrow=classic;html=1;strokeColor=#455A64;" edge="1" parent="1" source="devWorkstation" target="networkConnector">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="210" y="0" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="connectorToVpc" style="endArrow=classic;html=1;strokeColor=#455A64;" edge="1" parent="1" source="networkConnector" target="vpc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="devToArgo" value="SAML SSO" style="endArrow=classic;html=1;strokeColor=#1976D2;fontSize=11;" edge="1" parent="1" source="devWorkstation" target="argoCd">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="0" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="idpToArgo" value="SAML assertions" style="endArrow=classic;html=1;dashed=1;strokeColor=#1976D2;fontSize=11;" edge="1" parent="1" source="samlIdp" target="argoCd">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="argoToGit" value="GitOps pull" style="endArrow=classic;html=1;strokeColor=#5D4037;fontSize=11;" edge="1" parent="1" source="argoCd" target="gitRepo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="gitToAutomation" value="Pipeline trigger" style="endArrow=classic;html=1;dashed=1;strokeColor=#00796B;fontSize=11;" edge="1" parent="1" source="gitRepo" target="automation">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="automationToRoute53" value="Create / update DNS (API)" style="endArrow=classic;html=1;strokeColor=#6A1B9A;fontSize=11;" edge="1" parent="1" source="automation" target="route53">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="route53ToIngress" value="DNS resolves to ingress" style="endArrow=classic;html=1;strokeColor=#6A1B9A;fontSize=11;" edge="1" parent="1" source="route53" target="ingress">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="0" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ingressToServices" value="Routes traffic" style="endArrow=classic;html=1;strokeColor=#43A047;fontSize=11;" edge="1" parent="1" source="ingress" target="appServices">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="devToRoute53" value="Postman → API calls via new domain" style="endArrow=classic;html=1;strokeColor=#6A1B9A;fontSize=11;" edge="1" parent="1" source="devWorkstation" target="route53">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="0" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+

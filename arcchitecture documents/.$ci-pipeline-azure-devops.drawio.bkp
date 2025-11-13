@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="ci-pipeline" name="Azure DevOps CI Pipeline">
+    <mxGraphModel dx="891" dy="618" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="dev" value="Developer Commit&#10;- Feature branch&#10;- Pull request policies" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#3949AB;fillColor=#C5CAE9;" vertex="1" parent="1">
+          <mxGeometry x="60" y="120" width="220" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="git" value="Azure DevOps Repos (Git)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#1E88E5;fillColor=#BBDEFB;" vertex="1" parent="1">
+          <mxGeometry x="320" y="120" width="220" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="pipeline" value="Azure DevOps Pipeline (YAML)" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#0D47A1;fillColor=#E3F2FD;" vertex="1" parent="1">
+          <mxGeometry x="580" y="80" width="420" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="stage1" value="Stage 1: Build &amp; Test&#10;- Restore dependencies&#10;- Compile artifacts&#10;- Unit tests&#10;- Publish results" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#2E7D32;fillColor=#C8E6C9;" vertex="1" parent="1">
+          <mxGeometry x="610" y="120" width="360" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="stage2" value="Stage 2: DevSecOps (Option 2)&#10;- SCA&#10;- SAST&#10;- IAST&#10;- DAST&#10;- Sonar quality gate" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#FF8F00;fillColor=#FFE0B2;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="250" width="360" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="stage3" value="Stage 3: Container Build&#10;- Base image selection&#10;- Image build &amp; tag&#10;- Push to registry" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#00838F;fillColor=#B2EBF2;" vertex="1" parent="1">
+          <mxGeometry x="610" y="420" width="360" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="artifact" value="Container Registry / Artifact Feed" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#6A1B9A;fillColor=#E1BEE7;" vertex="1" parent="1">
+          <mxGeometry x="620" y="570" width="340" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="release" value="Release / Deployment (optional)&#10;- Promote to DEV / QA / PROD&#10;- Trigger Argo CD or Helm" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#5D4037;fillColor=#D7CCC8;" vertex="1" parent="1">
+          <mxGeometry x="980" y="210" width="240" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="monitoring" value="Observability &amp; Feedback&#10;- Metrics dashboards&#10;- Alerts&#10;- Backlog feedback" style="shape=rectangle;rounded=1;whiteSpace=wrap;html=1;strokeColor=#00796B;fillColor=#B2DFDB;" vertex="1" parent="1">
+          <mxGeometry x="980" y="410" width="240" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="devToGit" style="endArrow=classic;html=1;strokeColor=#3949AB;" edge="1" source="dev" target="git" parent="1"/>
+        <mxCell id="gitToPipeline" style="endArrow=classic;html=1;strokeColor=#1E88E5;" edge="1" source="git" target="stage1" parent="1"/>
+        <mxCell id="stage1ToStage2" value="Build reports" style="endArrow=classic;html=1;strokeColor=#2E7D32;fontSize=11;" edge="1" source="stage1" target="stage2" parent="1"/>
+        <mxCell id="stage2ToStage3" value="Security-cleared build" style="endArrow=classic;html=1;strokeColor=#FF8F00;fontSize=11;" edge="1" source="stage2" target="stage3" parent="1"/>
+        <mxCell id="stage3ToArtifact" style="endArrow=classic;html=1;strokeColor=#6A1B9A;" edge="1" source="stage3" target="artifact" parent="1"/>
+        <mxCell id="artifactToRelease" style="endArrow=classic;html=1;strokeColor=#6A1B9A;" edge="1" source="artifact" target="release" parent="1"/>
+        <mxCell id="releaseToMonitoring" style="endArrow=classic;html=1;strokeColor=#5D4037;" edge="1" source="release" target="monitoring" parent="1"/>
+        <mxCell id="feedback" value="Defect / vulnerability backlog" style="endArrow=classic;dashed=1;html=1;strokeColor=#00796B;fontSize=11;" edge="1" source="monitoring" target="dev" parent="1"/>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
