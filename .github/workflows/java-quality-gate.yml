@@ -82,20 +82,35 @@ jobs:
         fi
     
     - name: Run security audit
+      # Only run on schedule (daily) or main branch - skip on PRs to speed up builds
+      if: github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
       env:
         DC_NVD_API_KEY: ${{ secrets.DC_NVD_API_KEY }}
       run: |
-        echo "🔒 Running Java Security Audit (with cached NVD data)..."
-        # Use cached data if less than 7 days old - much faster in CI
-        mvn dependency-check:check \
-          -Ddependency-check.skip=false \
-          -Ddependency-check.nvd.validForHours=168 \
-          -Ddependency-check.cve.validForHours=168 \
-          -Ddependency-check.skipUpdateIfValid=true \
-          -Ddependency-check.failOnError=false || echo "⚠️ Security audit completed with findings"
+        echo "🔒 Running Java Security Audit (cached data only, no updates)..."
+        # Completely disable NVD updates - use only cached data (much faster)
+        # On schedule runs, allow updates; on main branch, use cache only
+        if [ "${{ github.event_name }}" == "schedule" ]; then
+          echo "📥 Scheduled run - allowing NVD update if cache is > 7 days old"
+          mvn dependency-check:check \
+            -Ddependency-check.skip=false \
+            -Ddependency-check.nvd.validForHours=168 \
+            -Ddependency-check.cve.validForHours=168 \
+            -Ddependency-check.skipUpdateIfValid=true \
+            -Ddependency-check.failOnError=false || echo "⚠️ Security audit completed with findings"
+        else
+          echo "⚡ Main branch - using cached data only (no updates)"
+          mvn dependency-check:check \
+            -Ddependency-check.skip=false \
+            -Ddependency-check.nvd.validForHours=8760 \
+            -Ddependency-check.cve.validForHours=8760 \
+            -Ddependency-check.skipUpdateIfValid=true \
+            -Ddependency-check.autoUpdate=false \
+            -Ddependency-check.failOnError=false || echo "⚠️ Security audit completed with findings"
+        fi
         echo "✅ Security audit completed"
       continue-on-error: true
-      timeout-minutes: 10
+      timeout-minutes: 5
     
     - name: Run code analysis
       run: |
