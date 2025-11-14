@@ -139,12 +139,30 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     
+    - name: Cache OWASP Dependency-Check data
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.m2/repository/org/owasp/dependency-check-data
+          ~/.dependency-check
+        key: ${{ runner.os }}-owasp-data-v1
+        restore-keys: ${{ runner.os }}-owasp-data-
+    
     - name: OWASP Dependency Check
+      env:
+        DC_NVD_API_KEY: ${{ secrets.DC_NVD_API_KEY }}
       run: |
-        echo "🔒 Running OWASP Dependency Check..."
-        mvn org.owasp:dependency-check-maven:check || echo "⚠️ OWASP Dependency Check failed (likely due to network issues)"
+        echo "🔒 Running OWASP Dependency Check (with cached NVD data)..."
+        # Use cached data if less than 7 days old - much faster in CI
+        mvn dependency-check:check \
+          -Ddependency-check.skip=false \
+          -Ddependency-check.nvd.validForHours=168 \
+          -Ddependency-check.cve.validForHours=168 \
+          -Ddependency-check.skipUpdateIfValid=true \
+          -Ddependency-check.failOnError=false || echo "⚠️ OWASP Dependency Check failed (likely due to network issues)"
         echo "✅ OWASP Dependency Check completed"
       continue-on-error: true
+      timeout-minutes: 10
     
     - name: Security Scan with Trivy
       run: |

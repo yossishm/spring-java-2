@@ -305,6 +305,8 @@
                         <cveValidForHours>168</cveValidForHours>
                         <!-- Only update if cached data is older than 7 days -->
                         <autoUpdate>true</autoUpdate>
+                        <!-- Skip NVD update if cached data is still valid (faster builds) -->
+                        <skipUpdateIfValid>true</skipUpdateIfValid>
                         <!-- Don't fail on update errors - will use cached data if available -->
                         <failOnError>false</failOnError>
                         <!-- Speed optimizations: Disable slow analyzers -->
