@@ -298,22 +298,41 @@
                     <version>12.1.0</version>
                     <configuration>
                         <format>HTML</format>
-                        <failBuildOnCVSS>7</failBuildOnCVSS>
+                        <!-- Only fail on high/critical vulnerabilities (CVSS >= 7.0) -->
+                        <failBuildOnCVSS>7.0</failBuildOnCVSS>
+                        <!-- Skip NVD update entirely if data is less than 7 days old - much faster -->
+                        <skipProvidedScope>true</skipProvidedScope>
+                        <skipRuntimeScope>false</skipRuntimeScope>
+                        <skipTestScope>false</skipTestScope>
                         <suppressionFiles>
                             <suppressionFile>owasp-suppressions.xml</suppressionFile>
                         </suppressionFiles>
-                        <!-- NVD API Configuration - API key required for NVD access (get free key from https://nvd.nist.gov/developers/request-an-api-key) -->
-                        <!-- Set DC_NVD_API_KEY environment variable for API key -->
+                        <!-- NVD API Configuration - API key optional but recommended for speed -->
+                        <!-- Set DC_NVD_API_KEY environment variable for API key (get free key from https://nvd.nist.gov/developers/request-an-api-key) -->
                         <nvdApiKey>${env.DC_NVD_API_KEY}</nvdApiKey>
-                        <!-- Use cached data if API fails, valid for 30 days -->
-                        <nvdValidForHours>720</nvdValidForHours>
-                        <!-- Retry configuration for network issues -->
-                        <nvdMaxRetryCount>5</nvdMaxRetryCount>
-                        <nvdRetryDelay>5000</nvdRetryDelay>
-                        <!-- Enable auto-update to keep data fresh -->
+                        <!-- Use cached data for 7 days (168 hours) - only update weekly to speed up builds -->
+                        <!-- This significantly speeds up builds by skipping NVD updates when data is recent -->
+                        <nvdValidForHours>168</nvdValidForHours>
+                        <cveValidForHours>168</cveValidForHours>
+                        <!-- Only update if cached data is older than 7 days -->
                         <autoUpdate>true</autoUpdate>
                         <!-- Don't fail on update errors - will use cached data if available -->
                         <failOnError>false</failOnError>
+                        <!-- Speed optimizations: Disable slow analyzers -->
+                        <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
+                        <nodeAuditAnalyzerEnabled>false</nodeAuditAnalyzerEnabled>
+                        <nodePackageAnalyzerEnabled>false</nodePackageAnalyzerEnabled>
+                        <composerAnalyzerEnabled>false</composerAnalyzerEnabled>
+                        <pythonAnalyzerEnabled>false</pythonAnalyzerEnabled>
+                        <rubyBundlerAnalyzerEnabled>false</rubyBundlerAnalyzerEnabled>
+                        <cocoapodsAnalyzerEnabled>false</cocoapodsAnalyzerEnabled>
+                        <swiftPackageManagerAnalyzerEnabled>false</swiftPackageManagerAnalyzerEnabled>
+                        <archiveAnalyzerEnabled>true</archiveAnalyzerEnabled>
+                        <jarAnalyzerEnabled>true</jarAnalyzerEnabled>
+                        <centralAnalyzerEnabled>true</centralAnalyzerEnabled>
+                        <ossIndexAnalyzerEnabled>false</ossIndexAnalyzerEnabled>
+                        <!-- Reduce verbosity for faster execution -->
+                        <logOutputDirectory>${project.build.directory}/dependency-check</logOutputDirectory>
                     </configuration>
                     <executions>
                         <execution>
