@@ -295,13 +295,25 @@
                 <plugin>
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
-                    <version>8.4.3</version>
+                    <version>12.1.0</version>
                     <configuration>
                         <format>HTML</format>
                         <failBuildOnCVSS>7</failBuildOnCVSS>
                         <suppressionFiles>
                             <suppressionFile>owasp-suppressions.xml</suppressionFile>
                         </suppressionFiles>
+                        <!-- NVD API Configuration - API key required for NVD access (get free key from https://nvd.nist.gov/developers/request-an-api-key) -->
+                        <!-- Set DC_NVD_API_KEY environment variable for API key -->
+                        <nvdApiKey>${env.DC_NVD_API_KEY}</nvdApiKey>
+                        <!-- Use cached data if API fails, valid for 30 days -->
+                        <nvdValidForHours>720</nvdValidForHours>
+                        <!-- Retry configuration for network issues -->
+                        <nvdMaxRetryCount>5</nvdMaxRetryCount>
+                        <nvdRetryDelay>5000</nvdRetryDelay>
+                        <!-- Enable auto-update to keep data fresh -->
+                        <autoUpdate>true</autoUpdate>
+                        <!-- Don't fail on update errors - will use cached data if available -->
+                        <failOnError>false</failOnError>
                     </configuration>
                     <executions>
                         <execution>
