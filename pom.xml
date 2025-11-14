@@ -85,17 +85,6 @@
             <version>5.3.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.auth</groupId>
-            <artifactId>google-auth-library-oauth2-http</artifactId>
-            <version>1.30.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client</artifactId>
-            <version>2.6.0</version>
-        </dependency>
 
         <!-- OpenTelemetry SDK auto-configuration for Spring Boot OTLP -->
   
@@ -298,8 +287,8 @@
                     <version>12.1.0</version>
                     <configuration>
                         <format>HTML</format>
-                        <!-- Only fail on high/critical vulnerabilities (CVSS >= 7.0) -->
-                        <failBuildOnCVSS>7.0</failBuildOnCVSS>
+                        <!-- Fail on medium+ vulnerabilities (CVSS >= 6.5) to catch gRPC CVE-2024-11407 (6.9) -->
+                        <failBuildOnCVSS>3</failBuildOnCVSS>
                         <!-- Skip NVD update entirely if data is less than 7 days old - much faster -->
                         <skipProvidedScope>true</skipProvidedScope>
                         <skipRuntimeScope>false</skipRuntimeScope>

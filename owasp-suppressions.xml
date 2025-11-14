@@ -45,14 +45,4 @@
         <cve>CVE-2018-8088</cve>
     </suppress>
     
-    <!-- Suppress gRPC CVE-2024-11407 (CVSS 6.9, below 7.0 threshold) for all gRPC packages -->
-    <suppress>
-        <notes><![CDATA[
-        gRPC CVE-2024-11407 has CVSS 6.9 which is below our 7.0 threshold.
-        This is a transitive dependency and the vulnerability is not critical.
-        Suppressing for all gRPC packages.
-        ]]></notes>
-        <packageUrl regex="true">^pkg:maven/io\.grpc/grpc-.*$</packageUrl>
-        <cve>CVE-2024-11407</cve>
-    </suppress>
 </suppressions>
