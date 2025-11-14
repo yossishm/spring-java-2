@@ -81,36 +81,55 @@ jobs:
           echo "❌ Coverage report not found"
         fi
     
+    - name: Check OWASP cache exists
+      id: check-owasp-cache
+      run: |
+        if [ -d "$HOME/.m2/repository/org/owasp/dependency-check-data" ] || [ -d "$HOME/.dependency-check" ]; then
+          echo "cache_exists=true" >> $GITHUB_OUTPUT
+          echo "✅ OWASP cache found"
+        else
+          echo "cache_exists=false" >> $GITHUB_OUTPUT
+          echo "⚠️ No OWASP cache found - will skip dependency-check to avoid slow NVD download"
+        fi
+    
     - name: Run security audit
       # Only run on schedule (daily) or main branch - skip on PRs to speed up builds
-      if: github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+      # Also skip if no cache exists to avoid slow first-time downloads
+      if: |
+        (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) &&
+        steps.check-owasp-cache.outputs.cache_exists == 'true'
       env:
         DC_NVD_API_KEY: ${{ secrets.DC_NVD_API_KEY }}
       run: |
         echo "🔒 Running Java Security Audit (cached data only, no updates)..."
         # Completely disable NVD updates - use only cached data (much faster)
-        # On schedule runs, allow updates; on main branch, use cache only
-        if [ "${{ github.event_name }}" == "schedule" ]; then
-          echo "📥 Scheduled run - allowing NVD update if cache is > 7 days old"
-          mvn dependency-check:check \
-            -Ddependency-check.skip=false \
-            -Ddependency-check.nvd.validForHours=168 \
-            -Ddependency-check.cve.validForHours=168 \
-            -Ddependency-check.skipUpdateIfValid=true \
-            -Ddependency-check.failOnError=false || echo "⚠️ Security audit completed with findings"
-        else
-          echo "⚡ Main branch - using cached data only (no updates)"
-          mvn dependency-check:check \
-            -Ddependency-check.skip=false \
-            -Ddependency-check.nvd.validForHours=8760 \
-            -Ddependency-check.cve.validForHours=8760 \
-            -Ddependency-check.skipUpdateIfValid=true \
-            -Ddependency-check.autoUpdate=false \
-            -Ddependency-check.failOnError=false || echo "⚠️ Security audit completed with findings"
-        fi
+        mvn dependency-check:check \
+          -Ddependency-check.skip=false \
+          -Ddependency-check.nvd.validForHours=8760 \
+          -Ddependency-check.cve.validForHours=8760 \
+          -Ddependency-check.skipUpdateIfValid=true \
+          -Ddependency-check.autoUpdate=false \
+          -Ddependency-check.failOnError=false || echo "⚠️ Security audit completed with findings"
         echo "✅ Security audit completed"
       continue-on-error: true
-      timeout-minutes: 5
+      timeout-minutes: 3
+    
+    - name: Update OWASP cache (scheduled only)
+      # Only update cache on scheduled runs to avoid blocking regular builds
+      if: github.event_name == 'schedule' && steps.check-owasp-cache.outputs.cache_exists == 'false'
+      env:
+        DC_NVD_API_KEY: ${{ secrets.DC_NVD_API_KEY }}
+      run: |
+        echo "📥 Scheduled run - downloading NVD data (first time or cache expired)..."
+        echo "⏱️ This may take 10-15 minutes on first run..."
+        mvn dependency-check:check \
+          -Ddependency-check.skip=false \
+          -Ddependency-check.nvd.validForHours=168 \
+          -Ddependency-check.cve.validForHours=168 \
+          -Ddependency-check.failOnError=false || echo "⚠️ Cache update completed with findings"
+        echo "✅ Cache updated - future runs will be much faster"
+      continue-on-error: true
+      timeout-minutes: 20
     
     - name: Run code analysis
       run: |
