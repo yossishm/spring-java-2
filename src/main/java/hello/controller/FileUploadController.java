@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,7 +59,7 @@ public class FileUploadController {
         
         try {
             // Process the file (in a real app, you'd save it somewhere)
-            String content = new String(file.getBytes());
+            String content = new String(file.getBytes(), StandardCharsets.UTF_8);
             logger.info("File processed successfully: {} characters", content.length());
             
             return ResponseEntity.ok(Map.of(
@@ -151,13 +152,25 @@ public class FileUploadController {
         try {
             try (var stream = Files.list(tempDir)) {
                 tempFileCount = stream
-                    .filter(path -> path.getFileName().toString().startsWith("tomcat"))
+                    .filter(path -> {
+                        final Path fileName = path.getFileName();
+                        if (fileName == null) {
+                            return false;
+                        }
+                        return fileName.toString().startsWith("tomcat");
+                    })
                     .count();
             }
             
             try (var stream = Files.list(tempDir)) {
                 tempFileSize = stream
-                    .filter(path -> path.getFileName().toString().startsWith("tomcat"))
+                    .filter(path -> {
+                        final Path fileName = path.getFileName();
+                        if (fileName == null) {
+                            return false;
+                        }
+                        return fileName.toString().startsWith("tomcat");
+                    })
                     .mapToLong(path -> {
                         try {
                             return Files.size(path);

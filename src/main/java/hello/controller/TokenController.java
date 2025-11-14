@@ -50,20 +50,20 @@ public class TokenController {
             @RequestParam(required = false) List<String> permissions) {
         
         // Default roles and permissions if not provided
-        if (roles == null || roles.isEmpty()) {
-            roles = List.of("USER");
-        }
-        if (permissions == null || permissions.isEmpty()) {
-            permissions = List.of(CACHE_READ);
-        }
+        final List<String> finalRoles = (roles == null || roles.isEmpty()) 
+            ? List.of("USER") 
+            : roles;
+        final List<String> finalPermissions = (permissions == null || permissions.isEmpty()) 
+            ? List.of(CACHE_READ) 
+            : permissions;
 
-        String token = jwtUtil.generateToken(username, roles, permissions);
+        String token = jwtUtil.generateToken(username, finalRoles, finalPermissions);
 
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put(USERNAME_KEY, username);
-        response.put(ROLES_KEY, roles);
-        response.put(PERMISSIONS_KEY, permissions);
+        response.put(ROLES_KEY, finalRoles);
+        response.put(PERMISSIONS_KEY, finalPermissions);
         response.put("expiresIn", "24 hours");
         response.put(TIMESTAMP_KEY, System.currentTimeMillis());
 

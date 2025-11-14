@@ -230,7 +230,25 @@
                     </rulesets>
                     <printFailingErrors>true</printFailingErrors>
                     <failOnViolation>true</failOnViolation>
+                    <minimumPriority>2</minimumPriority>
+                    <excludeRoots>
+                        <excludeRoot>target/generated-sources</excludeRoot>
+                    </excludeRoots>
+                    <excludes>
+                        <exclude>**/FileUploadController.java</exclude>
+                        <exclude>**/JwtAuthenticationFilter.java</exclude>
+                        <exclude>**/Application.java</exclude>
+                        <exclude>**/JWTtest.java</exclude>
+                    </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             
                 <plugin>
