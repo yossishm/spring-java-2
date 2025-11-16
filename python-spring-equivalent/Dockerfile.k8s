@@ -1,6 +1,6 @@
 # Multi-stage Dockerfile optimized for Kubernetes deployment
 # Using Alpine for security (matches Java's Alpine approach - minimal CVEs)
-FROM python:3.11-alpine3.22 as builder
+FROM python:3.11-alpine3.22 AS builder
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -37,19 +37,11 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     # Verify python-jose cryptography backend module is available
     python3 -c "import importlib; importlib.import_module('jose.backends.cryptography_backend'); print('✅ python-jose cryptography backend module available')"
 
-# Production stage - Alpine with minimal packages (matches Java Alpine security)
-FROM alpine:3.22.2
+# Production stage - use same Python base to ensure ABI compatibility
+FROM python:3.11-alpine3.22 AS runtime
 
-# Install Python runtime and essential packages only
-RUN apk update && apk upgrade && \
-    apk add --no-cache \
-    python3 \
-    py3-pip \
-    && \
-    # Clear package cache for security (keep apk for potential debugging)
-    rm -rf /var/cache/apk/* && \
-    # Create non-root user (matching Java's nonroot approach)
-    addgroup -g 65532 -S nonroot && \
+# Create non-root user (matching Java's nonroot approach)
+RUN addgroup -g 65532 -S nonroot && \
     adduser -u 65532 -S nonroot -G nonroot
 
 # Set environment variables
@@ -63,7 +55,6 @@ WORKDIR /app
 
 # Copy Python packages from builder stage
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy application code
 COPY python_spring_equivalent/ ./python_spring_equivalent/
