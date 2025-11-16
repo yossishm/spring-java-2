@@ -27,7 +27,15 @@ COPY requirements.txt .
 RUN pip install --upgrade pip>=25.3
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    # Verify ecdsa is not installed (mitigation for CVE-2024-23342)
+    python3 -c "import sys; sys.exit(0 if 'ecdsa' not in [p.key for p in __import__('pkg_resources').working_set] else 1)" || \
+    (echo "⚠️ WARNING: ecdsa package detected. Attempting to remove..." && \
+     pip uninstall -y ecdsa || true) && \
+    # Verify cryptography is installed and available
+    python3 -c "import cryptography; print(f'✅ cryptography {cryptography.__version__} installed')" && \
+    # Verify python-jose can use cryptography backend
+    python3 -c "from jose.backends.cryptography_backend import CryptographyBackend; print('✅ python-jose using cryptography backend')"
 
 # Production stage - Alpine with minimal packages (matches Java Alpine security)
 FROM alpine:3.22.2

@@ -17,6 +17,7 @@ from .config import settings
 from .services import CacheService, DatabaseService, MetricsService
 from .routers import cache, jwt, health, metrics
 from .telemetry import setup_telemetry
+from .security_mitigation import ensure_cryptography_backend
 
 # Configure structured logging
 structlog.configure(
@@ -51,6 +52,9 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting Python Spring Equivalent application")
     try:
+        # Verify CVE-2024-23342 mitigation (ecdsa package)
+        ensure_cryptography_backend()
+        
         # Set up OpenTelemetry
         setup_telemetry()
         

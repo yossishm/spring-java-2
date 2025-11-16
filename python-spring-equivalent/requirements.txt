@@ -7,6 +7,7 @@ pydantic-settings==2.7.0
 
 # JWT and security
 python-jose[cryptography]==3.4.0  # Fixed CVE-2024-33663 (CRITICAL) and CVE-2024-33664
+cryptography>=42.0.0  # Explicitly require cryptography backend (mitigates CVE-2024-23342 in ecdsa)
 passlib[bcrypt]==1.7.4
 python-multipart==0.0.18
 
