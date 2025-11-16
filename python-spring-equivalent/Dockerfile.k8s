@@ -34,8 +34,8 @@ RUN pip install --no-cache-dir -r requirements.txt && \
      pip uninstall -y ecdsa || true) && \
     # Verify cryptography is installed and available
     python3 -c "import cryptography; print(f'✅ cryptography {cryptography.__version__} installed')" && \
-    # Verify python-jose can use cryptography backend
-    python3 -c "from jose.backends.cryptography_backend import CryptographyBackend; print('✅ python-jose using cryptography backend')"
+    # Verify python-jose cryptography backend module is available
+    python3 -c "import importlib; importlib.import_module('jose.backends.cryptography_backend'); print('✅ python-jose cryptography backend module available')"
 
 # Production stage - Alpine with minimal packages (matches Java Alpine security)
 FROM alpine:3.22.2
