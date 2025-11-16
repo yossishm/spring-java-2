@@ -53,6 +53,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Set working directory
 WORKDIR /app
 
+# Upgrade pip in runtime to fix CVE-2025-8869 (MEDIUM)
+RUN pip install --no-cache-dir --upgrade "pip>=25.3"
+
 # Copy Python packages from builder stage
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 
