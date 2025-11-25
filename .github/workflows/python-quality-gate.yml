@@ -1,0 +1,83 @@
+name: Python Quality Gate & Security Check
+
+on:
+  push:
+    branches: [ '**' ]
+    paths:
+      - 'python-spring-equivalent/**'
+      - '.github/workflows/python-quality-gate.yml'
+      - 'sonar-project-python.properties'
+  pull_request:
+    branches: [ '**' ]
+    paths:
+      - 'python-spring-equivalent/**'
+      - '.github/workflows/python-quality-gate.yml'
+      - 'sonar-project-python.properties'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  python-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'python-spring-equivalent/requirements.txt'
+
+      - name: Install dependencies
+        working-directory: python-spring-equivalent
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 pytest-cov
+
+      - name: Lint (flake8)
+        working-directory: python-spring-equivalent
+        run: |
+          flake8 python_spring_equivalent || true
+
+      - name: Test with coverage (XML)
+        working-directory: python-spring-equivalent
+        run: |
+          pytest -q --maxfail=1 --disable-warnings \
+            --cov=python_spring_equivalent \
+            --cov-report=xml:coverage.xml \
+            --cov-report=term
+
+      - name: Upload test and coverage artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: python-test-coverage
+          path: |
+            python-spring-equivalent/.pytest_cache/
+            python-spring-equivalent/coverage.xml
+
+      - name: SonarCloud Scan (Python)
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dproject.settings=sonar-project-python.properties
+            -Dsonar.projectBaseDir=.
+
+      - name: Quality Gate status (optional)
+        if: github.event_name == 'pull_request'
+        run: echo "SonarCloud Quality Gate will be reported back to the PR."
+
+
+
