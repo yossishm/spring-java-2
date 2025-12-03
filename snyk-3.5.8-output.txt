@@ -1,0 +1,25 @@
+
+Testing /Users/yshmulev/dev/spring-java-2...
+
+Tested 105 dependencies for known issues, found 1 issue, 1 vulnerable path.
+
+
+Issues to fix by upgrading:
+
+  Upgrade com.squareup.okhttp3:okhttp@4.12.0 to com.squareup.okhttp3:okhttp@5.0.0 to fix
+  ✗ Information Exposure [Low Severity][https://security.snyk.io/vuln/SNYK-JAVA-ORGJETBRAINSKOTLIN-2393744] in org.jetbrains.kotlin:kotlin-stdlib@1.9.25
+    introduced by com.squareup.okhttp3:okhttp@4.12.0 > org.jetbrains.kotlin:kotlin-stdlib-jdk8@1.9.25 > org.jetbrains.kotlin:kotlin-stdlib@1.9.25
+
+
+
+Organization:      yossi.shmulevitch
+Package manager:   maven
+Target file:       pom.xml
+Project name:      org.springframework:gs-spring-boot-docker
+Open source:       no
+Project path:      /Users/yshmulev/dev/spring-java-2
+Licenses:          enabled
+
+Tip: Detected Maven project, are you using modules? Use --maven-aggregate-project to scan each project. Alternatively use --all-projects to scan Maven and other types of projects.
+
+
