@@ -38,3 +38,5 @@ If Spring Boot 3.5.7 already included:
 
 Then **both 3.5.7 and 3.5.8 are NOT vulnerable** to these CVEs.
 
+
+

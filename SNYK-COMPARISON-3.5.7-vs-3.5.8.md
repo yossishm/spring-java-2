@@ -23,3 +23,5 @@ Comparing Software Composition Analysis (SCA) results between Spring Boot versio
 
 (Results will be updated after running Snyk on 3.5.8)
 
+
+

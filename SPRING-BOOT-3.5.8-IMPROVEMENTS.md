@@ -51,3 +51,5 @@ While Snyk SCA shows the same vulnerability count, Spring Boot 3.5.8 is better b
 
 The single low-severity vulnerability (Kotlin stdlib via okhttp) exists in both versions and is unrelated to Spring Boot itself.
 
+
+
